@@ -3,9 +3,16 @@
 //game control
 int gameState = 0;
 
+//entities
+Player pj;
+
 void setup() {
-  size(800, 800);
+  size(900, 900);
  
+  //initialize entites
+  pj = new Player();
+  
+  gameState = 1;
 }
 
 void draw() {
@@ -18,7 +25,12 @@ void draw() {
       break;
     }
     case 1: { //-------[ main scene loop ]-------
-          
+      //entites update
+      pj.update();
+
+      //draw entities
+      pj.display();
+    
       break;
     }
   }
