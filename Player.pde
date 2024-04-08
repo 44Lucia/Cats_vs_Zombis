@@ -36,13 +36,13 @@ class Player {
     float deltaY = mouseY - y;
         
     float angle = degrees(atan2(deltaY, deltaX));
-    println(angle);
+
     //sprite Row update (8 dir)
     if (angle >= -22.5 && angle < 22.5) {row = 0;} //east
     else if (angle <= -22.5 && angle > -67.5) {row = 1;} //north-east
     else if (angle <= -67.5 && angle > -112.5) {row = 2;} //north
     else if (angle <= -112.5 && angle > -157.5) {row = 3;} //north-west
-    else if (angle <= -157.5 && angle > 157.5) {row = 4;} //west
+    else if (angle <= -157.5 || angle > 157.5) {row = 4;} //west
     else if (angle <= 157.5 && angle > 112.5) {row = 5;} //south-west
     else if (angle <= 112.5 && angle > 67.5) {row = 6;} //south
     else {row = 7;} //south-east

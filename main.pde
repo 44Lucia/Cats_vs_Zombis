@@ -1,5 +1,7 @@
 //-------[ variables ]-------
 Utilities utilities;
+GridManager gridManager;
+CollisionManager colManager;
 
 //game control
 int gameState = 0;
@@ -7,15 +9,16 @@ boolean isClicked;
 
 //entities
 Player pj;
-GridManager gridManager;
 
 void setup() {
   size(900, 900);
+  
+  utilities = new Utilities();
+  colManager = new CollisionManager();
+  gridManager = new GridManager();
  
   //initialize entites
-  utilities = new Utilities();
   pj = new Player();
-  gridManager = new GridManager();
   
   gameState = 1;
 }
@@ -43,6 +46,14 @@ void draw() {
   }
 }
 
+//Draw rectangle using its vertex
+void drawRectangle(PVector[] vertices) {
+  beginShape();
+  for (PVector v : vertices) {
+    vertex(v.x, v.y);
+  }
+  endShape(CLOSE);
+}
 
 void mousePressed() {
   isClicked = true;
