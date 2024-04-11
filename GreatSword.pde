@@ -1,50 +1,42 @@
 class GreatSword {
   PImage swordSprite;
   float x = 50, y = 0;
+  PVector matrixPos = new PVector(0, 0);
   int w = 76, h = 19;
-  float rotationAngle = radians(0);
+  
+  float currentAngle = 0;
+  float rotatingSpeed = 0.08;
   
   GreatSword() {
    swordSprite = loadImage("GreatSword.png"); 
   }
   
   void update() {
-    
+    satTest();
   }
     
   void display() {
     imageMode(CENTER);
     image(swordSprite, x, y);
   }
-  
-  void setRotationAngle(float p_angle) {rotationAngle = radians(p_angle);}
-  
+    
   //CONSERVAR PARA TESTEO
   void satTest() {
-    float cx1 = 150;
-    float cy1 = 150;
+    float cx1 = mouseX;
+    float cy1 = mouseY;
     float w1 = 100;
     float h1 = 50;
-    float theta1 = radians(30);  // Ángulo de rotación en radianes
-    
-    // Definir rectángulo 2
-    float cx2 = mouseX;
-    float cy2 = mouseY;
-    float w2 = 80;
-    float h2 = 80;
-    float theta2 = radians(-20);  // Ángulo de rotación en radianes
+    float theta1 = radians(0);  // Ángulo de rotación en radianes
     
     // Calcular vértices de cada rectángulo
-    PVector[] Rect1Vertices = colManager.calculateVertices(cx1, cy1, w1, h1, theta1);
-    PVector[] rect2Vertices = colManager.calculateVertices(cx2, cy2, w2, h2, theta2);
+    PVector[] rect1Vertices = colManager.calculateVertices(cx1, cy1, w1, h1, theta1);
+    PVector[] rect2Vertices = colManager.calculateVertices(matrixPos.x, matrixPos.y, w, h, currentAngle);
     
     // Verificar colisión usando SAT
-    boolean collision = colManager.checkSATCollision(Rect1Vertices, rect2Vertices);
+    boolean collision = colManager.checkSATCollision(rect1Vertices, rect2Vertices);
     
     // Dibujar rectángulo 1
-    utilities.drawRectangle(Rect1Vertices);
-    
-    // Dibujar rectángulo 2
+    utilities.drawRectangle(rect1Vertices);
     utilities.drawRectangle(rect2Vertices);
     
     // Mostrar resultado de colisión

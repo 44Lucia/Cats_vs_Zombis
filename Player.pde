@@ -7,9 +7,7 @@ class Player {
   boolean isWeaponUp;
   float deltaX = mouseX - x;
   float deltaY = mouseY - y;
-  float currentAngle = 0;
   float desiredAngle = atan2(deltaY, deltaX);
-  float rotatingSpeed = 0.08;
     
   //sprite
   PImage playerSprite;
@@ -28,18 +26,17 @@ class Player {
     deltaY = mouseY - y;
     desiredAngle = atan2(deltaY, deltaX);
     
-    float diff= desiredAngle - currentAngle;
+    float diff= desiredAngle - sword.currentAngle;
     if(abs(diff) > PI) {
       if(diff > 0) { desiredAngle -= TWO_PI; }
       else { desiredAngle += TWO_PI; }
     }
-    currentAngle = lerp(currentAngle, desiredAngle, rotatingSpeed);
+    sword.currentAngle = lerp(sword.currentAngle, desiredAngle, sword.rotatingSpeed);
+    println(sword.currentAngle);
     
     isWeaponUp = row < 5; //Sets the weapon back or front of the player
     sword.update();
-    
-    //sword.setRotationAngle(mouseX);
- 
+     
     //animations
     setAnimDirection();
   }
@@ -50,8 +47,10 @@ class Player {
     if(isWeaponUp) {
       pushMatrix();
         translate(x, y);
-        rotate(currentAngle);
+        rotate(sword.currentAngle);
         sword.display();
+        
+        sword.matrixPos = new PVector(x, y);
       popMatrix();
     }
     
@@ -63,12 +62,13 @@ class Player {
     if(!isWeaponUp) {
       pushMatrix();
         translate(x, y);
-        rotate(currentAngle);
+        rotate(sword.currentAngle);
         sword.display();
+        
+        sword.matrixPos = new PVector(x, y);
       popMatrix();
     }
   }
-  
   void setAnimDirection() {
     float animAngle = degrees(atan2(deltaY, deltaX));
     //sprite Row update (8 dir)
