@@ -1,21 +1,23 @@
-class Sword {
-    float x = 60, y = 0;
-    int w = 100, h = 20;
-    float rotationAngle = radians(0);
-    
-    void update() {
-      
-    }
-    
-    void display() {
-      PVector[] Rect1Vertices = colManager.calculateVertices(x, y, w, h, rotationAngle);
-
-      drawRectangle(Rect1Vertices);
-    }
+class GreatSword {
+  PImage swordSprite;
+  float x = 50, y = 0;
+  int w = 76, h = 19;
+  float rotationAngle = radians(0);
   
-  void setRotationAngle(float p_angle){
-    rotationAngle = radians(p_angle);
+  GreatSword() {
+   swordSprite = loadImage("GreatSword.png"); 
   }
+  
+  void update() {
+    
+  }
+    
+  void display() {
+    imageMode(CENTER);
+    image(swordSprite, x, y);
+  }
+  
+  void setRotationAngle(float p_angle) {rotationAngle = radians(p_angle);}
   
   //CONSERVAR PARA TESTEO
   void satTest() {
@@ -40,10 +42,10 @@ class Sword {
     boolean collision = colManager.checkSATCollision(Rect1Vertices, rect2Vertices);
     
     // Dibujar rectángulo 1
-    drawRectangle(Rect1Vertices);
+    utilities.drawRectangle(Rect1Vertices);
     
     // Dibujar rectángulo 2
-    drawRectangle(rect2Vertices);
+    utilities.drawRectangle(rect2Vertices);
     
     // Mostrar resultado de colisión
     fill(0);

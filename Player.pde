@@ -3,12 +3,13 @@ class Player {
   int diameter = 64;
   float x = width / 2, y = height / 2;
   
-  Sword sword;
+  GreatSword sword;
   boolean isWeaponUp;
   float deltaX = mouseX - x;
   float deltaY = mouseY - y;
   float currentAngle = 0;
   float desiredAngle = atan2(deltaY, deltaX);
+  float rotatingSpeed = 0.08;
     
   //sprite
   PImage playerSprite;
@@ -19,7 +20,7 @@ class Player {
   Player() {
    playerSprite = loadImage("Player.png");
    
-   sword = new Sword();
+   sword = new GreatSword();
   }
   
   void update() {
@@ -32,7 +33,7 @@ class Player {
       if(diff > 0) { desiredAngle -= TWO_PI; }
       else { desiredAngle += TWO_PI; }
     }
-    currentAngle = lerp(currentAngle, desiredAngle, 0.1);
+    currentAngle = lerp(currentAngle, desiredAngle, rotatingSpeed);
     
     isWeaponUp = row < 5; //Sets the weapon back or front of the player
     sword.update();

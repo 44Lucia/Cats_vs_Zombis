@@ -47,13 +47,7 @@ void draw() {
 }
 
 //Draw rectangle using its vertex
-void drawRectangle(PVector[] vertices) {
-  beginShape();
-  for (PVector v : vertices) {
-    vertex(v.x, v.y);
-  }
-  endShape(CLOSE);
-}
+
 
 void mousePressed() {
   isClicked = true;
