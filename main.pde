@@ -6,12 +6,16 @@ CollisionManager colManager;
 //game control
 int gameState = 0;
 boolean isClicked;
+PImage mouseSprite; 
 
 //entities
 Player pj;
 
 void setup() {
   size(900, 900);
+  
+  mouseSprite = loadImage("mouse.png");
+  noCursor();
   
   utilities = new Utilities();
   colManager = new CollisionManager();
@@ -29,14 +33,13 @@ void draw() {
   switch(gameState) {
     default: break;
     case 0: { //-------[ main menu loop ]-------
-
       break;
     }
     case 1: { //-------[ main scene loop ]-------
       //entites update
       pj.update();
       gridManager.update();
-
+      
       //draw entities
       pj.display();
       gridManager.display();
@@ -44,6 +47,8 @@ void draw() {
       break;
     }
   }
+  
+  image(mouseSprite, mouseX, mouseY);
 }
 
 //Draw rectangle using its vertex
