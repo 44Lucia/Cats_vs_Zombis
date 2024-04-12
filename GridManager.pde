@@ -9,8 +9,8 @@ class GridManager {
   int selectedCol;
   
   GridManager() {
-    rows = 20;
-    cols = 20;
+    rows = 18;
+    cols = 18;
     cellSize = 50;
     selectedRow = -1;
     selectedCol = -1;
