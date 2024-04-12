@@ -14,7 +14,7 @@ class CollisionManager {
       float[] proj1 = projectToAxis(vertices1, axis);
       float[] proj2 = projectToAxis(vertices2, axis);
       
-      if (!utilities.isOverlap(proj1[0], proj1[1], proj2[0], proj2[1])) {
+      if (!utilities.isOverlaping(proj1[0], proj1[1], proj2[0], proj2[1])) {
         return false; // No hay solapamiento en este eje, por lo tanto no hay colisión
       }
     } 
@@ -23,7 +23,7 @@ class CollisionManager {
       float[] proj1 = projectToAxis(vertices1, axis);
       float[] proj2 = projectToAxis(vertices2, axis);
       
-      if (!utilities.isOverlap(proj1[0], proj1[1], proj2[0], proj2[1])) {return false;}
+      if (!utilities.isOverlaping(proj1[0], proj1[1], proj2[0], proj2[1])) {return false;}
     }
     
     return true;

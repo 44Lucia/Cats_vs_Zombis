@@ -1,5 +1,6 @@
 class Player {
-  int health = 100;
+  int MAX_HEALTH = 100;
+  int health = MAX_HEALTH;
   int diameter = 64;
   float x = width / 2, y = height / 2;
   
@@ -32,7 +33,6 @@ class Player {
       else { desiredAngle += TWO_PI; }
     }
     sword.currentAngle = lerp(sword.currentAngle, desiredAngle, sword.rotatingSpeed);
-    println(sword.currentAngle);
     
     isWeaponUp = row < 5; //Sets the weapon back or front of the player
     sword.update();

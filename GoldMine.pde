@@ -1,6 +1,6 @@
 class GoldMine{
   PImage goldMine;
-  ArrayList<Gold> golds;
+  ArrayList<Gold> goldList;
   int timeLastGold;
   int intervalBetweenCoins; 
   int spawnRadius; 
@@ -15,7 +15,7 @@ class GoldMine{
     mineX =  x;
     mineY = y;
     
-    golds = new ArrayList<Gold>();
+    goldList = new ArrayList<Gold>();
   }
   
   void update(){
@@ -25,20 +25,20 @@ class GoldMine{
       float x = mineX + cos(angle) * spawnRadius;
       float y = mineY + sin(angle) * spawnRadius;
       
-      golds.add(new Gold(x, y));
+      goldList.add(new Gold(x, y));
       timeLastGold = millis();
     }
     
-    for (int i = golds.size() - 1; i >= 0; i--) {
-      Gold gold = golds.get(i);
+    for (int i = goldList.size() - 1; i >= 0; i--) {
+      Gold gold = goldList.get(i);
       gold.display();
       if (gold.isCliceked()) {
-        golds.remove(i);
+        goldList.remove(i);
       }
     }
   }
   
-  void display(){
+  void display() {
     image(goldMine, mineX, mineY, goldMine.width / 2.5, goldMine.height / 2);
   }
 }

@@ -1,19 +1,19 @@
 class Gold {
   float x, y;
-  PImage img;
+  PImage sprite;
   
-  Gold(float x, float y) {
-    this.x = x;
-    this.y = y;
-    this.img = loadImage("Gold.png");
+  Gold(float p_x, float p_y) {
+    x = p_x;
+    y = p_y;
+    sprite = loadImage("Gold.png");
   }
   
   void display() {
-    image(img, x, y, img.width / 2, img.height / 2);
+    image(sprite, x, y, sprite.width / 2, sprite.height / 2);
   }
   
   boolean isCliceked() {
-    if (mousePressed && mouseX > x && mouseX < x + img.width / 2 && mouseY > y && mouseY < y + img.height / 2) {
+    if (mousePressed && utilities.isMouseOver(x, y, sprite.width, sprite.height)) {
       return true;
     }return false;
   }

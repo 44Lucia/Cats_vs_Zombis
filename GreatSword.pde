@@ -22,25 +22,23 @@ class GreatSword {
     
   //CONSERVAR PARA TESTEO
   void satTest() {
-    float cx1 = mouseX;
-    float cy1 = mouseY;
-    float w1 = 100;
-    float h1 = 50;
-    float theta1 = radians(0);  // Ángulo de rotación en radianes
+    float testX = mouseX;
+    float testY = mouseY;
+    float testW = 100;
+    float testH = 50;
+    float testAngle = radians(0);  // Ángulo de rotación en radianes
     
     // Calcular vértices de cada rectángulo
-    PVector[] rect1Vertices = colManager.calculateVertices(cx1, cy1, w1, h1, theta1);
-    PVector[] rect2Vertices = colManager.calculateVertices(matrixPos.x, matrixPos.y, w, h, currentAngle);
+    PVector[] rect1Vertices = colManager.calculateVertices(testX, testY, testW, testH, testAngle); //me
+    PVector[] rect2Vertices = colManager.calculateVertices(matrixPos.x, matrixPos.y, w, h, currentAngle); //sword collider
     
     // Verificar colisión usando SAT
     boolean collision = colManager.checkSATCollision(rect1Vertices, rect2Vertices);
     
-    // Dibujar rectángulo 1
+    // Dibujar rectángulos de colisiones
     utilities.drawRectangle(rect1Vertices);
     utilities.drawRectangle(rect2Vertices);
     
-    // Mostrar resultado de colisión
-    fill(0);
-    text("Collision: " + collision, 20, 20); 
+    //println("Collision: " + collision); 
   } 
 }

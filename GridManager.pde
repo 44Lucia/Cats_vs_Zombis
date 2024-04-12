@@ -21,7 +21,7 @@ class GridManager {
   
    void update() {
      displayGrid();
-     if(utilities.isClicked()){
+     if(isClicked){
        gridManagement();
      }
    }
