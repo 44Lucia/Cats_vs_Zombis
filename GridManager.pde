@@ -7,6 +7,15 @@ class GridManager {
   boolean[][] ocuped; // Matriz que registra las casillas ocupadas
   int selectedRow;
   int selectedCol;
+  ArrayList<TreeWall> trees;
+  
+  boolean gridLocked;
+  int lockDuration; 
+  int lastLockTime;
+  
+  boolean selectedTree;
+  boolean selectedMine;
+  boolean selectedArcher;
   
   GridManager() {
     rows = 18;
@@ -14,27 +23,40 @@ class GridManager {
     cellSize = 50;
     selectedRow = -1;
     selectedCol = -1;
+    lockDuration = 500;
+    lastLockTime = 0;
     
     grid = new int[rows][cols];
     ocuped = new boolean[rows][cols];
+    trees = new ArrayList<TreeWall>();
+    
+    selectedTree = false;
+    selectedMine = false;
+    selectedArcher = false;
+    gridLocked = false;
   }
   
    void update() {
      displayGrid();
+     
+     if (gridLocked && millis() - lastLockTime >= lockDuration) { gridLocked = false; }
+     for(TreeWall tree : trees) { tree.display(); }
+     
      if(isClicked){
+       checkItemToInsert();
        gridManagement();
      }
    }
    
    void display(){
-     // Inicializa la cuadrícula con valores predeterminados (0 para espacios vacíos)
+     // Initializes the grid with default values (0 for empty spaces)
      for (int i = 0; i < rows; i++) {
        for (int j = 0; j < cols; j++) { grid[i][j] = 0; }
      }
    }
    
    void displayGrid(){
-     // Dibuja la cuadrícula
+     // Draw the grid
      for (int i = 0; i < rows; i++) {
        for (int j = 0; j < cols; j++) {
          stroke(0);
@@ -52,11 +74,6 @@ class GridManager {
          }
        }
      }
-      
-     // Muestra las coordenadas de la celda seleccionada
-     fill(0);
-     textSize(20);
-     text("Fila: " + selectedRow + ", Columna: " + selectedCol, 10, 30);
    }
   
    void gridManagement(){
@@ -66,12 +83,32 @@ class GridManager {
      // Verifica si la celda seleccionada está dentro de los límites de la cuadrícula
      if (row >= 0 && row < rows && col >= 0 && col < cols) {
        // Verifica si la casilla está ocupada
-       if (!ocuped[row][col]) {
+       if (!ocuped[row][col] && !gridLocked && canPlaceItems()) {
          // Marca la casilla como ocupada y seleccionada
          ocuped[row][col] = true;
          selectedRow = row;
          selectedCol = col;
+         if(selectedTree){
+           trees.add(new TreeWall(col * cellSize + 6, row * cellSize - 2));
+           money -= 50;
+           selectedTree = false;
+         }else if (selectedMine){
+           money -= 100;
+           selectedMine = false;
+         }
        }
      }
   }
+  
+  void checkItemToInsert(){
+    if(ui.treeButton.isMouseOver()){
+      if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
+      selectedTree = true;
+    }else if (ui.goldButton.isMouseOver()){
+      if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
+      selectedMine = true;
+    }
+  }
+  
+  boolean canPlaceItems(){ return selectedMine || selectedTree || selectedArcher; }
 }

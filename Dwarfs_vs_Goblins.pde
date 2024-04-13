@@ -8,6 +8,7 @@ CollisionManager colManager;
 int gameState = 0;
 boolean isClicked;
 PImage mouseSprite; 
+int money = 0;
 String playerInput;
 
 //entities
@@ -46,6 +47,7 @@ void draw() {
       break;
     }
     case 2: { //-------[ game ]-------
+      money = 0;
       //entites update
       ui.uiGameDisplay();
       pj.update();

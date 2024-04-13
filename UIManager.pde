@@ -56,5 +56,10 @@ class UIManager {
     goldButton.display();
     treeButton.display();
     archerButton.display();
+    
+    fill(255);
+    textSize(20);
+    textAlign(RIGHT, TOP);
+    text("Money: " + money, width - 10, 10);
   }
 }
