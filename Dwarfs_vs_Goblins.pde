@@ -47,6 +47,7 @@ void draw() {
     }
     case 2: { //-------[ game ]-------
       //entites update
+      ui.uiGameDisplay();
       pj.update();
       gridManager.update();
       
@@ -80,7 +81,6 @@ void mousePressed() {
       break;
     }
     case 2: { //-------[ game ]-------
-
       break;
     }
     case 3: { //-------[ game over ]-------     
