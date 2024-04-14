@@ -1,6 +1,7 @@
 class Player {
   int MAX_HEALTH = 100;
   int health = MAX_HEALTH;
+  int money = 0;
   int diameter = 64;
   float x = width / 2, y = height / 2;
   
@@ -26,7 +27,7 @@ class Player {
     deltaX = mouseX - x;
     deltaY = mouseY - y;
     desiredAngle = atan2(deltaY, deltaX);
-    
+
     float diff= desiredAngle - sword.currentAngle;
     if(abs(diff) > PI) {
       if(diff > 0) { desiredAngle -= TWO_PI; }
@@ -43,14 +44,12 @@ class Player {
   
   void display() {
     fill(0);
-    
+ 
     if(isWeaponUp) {
       pushMatrix();
         translate(x, y);
         rotate(sword.currentAngle);
         sword.display();
-        
-        sword.matrixPos = new PVector(x, y);
       popMatrix();
     }
     
@@ -64,8 +63,6 @@ class Player {
         translate(x, y);
         rotate(sword.currentAngle);
         sword.display();
-        
-        sword.matrixPos = new PVector(x, y);
       popMatrix();
     }
   }

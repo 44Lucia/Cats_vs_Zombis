@@ -8,14 +8,13 @@ CollisionManager colManager;
 int gameState = 0;
 boolean isClicked;
 PImage mouseSprite; 
-int money = 0;
 String playerInput;
 
 //entities
 Player pj;
 
 void setup() {
-  size(900, 900);
+  size(960, 960);
   
   mouseSprite = loadImage("mouse.png");
   noCursor();
@@ -47,14 +46,15 @@ void draw() {
       break;
     }
     case 2: { //-------[ game ]-------
-      money = 0;
       //entites update
-      ui.uiGameDisplay();
       pj.update();
+      
       gridManager.update();
       
       //draw entities
       pj.display();
+      ui.builderButtonsDisplay();
+      
       gridManager.display();
       
       break;

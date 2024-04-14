@@ -42,7 +42,7 @@ class UIManager {
 
   //-------[ functions ]-------  
   void mainMenuDisplay() {
-    background(bgSprite);
+    //background(bgSprite);
     
     //title
     fill(0);    
@@ -52,7 +52,7 @@ class UIManager {
     playButton.display();
   }
   
-  void uiGameDisplay(){
+  void builderButtonsDisplay(){
     goldButton.display();
     treeButton.display();
     archerButton.display();
@@ -60,6 +60,6 @@ class UIManager {
     fill(255);
     textSize(20);
     textAlign(RIGHT, TOP);
-    text("Money: " + money, width - 10, 10);
+    text("Money: " + pj.money, width - 10, 10);
   }
 }

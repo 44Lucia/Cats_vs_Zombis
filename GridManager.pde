@@ -4,10 +4,10 @@ class GridManager {
   final int cols; // Número de columnas en la cuadrícula
   final int cellSize; // Tamaño de cada celda de la cuadrícula
   int[][] grid; // Matriz que representa la cuadrícula
-  boolean[][] ocuped; // Matriz que registra las casillas ocupadas
+  boolean[][] ocupedCells; // Matriz que registra las casillas ocupadas
   int selectedRow;
   int selectedCol;
-  ArrayList<TreeWall> trees;
+  ArrayList<TreeWall> treeList;
   
   boolean gridLocked;
   int lockDuration; 
@@ -18,57 +18,55 @@ class GridManager {
   boolean selectedArcher;
   
   GridManager() {
-    rows = 18;
-    cols = 18;
-    cellSize = 50;
+    rows = 15;
+    cols = 15;
+    cellSize = 64;
     selectedRow = -1;
     selectedCol = -1;
     lockDuration = 500;
     lastLockTime = 0;
     
     grid = new int[rows][cols];
-    ocuped = new boolean[rows][cols];
-    trees = new ArrayList<TreeWall>();
+    ocupedCells = new boolean[rows][cols];
+    treeList = new ArrayList<TreeWall>();
     
     selectedTree = false;
     selectedMine = false;
     selectedArcher = false;
     gridLocked = false;
+    
+     // Initializes the grid with default values (0 for empty spaces)
+     for (int i = 0; i < rows; i++) {
+       for (int j = 0; j < cols; j++) { grid[i][j] = 0; }
+     }
   }
   
-   void update() {
-     displayGrid();
-     
+   void update() {     
      if (gridLocked && millis() - lastLockTime >= lockDuration) { gridLocked = false; }
-     for(TreeWall tree : trees) { tree.display(); }
+     for(TreeWall tree : treeList) { tree.display(); }
      
      if(isClicked){
        checkItemToInsert();
        gridManagement();
      }
    }
-   
+
    void display(){
-     // Initializes the grid with default values (0 for empty spaces)
-     for (int i = 0; i < rows; i++) {
-       for (int j = 0; j < cols; j++) { grid[i][j] = 0; }
-     }
-   }
-   
-   void displayGrid(){
      // Draw the grid
      for (int i = 0; i < rows; i++) {
        for (int j = 0; j < cols; j++) {
-         stroke(0);
+         strokeWeight(1);
          noFill();
          rect(j * cellSize, i * cellSize, cellSize, cellSize);
          // Cambia el color de la celda seleccionada
          if (i == selectedRow && j == selectedCol) {
-           fill(0, 255, 0); // Color verde
+           strokeWeight(2);
+           //fill(0, 255, 0); // Color verde
            rect(j * cellSize, i * cellSize, cellSize, cellSize);     
          }
          // Dibuja un marcador si la casilla está ocupada
-         if (ocuped[i][j]) {
+         if (ocupedCells[i][j]) {
+           strokeWeight(1);
            fill(255, 0, 0); // Color rojo
            ellipse(j * cellSize + cellSize/2, i * cellSize + cellSize/2, cellSize/2, cellSize/2);
          }
@@ -83,17 +81,17 @@ class GridManager {
      // Verifica si la celda seleccionada está dentro de los límites de la cuadrícula
      if (row >= 0 && row < rows && col >= 0 && col < cols) {
        // Verifica si la casilla está ocupada
-       if (!ocuped[row][col] && !gridLocked && canPlaceItems()) {
+       if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
          // Marca la casilla como ocupada y seleccionada
-         ocuped[row][col] = true;
+         ocupedCells[row][col] = true;
          selectedRow = row;
          selectedCol = col;
          if(selectedTree){
-           trees.add(new TreeWall(col * cellSize + 6, row * cellSize - 2));
-           money -= 50;
+           treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 2));
+           pj.money -= 50;
            selectedTree = false;
          }else if (selectedMine){
-           money -= 100;
+           pj.money -= 100;
            selectedMine = false;
          }
        }
