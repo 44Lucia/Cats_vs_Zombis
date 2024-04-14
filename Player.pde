@@ -2,6 +2,7 @@ class Player {
   int MAX_HEALTH = 100;
   int health = MAX_HEALTH;
   int money = 0;
+  int score = 0;
   int diameter = 64;
   float x = width / 2, y = height / 2;
   
