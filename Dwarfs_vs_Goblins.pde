@@ -103,5 +103,5 @@ void mouseReleased(){
 }
 
 void startGame() {
-  gameState = 1; // Game scene
+  gameState = 2; // Game scene
 }
