@@ -49,7 +49,7 @@ class GridManager {
      
      if(isClicked){
        checkItemToInsert();
-      gridManagement();
+       gridManagement();
      }
    }
 
@@ -78,16 +78,14 @@ class GridManager {
      if (row >= 0 && row < rows && col >= 0 && col < cols) {
        // Verifica si la casilla está ocupada
        if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
-         // Marca la casilla como ocupada y seleccionada
-         ocupedCells[row][col] = true;
-         selectedRow = row;
-         selectedCol = col;
          if(selectedTree && pj.money >= 50){
            treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
+           ocupedCells[row][col] = true;
            pj.money -= 50;
            selectedTree = false;
          }else if (selectedMine && pj.money >= 100){
            goldList.add(new GoldMine(col * cellSize - 5, row * cellSize));
+           ocupedCells[row][col] = true;
            pj.money -= 100;
            selectedMine = false;
          }
