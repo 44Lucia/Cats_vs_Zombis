@@ -8,6 +8,7 @@ class GridManager {
   int selectedRow;
   int selectedCol;
   ArrayList<TreeWall> treeList;
+  ArrayList<GoldMine> goldList;
   
   boolean gridLocked;
   int lockDuration; 
@@ -29,6 +30,7 @@ class GridManager {
     grid = new int[rows][cols];
     ocupedCells = new boolean[rows][cols];
     treeList = new ArrayList<TreeWall>();
+    goldList = new ArrayList<GoldMine>();
     
     selectedTree = false;
     selectedMine = false;
@@ -43,7 +45,7 @@ class GridManager {
   
    void update() {     
      if (gridLocked && millis() - lastLockTime >= lockDuration) { gridLocked = false; }
-     for(TreeWall tree : treeList) { tree.display(); }
+     displayItems();
      
      if(isClicked){
        checkItemToInsert();
@@ -64,12 +66,6 @@ class GridManager {
            //fill(0, 255, 0); // Color verde
            rect(j * cellSize, i * cellSize, cellSize, cellSize);     
          }
-         // Dibuja un marcador si la casilla está ocupada
-         if (ocupedCells[i][j]) {
-           strokeWeight(1);
-           fill(255, 0, 0); // Color rojo
-           ellipse(j * cellSize + cellSize/2, i * cellSize + cellSize/2, cellSize/2, cellSize/2);
-         }
        }
      }
    }
@@ -87,10 +83,11 @@ class GridManager {
          selectedRow = row;
          selectedCol = col;
          if(selectedTree){
-           treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 2));
+           treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
            pj.money -= 50;
            selectedTree = false;
          }else if (selectedMine){
+           goldList.add(new GoldMine(col * cellSize - 5, row * cellSize));
            pj.money -= 100;
            selectedMine = false;
          }
@@ -106,6 +103,11 @@ class GridManager {
       if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
       selectedMine = true;
     }
+  }
+  
+  void displayItems(){
+    for(TreeWall tree : treeList) { tree.display(); }
+    for(GoldMine gold : goldList) { gold.display(); gold.update(); }
   }
   
   boolean canPlaceItems(){ return selectedMine || selectedTree || selectedArcher; }
