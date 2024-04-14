@@ -7,8 +7,17 @@ class UIManager {
   PImage titleBgSprite;
   PImage redButtonSprite, redButtonHoverSprite;
   int titleBgPosX = 50, titleBgPosY = 160;
-  Button playButton;
-  int playButtonPosX = 185, playButtonPosY = 340;
+  Button playButton, highscoreButton, exitButton;
+  int playButtonPosX = 185, playButtonPosY = 360;
+  
+  //highscore table
+  PImage backToMainTitleSprite;
+  PImage top1HighscoreSprite, top5HighscoreSprite, top10HighscoreSprite;
+  PImage returnButtonSprite, returnButtonHoverSprite;
+  int highscorePosX = 150, highscorePosY = 340;
+  Button returnButton;
+  int returnButtonPosX = 40, returnButtonPosY = 120;
+  boolean showHighscoreTable;
   
   //game ui
   PImage treeSprite;
@@ -25,7 +34,17 @@ class UIManager {
     redButtonSprite = loadImage("RedButton.png");
     redButtonHoverSprite = loadImage("RedButtonHover.png");
     
-    playButton = new Button(this, playButtonPosX, playButtonPosY, "Play", redButtonSprite, redButtonHoverSprite); 
+    top1HighscoreSprite = loadImage("HighscoreTop1.png");
+    top5HighscoreSprite = loadImage("HighscoreTop5.png");
+    top10HighscoreSprite = loadImage("HighscoreTop10.png");
+    returnButtonSprite = loadImage("ReturnButton.png");
+    returnButtonHoverSprite = loadImage("ReturnButtonHover.png");
+    
+    //buttons
+    playButton = new Button(this, playButtonPosX, playButtonPosY, "Play", redButtonSprite, redButtonHoverSprite);
+    highscoreButton = new Button(this, playButtonPosX, playButtonPosY + 80, "Highscores", redButtonSprite, redButtonHoverSprite);
+    exitButton = new Button(this, playButtonPosX, playButtonPosY + 200, "Exit", redButtonSprite, redButtonHoverSprite);
+    returnButton = new Button(this, returnButtonPosX, returnButtonPosY, "", returnButtonSprite, returnButtonHoverSprite);
     
     goldSprite = loadImage("GoldMine.png");
     goldSprite.resize(85, 70);
@@ -42,14 +61,28 @@ class UIManager {
 
   //-------[ functions ]-------  
   void mainMenuDisplay() {
-    //background(bgSprite);
+    background(bgSprite);
     
     //title
     fill(0);    
     imageMode(CORNER);
     image(titleBgSprite, titleBgPosX, titleBgPosY);
     
-    playButton.display();
+    if(!showHighscoreTable) {
+      textSize(52);
+      text("Dwarfs", titleBgPosX + 120,  titleBgPosY + 40);
+      textSize(32);
+      text("vs.", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
+      textSize(52);
+      text("Goblins", titleBgPosX + titleBgSprite.width - 120,  titleBgPosY + 90);
+      
+      playButton.display();
+      highscoreButton.display();
+      exitButton.display();
+    }
+    else {
+      displayHighscore();
+    }
   }
   
   void builderButtonsDisplay(){
@@ -61,5 +94,27 @@ class UIManager {
     textSize(20);
     textAlign(RIGHT, TOP);
     text("Money: " + pj.money, width - 10, 10);
+  }
+  
+  void displayHighscore() {
+    returnButton.display();
+    
+    for(int i = 0; i < 20; i+=2) {
+      int offsetY = i * 25 + top1HighscoreSprite.height;
+      //score bg sprite
+      imageMode(CORNER);
+      if(i == 0) {image(top1HighscoreSprite, highscorePosX, highscorePosY);}
+      else if(i < 8) {image(top5HighscoreSprite, highscorePosX, highscorePosY + offsetY);}
+      else {image(top10HighscoreSprite, highscorePosX, highscorePosY + offsetY);}
+
+      //score text
+      hsManager.sortedScores();
+      fill(0);
+      textSize(48);
+      textAlign(CENTER, CORNER);
+      text(hsManager.sortedScores()[i], highscorePosX + 50, highscorePosY + offsetY - 12);
+      textSize(32);
+      text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 80, highscorePosY + offsetY - 16);
+    }  
   }
 }

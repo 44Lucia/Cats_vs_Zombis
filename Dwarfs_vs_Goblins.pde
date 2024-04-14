@@ -3,6 +3,7 @@ Utilities utilities;
 UIManager ui;
 GridManager gridManager;
 CollisionManager colManager;
+HighscoreManager hsManager;
 
 //game control
 int gameState = 0;
@@ -21,13 +22,12 @@ void setup() {
   
   utilities = new Utilities();
   ui = new UIManager();
-  colManager = new CollisionManager();
   gridManager = new GridManager();
+  colManager = new CollisionManager();
+  hsManager = new HighscoreManager();
  
   //initialize entites
-  pj = new Player();
-  
-  //gameState = 1;
+  pj = new Player();  
 }
 
 void draw() {
@@ -76,6 +76,12 @@ void mousePressed() {
     default: break;
     case 0: { //-------[ main title ]-------
       if(ui.playButton.isMouseOver()) {startGame();}
+      
+      if(ui.highscoreButton.isMouseOver()) {ui.showHighscoreTable = true;}
+      else if(ui.returnButton.isMouseOver()) {ui.showHighscoreTable = false;}
+      
+      if(ui.exitButton.isMouseOver()) {exit();}
+
       break;
     }
     case 1: { //-------[ character selection ]-------
@@ -97,5 +103,5 @@ void mouseReleased(){
 }
 
 void startGame() {
-  gameState = 2; // Game scene
+  gameState = 1; // Game scene
 }
