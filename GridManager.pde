@@ -43,13 +43,13 @@ class GridManager {
      }
   }
   
-   void update() {     
+   void update() {    
      if (gridLocked && millis() - lastLockTime >= lockDuration) { gridLocked = false; }
      displayItems();
      
      if(isClicked){
        checkItemToInsert();
-       gridManagement();
+      gridManagement();
      }
    }
 
@@ -82,11 +82,11 @@ class GridManager {
          ocupedCells[row][col] = true;
          selectedRow = row;
          selectedCol = col;
-         if(selectedTree){
+         if(selectedTree && pj.money >= 50){
            treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
            pj.money -= 50;
            selectedTree = false;
-         }else if (selectedMine){
+         }else if (selectedMine && pj.money >= 100){
            goldList.add(new GoldMine(col * cellSize - 5, row * cellSize));
            pj.money -= 100;
            selectedMine = false;
