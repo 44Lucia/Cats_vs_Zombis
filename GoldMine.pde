@@ -33,6 +33,7 @@ class GoldMine{
       Gold gold = goldList.get(i);
       gold.display();
       if (gold.isCliceked()) {
+        pj.money += 20;
         goldList.remove(i);
       }
     }

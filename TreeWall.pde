@@ -8,7 +8,7 @@ class TreeWall {
 
   TreeWall(float x, float y) {
     treeImage = loadImage("Tree.png");
-    treeImage.resize(40, 55);
+    treeImage.resize(55, 70);
     this.x = x;
     this.y = y;
     maxHealth = 100;
