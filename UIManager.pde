@@ -100,7 +100,7 @@ class UIManager {
     returnButton.display();
     
     for(int i = 0; i < 20; i+=2) {
-      int offsetY = i * 25 + top1HighscoreSprite.height;
+      int offsetY = i * 25;
       //score bg sprite
       imageMode(CORNER);
       if(i == 0) {image(top1HighscoreSprite, highscorePosX, highscorePosY);}
@@ -109,12 +109,15 @@ class UIManager {
 
       //score text
       hsManager.sortedScores();
-      fill(0);
-      textSize(48);
-      textAlign(CENTER, CORNER);
-      text(hsManager.sortedScores()[i], highscorePosX + 50, highscorePosY + offsetY - 12);
-      textSize(32);
-      text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 80, highscorePosY + offsetY - 16);
+      
+      if(hsManager.sortedScores().length > i) { //avoid null scores if less than 10
+        fill(0);
+        textSize(48);
+        textAlign(CORNER);
+        text(hsManager.sortedScores()[i], highscorePosX + 20, highscorePosY + top1HighscoreSprite.height + offsetY - 12);
+        textSize(32);
+        text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 80, highscorePosY + top1HighscoreSprite.height + offsetY - 16);
+      }
     }  
   }
 }

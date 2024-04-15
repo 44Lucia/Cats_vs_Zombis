@@ -7,11 +7,10 @@ class HighscoreManager {
   HighscoreManager() {
     file = "scores.txt";
     highscoreDict = new IntDict();
-
-    for(int i = 0; i < 30; i++) {
-      highscoreDict.set(str(i+1),i+1);
-    }
-
+    readFileValues();
+    
+    //highscoreDict.set("awawa", 5);
+    
     nameList = highscoreDict.keyArray();
     scoreList = str(highscoreDict.valueArray());
   }

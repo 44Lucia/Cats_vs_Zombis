@@ -75,12 +75,12 @@ void mousePressed() {
   switch(gameState) {
     default: break;
     case 0: { //-------[ main title ]-------
-      if(ui.playButton.isMouseOver()) {startGame();}
+      if(ui.playButton.isMouseOver() && !ui.showHighscoreTable) {startGame();}
       
       if(ui.highscoreButton.isMouseOver()) {ui.showHighscoreTable = true;}
       else if(ui.returnButton.isMouseOver()) {ui.showHighscoreTable = false;}
       
-      if(ui.exitButton.isMouseOver()) {exit();}
+      if(ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {closeGame();}
 
       break;
     }
@@ -105,3 +105,8 @@ void mouseReleased(){
 void startGame() {
   gameState = 2; // Game scene
 }
+
+void closeGame() {
+  hsManager.saveValuesToFile();
+  exit();
+} 
