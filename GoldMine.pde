@@ -8,6 +8,7 @@ class GoldMine{
   
   GoldMine(float x, float y) {
     goldMine = loadImage("GoldMine.png");
+    goldMine.resize(70, 55);
     
     timeLastGold = 0;
     intervalBetweenCoins = 2000;
@@ -40,6 +41,6 @@ class GoldMine{
   }
   
   void display() {
-    image(goldMine, mineX, mineY, goldMine.width / 2.5, goldMine.height / 2);
+    image(goldMine, mineX, mineY);
   }
 }

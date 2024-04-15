@@ -10,6 +10,9 @@ class GridManager {
   ArrayList<TreeWall> treeList;
   ArrayList<GoldMine> goldList;
   
+  PImage shadowSprite;
+  boolean placingItem;
+  
   boolean gridLocked;
   int lockDuration; 
   int lastLockTime;
@@ -36,6 +39,7 @@ class GridManager {
     selectedMine = false;
     selectedArcher = false;
     gridLocked = false;
+    placingItem = false;
     
      // Initializes the grid with default values (0 for empty spaces)
      for (int i = 0; i < rows; i++) {
@@ -83,11 +87,13 @@ class GridManager {
            ocupedCells[row][col] = true;
            pj.money -= 50;
            selectedTree = false;
+           placingItem = false;
          }else if (selectedMine && pj.money >= 100){
-           goldList.add(new GoldMine(col * cellSize - 5, row * cellSize));
+           goldList.add(new GoldMine(col * cellSize - 2, row * cellSize + 2));
            ocupedCells[row][col] = true;
            pj.money -= 100;
            selectedMine = false;
+           placingItem = false;
          }
        }
      }
@@ -97,15 +103,54 @@ class GridManager {
     if(ui.treeButton.isMouseOver()){
       if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
       selectedTree = true;
+      shadowSprite = loadImage("Tree.png");
+      shadowSprite.resize(55, 70);
+      placingItem = true;
     }else if (ui.goldButton.isMouseOver()){
       if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
       selectedMine = true;
+      shadowSprite = loadImage("GoldMine.png");
+      shadowSprite.resize(70, 55);
+      placingItem = true;
     }
   }
   
   void displayItems(){
     for(TreeWall tree : treeList) { tree.display(); }
     for(GoldMine gold : goldList) { gold.display(); gold.update(); }
+    
+    if (placingItem) { 
+      float shadowX = mouseX - shadowSprite.width / 2;
+      float shadowY = mouseY - shadowSprite.height /  2;
+      image(createShadow(shadowSprite), shadowX, shadowY);
+    }
+  }
+  
+  PImage createShadow(PImage originalImage) {
+    PImage shadowImage = createImage(originalImage.width, originalImage.height, ARGB); // // Create a new image of the same size
+    float[] lut = createOpacityLUT(); // Create a lookup table to adjust opacity
+    
+    // Apply the lookup table to the original image to create the shadow
+    originalImage.loadPixels();
+    shadowImage.loadPixels();
+    for (int i = 0; i < originalImage.pixels.length; i++) {
+      int c = originalImage.pixels[i];
+      int a = (int) alpha(c);
+      int newA = (int) (a * lut[a]); // Adjust opacity using lookup table
+      shadowImage.pixels[i] = color(red(c), green(c), blue(c), newA); // Keep the original color components and adjust only the opacity
+    }
+    shadowImage.updatePixels();
+    
+    return shadowImage;
+  }
+
+  float[] createOpacityLUT() {
+    float[] lut = new float[256]; // Create a lookup table with 256 values (0-255)
+    float opacityFactor = 0.5; // Opacity factor for shadow
+    for (int i = 0; i < 256; i++) {
+      lut[i] = i / 255.0 * opacityFactor; // Adjust opacity based on original pixel value
+    }
+    return lut;
   }
   
   boolean canPlaceItems(){ return selectedMine || selectedTree || selectedArcher; }
