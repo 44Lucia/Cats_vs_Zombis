@@ -4,16 +4,18 @@ class GreatSword {
   int w = 76, h = 19;
   
   float currentAngle = 0;
-  float rotatingSpeed = 0.08;
+  float rotationSpeed = 0.08;
   int playerOffset = 50;
   
   GreatSword() {
-   swordSprite = loadImage("GreatSword.png"); 
+   swordSprite = loadImage("GreatSword.png");    
   }
   
   void update() {
     x = pj.x + cos(currentAngle) * playerOffset; 
     y = pj.y + sin(currentAngle) * playerOffset;
+    
+    currentAngle = swordRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
     
     satTest();
   }
@@ -44,4 +46,15 @@ class GreatSword {
     
     //println("Collision: " + collision); 
   } 
+  
+  float swordRotationAngle(float current, float target, float speed) {
+    float diff = target - current;
+    
+    if (abs(diff) > PI) {
+        if (diff > 0) {current += TWO_PI;} 
+        else {current -= TWO_PI;}
+    }
+    
+    return lerp(current, target, speed);
+  }
 }

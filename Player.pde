@@ -8,9 +8,6 @@ class Player {
   
   GreatSword sword;
   boolean isWeaponUp;
-  float deltaX = mouseX - x;
-  float deltaY = mouseY - y;
-  float desiredAngle = atan2(deltaY, deltaX);
     
   //sprite
   PImage playerSprite;
@@ -25,16 +22,16 @@ class Player {
   }
   
   void update() {
-    deltaX = mouseX - x;
-    deltaY = mouseY - y;
-    desiredAngle = atan2(deltaY, deltaX);
 
-    float diff= desiredAngle - sword.currentAngle;
+    /*float diff= desiredAngle - sword.currentAngle;
     if(abs(diff) > PI) {
       if(diff > 0) { desiredAngle -= TWO_PI; }
       else { desiredAngle += TWO_PI; }
     }
-    sword.currentAngle = lerp(sword.currentAngle, desiredAngle, sword.rotatingSpeed);
+    sword.currentAngle = lerp(sword.currentAngle, desiredAngle, sword.rotationSpeed);*/
+    
+    // Calcular el ángulo hacia el ratón
+    
     
     isWeaponUp = row < 5; //Sets the weapon back or front of the player
     sword.update();
@@ -68,7 +65,7 @@ class Player {
     }
   }
   void setAnimDirection() {
-    float animAngle = degrees(atan2(deltaY, deltaX));
+    float animAngle = degrees(utilities.mouseAngle());
     //sprite Row update (8 dir)
     if (animAngle >= -22.5 && animAngle < 22.5) {row = 0;} //east
     else if (animAngle <= -22.5 && animAngle > -67.5) {row = 1;} //north-east

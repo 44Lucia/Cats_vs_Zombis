@@ -81,6 +81,9 @@ class UIManager {
       exitButton.display();
     }
     else {
+      textSize(52);
+      textAlign(CENTER, CENTER);
+      text("Highscores", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
       displayHighscore();
     }
   }
@@ -114,9 +117,9 @@ class UIManager {
         fill(0);
         textSize(48);
         textAlign(CORNER);
-        text(hsManager.sortedScores()[i], highscorePosX + 20, highscorePosY + top1HighscoreSprite.height + offsetY - 12);
+        text(hsManager.sortedScores()[i], highscorePosX + 20, highscorePosY + top1HighscoreSprite.height + offsetY - 14);
         textSize(32);
-        text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 80, highscorePosY + top1HighscoreSprite.height + offsetY - 16);
+        text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 60, highscorePosY + top1HighscoreSprite.height + offsetY - 14);
       }
     }  
   }
