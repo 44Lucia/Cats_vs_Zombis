@@ -1,4 +1,6 @@
-class Utilities {     //<>//
+enum EnemyState {IDLE, WALK, ATTACK} //<>//
+
+class Utilities {
   float deltaX() {return mouseX - pj.x;}
   float deltaY() {return mouseY - pj.y;}
   float mouseAngle() {return atan2(deltaY(), deltaX());}

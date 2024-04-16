@@ -21,18 +21,7 @@ class Player {
    sword = new GreatSword();
   }
   
-  void update() {
-
-    /*float diff= desiredAngle - sword.currentAngle;
-    if(abs(diff) > PI) {
-      if(diff > 0) { desiredAngle -= TWO_PI; }
-      else { desiredAngle += TWO_PI; }
-    }
-    sword.currentAngle = lerp(sword.currentAngle, desiredAngle, sword.rotationSpeed);*/
-    
-    // Calcular el ángulo hacia el ratón
-    
-    
+  void update() {    
     isWeaponUp = row < 5; //Sets the weapon back or front of the player
     sword.update();
      

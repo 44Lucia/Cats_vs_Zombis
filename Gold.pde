@@ -1,11 +1,10 @@
 class Gold {
   float x, y;
-  PImage sprite;
+  PImage sprite = loadImage("Gold.png");
   
   Gold(float p_x, float p_y) {
     x = p_x;
     y = p_y;
-    sprite = loadImage("Gold.png");
   }
   
   void display() {
@@ -13,8 +12,6 @@ class Gold {
   }
   
   boolean isCliceked() {
-    if (mousePressed && utilities.isMouseOver(x, y, sprite.width, sprite.height)) {
-      return true;
-    }return false;
+    return (mousePressed && utilities.isMouseOver(x, y, sprite.width, sprite.height));
   }
 }

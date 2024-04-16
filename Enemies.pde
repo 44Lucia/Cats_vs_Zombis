@@ -1,9 +1,3 @@
-enum EnemyState {
-  IDLE,
-    WALK,
-    ATTACK
-}
-
 abstract class Enemy {
   float x, y;
 
@@ -16,15 +10,13 @@ abstract class Enemy {
 }
 
 class Torch extends Enemy {
-
   // Sprites
   final PImage spriteSheet = loadImage("Torch.png");
-  final int spriteWidth = 192;
-  final int spriteHeight = 192;
+  final int spriteWidth = 192, spriteHeight = 192;
 
-  Torch(int x, int y) {
-    this.x = x;
-    this.y = y;
+  Torch(int p_x, int p_y) {
+    x = p_x;
+    y = p_y;
     health = 100;
     range = 15;
     speed = 10;
@@ -40,23 +32,20 @@ class Torch extends Enemy {
 
   void display() {
     pushMatrix();
-    translate(x, y);
-    idle.play();
-
+      translate(x, y);
+      idle.play();
     popMatrix();
   }
 }
 
 class Tnt extends Enemy {
-
   // Sprites
   final PImage spriteSheet = loadImage("TNT.png");
-  final int spriteWidth = 192;
-  final int spriteHeight = 192;
+  final int spriteWidth = 192, spriteHeight = 192;
 
-  Tnt(int x, int y) {
-    this.x = x;
-    this.y = y;
+  Tnt(int p_x, int p_y) {
+    x = p_x;
+    y = p_y;
     health = 60;
     range = 50;
     speed = 15;
@@ -70,9 +59,8 @@ class Tnt extends Enemy {
 
   void display() {
     pushMatrix();
-    translate(x, y);
-    idle.play();
-
+      translate(x, y);
+      idle.play();
     popMatrix();
   }
 }
@@ -81,12 +69,11 @@ class Barry extends Enemy {
 
   // Sprites
   final PImage spriteSheet = loadImage("Barry.png");
-  final int spriteWidth = 128;
-  final int spriteHeight = 128;
+  final int spriteWidth = 128, spriteHeight = 128;
 
-  Barry(int x, int y) {
-    this.x = x;
-    this.y = y;
+  Barry(int p_x, int p_y) {
+    x = p_x;
+    y = p_y;
     health = 40;
     range = 8;
     speed = 18;
@@ -102,9 +89,8 @@ class Barry extends Enemy {
 
   void display() {
     pushMatrix();
-    translate(x, y);
-    idle.play();
-
+      translate(x, y);
+      idle.play();
     popMatrix();
   }
 }

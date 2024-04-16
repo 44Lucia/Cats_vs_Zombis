@@ -1,15 +1,11 @@
 class GreatSword {
-  PImage swordSprite;
+  PImage swordSprite = loadImage("GreatSword.png");
   float x = 50, y = 0;
   int w = 76, h = 19;
   
   float currentAngle = 0;
   float rotationSpeed = 0.08;
   int playerOffset = 50;
-  
-  GreatSword() {
-   swordSprite = loadImage("GreatSword.png");    
-  }
   
   void update() {
     x = pj.x + cos(currentAngle) * playerOffset; 
