@@ -20,6 +20,7 @@ class UIManager {
   boolean showHighscoreTable;
   
   //game ui
+  PImage panelSprite;
   PImage treeSprite;
   PImage goldSprite;
   PImage archerSprite;
@@ -45,6 +46,8 @@ class UIManager {
     highscoreButton = new Button(this, playButtonPosX, playButtonPosY + 80, "Highscores", redButtonSprite, redButtonHoverSprite);
     exitButton = new Button(this, playButtonPosX, playButtonPosY + 200, "Exit", redButtonSprite, redButtonHoverSprite);
     returnButton = new Button(this, returnButtonPosX, returnButtonPosY, "", returnButtonSprite, returnButtonHoverSprite);
+    
+    panelSprite = loadImage("BannerInGame.png");
     
     goldSprite = loadImage("GoldMine.png");
     goldSprite.resize(85, 70);
@@ -89,6 +92,9 @@ class UIManager {
   }
   
   void builderButtonsDisplay(){
+    fill(200, 200, 200, 150); // Color semitransparente
+    image(panelSprite, 190, height - 55, 350, 125);
+    
     goldButton.display();
     treeButton.display();
     archerButton.display();

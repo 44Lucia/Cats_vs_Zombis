@@ -82,13 +82,13 @@ class GridManager {
      if (row >= 0 && row < rows && col >= 0 && col < cols) {
        // Verifica si la casilla está ocupada
        if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
-         if(selectedTree && pj.money >= 50){
+         if(selectedTree){
            treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
            ocupedCells[row][col] = true;
            pj.money -= 50;
            selectedTree = false;
            placingItem = false;
-         }else if (selectedMine && pj.money >= 100){
+         }else if (selectedMine){
            goldList.add(new GoldMine(col * cellSize - 2, row * cellSize + 2));
            ocupedCells[row][col] = true;
            pj.money -= 100;
@@ -100,14 +100,16 @@ class GridManager {
   }
   
   void checkItemToInsert(){
-    if(ui.treeButton.isMouseOver()){
+    if(ui.treeButton.isMouseOver() && pj.money >= 50){
       if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
+      selectedMine = false;
       selectedTree = true;
       shadowSprite = loadImage("Tree.png");
       shadowSprite.resize(55, 70);
       placingItem = true;
-    }else if (ui.goldButton.isMouseOver()){
+    }else if (ui.goldButton.isMouseOver() && pj.money >= 100){
       if (!gridLocked) { gridLocked = true; lastLockTime = millis(); }
+      selectedTree = false;
       selectedMine = true;
       shadowSprite = loadImage("GoldMine.png");
       shadowSprite.resize(70, 55);
