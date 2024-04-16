@@ -27,7 +27,7 @@ void setup() {
   hsManager = new HighscoreManager();
  
   //initialize entites
-  pj = new Player();  
+  pj = new Archer();
 }
 
 void draw() {
