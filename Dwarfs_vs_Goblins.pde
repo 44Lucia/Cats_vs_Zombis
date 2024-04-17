@@ -7,7 +7,7 @@ HighscoreManager hsManager;
 
 //game control
 int gameState = 0;
-boolean isClicked;
+boolean leftClickDown, rightClickDown;
 PImage mouseSprite; 
 String playerInput;
 
@@ -70,7 +70,8 @@ void draw() {
 }
 
 void mousePressed() {
-  isClicked = true;
+  if(mouseButton == LEFT) {leftClickDown = true;}
+  if(mouseButton == RIGHT) {rightClickDown = true;}
   
   switch(gameState) {
     default: break;
@@ -98,8 +99,9 @@ void mousePressed() {
   }
 }
 
-void mouseReleased(){
-  isClicked = false;
+void mouseReleased() {
+  if(mouseButton == LEFT) {leftClickDown = false;}
+  if(mouseButton == RIGHT) {rightClickDown = false;}
 }
 
 void startGame() {

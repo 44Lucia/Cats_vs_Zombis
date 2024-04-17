@@ -51,7 +51,7 @@ class GridManager {
      if (gridLocked && millis() - lastLockTime >= lockDuration) { gridLocked = false; }
      displayItems();
      
-     if(isClicked){
+     if(leftClickDown){
        checkItemToInsert();
        gridManagement();
      }
@@ -63,6 +63,7 @@ class GridManager {
        for (int j = 0; j < cols; j++) {
          strokeWeight(1);
          noFill();
+         rectMode(CORNER);
          rect(j * cellSize, i * cellSize, cellSize, cellSize);
          // Cambia el color de la celda seleccionada
          if (i == selectedRow && j == selectedCol) {
