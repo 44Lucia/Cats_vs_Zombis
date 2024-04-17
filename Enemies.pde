@@ -1,5 +1,10 @@
 // Torch goblin enemy
-class Torch extends Entity {
+
+abstract class Enemy extends Entity {
+
+  // Sprites
+  PImage spriteSheet;
+  int spriteWidth, spriteHeight;
 
   // Stats
   int health;
@@ -7,40 +12,49 @@ class Torch extends Entity {
   int range;
   int speed;
 
-  // Sprites
-  final PImage spriteSheet = loadImage("Torch.png");
-  final int spriteWidth = 192, spriteHeight = 192;
+  // Basic animations
+  Animation idle;
+  Animation walk;
+  Animation attack;
+  
+}
+
+class Torch extends Enemy {
+
+  // Specific animations
+  Animation attackRight;
+  Animation attackDown;
+  Animation attackUp;
 
   Torch(int x, int y) {
+
+    // Position
     this.x = x;
     this.y = y;
+
+    // Stats
     health = 100;
     range = 15;
     speed = 10;
     damage = 10;
+
+    // Sprite
+    spriteSheet = loadImage("Torch.png");
+    spriteWidth = 192;
+    spriteHeight = 192;
+
+    // Animations
+    idle = new Animation(spriteSheet, 0, 7, spriteWidth, spriteHeight);
+    walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
+    attackRight = new Animation(spriteSheet, 2, 6, spriteWidth, spriteHeight);
+    attackDown = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
+    attackUp = new Animation(spriteSheet, 4, 6, spriteWidth, spriteHeight);
     currentAnimation = idle;
   }
-
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 7, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation attackRight = new Animation(spriteSheet, 2, 6, spriteWidth, spriteHeight);
-  Animation attackDown = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-  Animation attackUp = new Animation(spriteSheet, 4, 6, spriteWidth, spriteHeight);
 }
 
 // TNT goblin thrower enemy
-class Tnt extends Entity {
-
-  // Stats
-  int health;
-  int damage;
-  int range;
-  int speed;
-
-  // Sprites
-  final PImage spriteSheet = loadImage("TNT.png");
-  final int spriteWidth = 192, spriteHeight = 192;
+class Tnt extends Enemy {
 
   Tnt(int x, int y) {
     this.x = x;
@@ -50,26 +64,27 @@ class Tnt extends Entity {
     speed = 15;
     damage = 15;
     currentAnimation = idle;
-  }
 
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 6, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation attack = new Animation(spriteSheet, 2, 7, spriteWidth, spriteHeight);
+    // Sprites
+    spriteSheet = loadImage("TNT.png");
+    spriteWidth = 192;
+    spriteHeight = 192;
+
+    // Animations
+    idle = new Animation(spriteSheet, 0, 6, spriteWidth, spriteHeight);
+    walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
+    attack = new Animation(spriteSheet, 2, 7, spriteWidth, spriteHeight);
+    currentAnimation = idle;
+  }
 }
 
 // Barry goblin enemy
-class Barry extends Entity {
+class Barry extends Enemy {
 
-  // Stats
-  int health;
-  int damage;
-  int range;
-  int speed;
-
-  // Sprites
-  final PImage spriteSheet = loadImage("Barry.png");
-  final int spriteWidth = 128, spriteHeight = 128;
+  // Specific animations
+  Animation idle;
+  Animation reveal;
+  Animation hide;
 
   Barry(int x, int y) {
     this.x = x;
@@ -78,13 +93,18 @@ class Barry extends Entity {
     range = 8;
     speed = 18;
     damage = 30;
+
+    // Sprite
+    spriteSheet = loadImage("Barry.png");
+    spriteWidth = 128;
+    spriteHeight = 128;
+
+    // Animations
+    idle = new Animation(spriteSheet, 0, 1, spriteWidth, spriteHeight);
+    reveal = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
+    hide = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
+    walk = new Animation(spriteSheet, 4, 3, spriteWidth, spriteHeight);
+    attack = new Animation(spriteSheet, 5, 3, spriteWidth, spriteHeight);
     currentAnimation = idle;
   }
-
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 1, spriteWidth, spriteHeight);
-  Animation reveal = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation hide = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 4, 3, spriteWidth, spriteHeight);
-  Animation explode = new Animation(spriteSheet, 5, 3, spriteWidth, spriteHeight);
 }
