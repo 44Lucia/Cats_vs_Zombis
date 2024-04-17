@@ -1,96 +1,130 @@
-abstract class Enemy {
-  float x, y;
+// Torch goblin enemy
+
+abstract class Enemy extends Entity {
 
   // Stats
-  EnemyState state;
   int health;
   int damage;
-  int range;
-  int speed;
+  float range;
+  float speed;  // Speed from 0 to 1
+
+  // Basic animations
+  Animation idle;
+  Animation walk;
+  Animation attack;
+
+  final float LIThreshold = 4; // Linear Interpolation threshold for not moving infinitely
+
+  void moveTo(float targetX, float targetY) {
+    if (abs(x - targetX) < LIThreshold && abs(y - targetY) < LIThreshold) {
+      x = targetX;
+      y = targetY;
+      currentAnimation = idle;
+    } else {
+      currentAnimation = walk;
+      x = (1 - speed) * x + speed * targetX;
+      y = (1 - speed) * y + speed * targetY;
+    }
+  }
 }
 
 class Torch extends Enemy {
-  // Sprites
-  final PImage spriteSheet = loadImage("Torch.png");
-  final int spriteWidth = 192, spriteHeight = 192;
 
-  Torch(int p_x, int p_y) {
-    x = p_x;
-    y = p_y;
+  // Specific animations
+  Animation attackRight;
+  Animation attackDown;
+  Animation attackUp;
+
+  Torch(int x, int y) {
+
+    // Position
+    this.x = x;
+    this.y = y;
+
+    // Stats
     health = 100;
-    range = 15;
-    speed = 10;
+    range = 70;
+    speed = 0.025;
     damage = 10;
+
+    // Sprite
+    spriteSheet = loadImage("Torch.png");
+    spriteWidth = 192;
+    spriteHeight = 192;
+
+    // Animations
+    idle = new Animation(0, 7);
+    walk = new Animation(1, 6);
+    attackRight = new Animation(2, 6);
+    attackDown = new Animation(3, 6);
+    attackUp = new Animation(4, 6);
+    currentAnimation = idle;
   }
 
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 7, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation attackRight = new Animation(spriteSheet, 2, 6, spriteWidth, spriteHeight);
-  Animation attackDown = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-  Animation attackUp = new Animation(spriteSheet, 4, 6, spriteWidth, spriteHeight);
-
-  void display() {
-    pushMatrix();
-      translate(x, y);
-      idle.play();
-    popMatrix();
+  void update() {
+    utilities.drawCircle(x, y, range);
   }
 }
 
+// TNT goblin thrower enemy
 class Tnt extends Enemy {
-  // Sprites
-  final PImage spriteSheet = loadImage("TNT.png");
-  final int spriteWidth = 192, spriteHeight = 192;
 
-  Tnt(int p_x, int p_y) {
-    x = p_x;
-    y = p_y;
+  Tnt(int x, int y) {
+    this.x = x;
+    this.y = y;
     health = 60;
-    range = 50;
-    speed = 15;
+    range = 230;
+    speed = 0.05;
     damage = 15;
+    currentAnimation = idle;
+
+    // Sprites
+    spriteSheet = loadImage("TNT.png");
+    spriteWidth = 192;
+    spriteHeight = 192;
+
+    // Animations
+    idle = new Animation(0, 6);
+    walk = new Animation(1, 6);
+    attack = new Animation(2, 7);
+    currentAnimation = idle;
   }
-
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 6, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation attack = new Animation(spriteSheet, 2, 7, spriteWidth, spriteHeight);
-
-  void display() {
-    pushMatrix();
-      translate(x, y);
-      idle.play();
-    popMatrix();
+  
+  void update() {
+    utilities.drawCircle(x, y, range);
   }
 }
 
+// Barry goblin enemy
 class Barry extends Enemy {
 
-  // Sprites
-  final PImage spriteSheet = loadImage("Barry.png");
-  final int spriteWidth = 128, spriteHeight = 128;
+  // Specific animations
+  Animation reveal;
+  Animation hide;
 
-  Barry(int p_x, int p_y) {
-    x = p_x;
-    y = p_y;
+  Barry(int x, int y) {
+    this.x = x;
+    this.y = y;
     health = 40;
-    range = 8;
-    speed = 18;
+    range = 50;
+    speed = 0.08;
     damage = 30;
+
+    // Sprite
+    spriteSheet = loadImage("Barry.png");
+    spriteWidth = 128;
+    spriteHeight = 128;
+
+    // Animations
+    idle = new Animation(0, 1);
+    reveal = new Animation(1, 6);
+    hide = new Animation(3, 6);
+    walk = new Animation(4, 3);
+    attack = new Animation(5, 3);
+    currentAnimation = idle;
   }
-
-  // Animations
-  Animation idle = new Animation(spriteSheet, 0, 1, spriteWidth, spriteHeight);
-  Animation reveal = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-  Animation hide = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-  Animation walk = new Animation(spriteSheet, 4, 3, spriteWidth, spriteHeight);
-  Animation explode = new Animation(spriteSheet, 5, 3, spriteWidth, spriteHeight);
-
-  void display() {
-    pushMatrix();
-      translate(x, y);
-      idle.play();
-    popMatrix();
+  
+  void update() {
+    utilities.drawCircle(x, y, range);
   }
 }
