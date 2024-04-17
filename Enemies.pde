@@ -5,17 +5,27 @@ abstract class Enemy extends Entity {
   // Stats
   int health;
   int damage;
-  int range;
-  int speed;
+  float range;
+  float speed;  // Speed from 0 to 1
 
   // Basic animations
   Animation idle;
   Animation walk;
   Animation attack;
-  
- // void moveTo(float x, y) {
-    
- // }
+
+  final float LIThreshold = 4; // Linear Interpolation threshold for not moving infinitely
+
+  void moveTo(float targetX, float targetY) {
+    if (abs(x - targetX) < LIThreshold && abs(y - targetY) < LIThreshold) {
+      x = targetX;
+      y = targetY;
+      currentAnimation = idle;
+    } else {
+      currentAnimation = walk;
+      x = (1 - speed) * x + speed * targetX;
+      y = (1 - speed) * y + speed * targetY;
+    }
+  }
 }
 
 class Torch extends Enemy {
@@ -33,8 +43,8 @@ class Torch extends Enemy {
 
     // Stats
     health = 100;
-    range = 15;
-    speed = 10;
+    range = 70;
+    speed = 0.025;
     damage = 10;
 
     // Sprite
@@ -50,6 +60,10 @@ class Torch extends Enemy {
     attackUp = new Animation(4, 6);
     currentAnimation = idle;
   }
+
+  void update() {
+    utilities.drawCircle(x, y, range);
+  }
 }
 
 // TNT goblin thrower enemy
@@ -59,8 +73,8 @@ class Tnt extends Enemy {
     this.x = x;
     this.y = y;
     health = 60;
-    range = 50;
-    speed = 15;
+    range = 230;
+    speed = 0.05;
     damage = 15;
     currentAnimation = idle;
 
@@ -75,13 +89,16 @@ class Tnt extends Enemy {
     attack = new Animation(2, 7);
     currentAnimation = idle;
   }
+  
+  void update() {
+    utilities.drawCircle(x, y, range);
+  }
 }
 
 // Barry goblin enemy
 class Barry extends Enemy {
 
   // Specific animations
-  Animation idle;
   Animation reveal;
   Animation hide;
 
@@ -89,8 +106,8 @@ class Barry extends Enemy {
     this.x = x;
     this.y = y;
     health = 40;
-    range = 8;
-    speed = 18;
+    range = 50;
+    speed = 0.08;
     damage = 30;
 
     // Sprite
@@ -105,5 +122,9 @@ class Barry extends Enemy {
     walk = new Animation(4, 3);
     attack = new Animation(5, 3);
     currentAnimation = idle;
+  }
+  
+  void update() {
+    utilities.drawCircle(x, y, range);
   }
 }
