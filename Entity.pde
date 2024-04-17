@@ -3,23 +3,20 @@
 abstract class Entity {
 
   float x, y;
+
+  PImage spriteSheet;
+  int spriteWidth, spriteHeight;
   Animation currentAnimation;
 
   class Animation {
-    PImage sprite;
     int currentFrame;
     int timeLastFrame;
     float frameTime = 90;
     int frameX, frameY;
     int totalFrames;
 
-    int spriteWidth, spriteHeight;
-
-    Animation(PImage spriteSheet, int row, int totalFrames, int spriteWidth, int spriteHeight) {
-      this.sprite = spriteSheet;
+    Animation(int row, int totalFrames) {
       this.totalFrames = totalFrames;
-      this.spriteWidth = spriteWidth;
-      this.spriteHeight = spriteHeight;
       frameY = row * spriteHeight;
     }
 
@@ -34,7 +31,7 @@ abstract class Entity {
         timeLastFrame = millis();
       }
 
-      copy(sprite, frameX, frameY,
+      copy(spriteSheet, frameX, frameY,
         spriteWidth, spriteHeight,
         -spriteHeight / 2, -spriteWidth / 2,
         spriteWidth, spriteHeight);

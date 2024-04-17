@@ -2,10 +2,6 @@
 
 abstract class Enemy extends Entity {
 
-  // Sprites
-  PImage spriteSheet;
-  int spriteWidth, spriteHeight;
-
   // Stats
   int health;
   int damage;
@@ -17,6 +13,9 @@ abstract class Enemy extends Entity {
   Animation walk;
   Animation attack;
   
+ // void moveTo(float x, y) {
+    
+ // }
 }
 
 class Torch extends Enemy {
@@ -44,11 +43,11 @@ class Torch extends Enemy {
     spriteHeight = 192;
 
     // Animations
-    idle = new Animation(spriteSheet, 0, 7, spriteWidth, spriteHeight);
-    walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-    attackRight = new Animation(spriteSheet, 2, 6, spriteWidth, spriteHeight);
-    attackDown = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-    attackUp = new Animation(spriteSheet, 4, 6, spriteWidth, spriteHeight);
+    idle = new Animation(0, 7);
+    walk = new Animation(1, 6);
+    attackRight = new Animation(2, 6);
+    attackDown = new Animation(3, 6);
+    attackUp = new Animation(4, 6);
     currentAnimation = idle;
   }
 }
@@ -71,9 +70,9 @@ class Tnt extends Enemy {
     spriteHeight = 192;
 
     // Animations
-    idle = new Animation(spriteSheet, 0, 6, spriteWidth, spriteHeight);
-    walk = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-    attack = new Animation(spriteSheet, 2, 7, spriteWidth, spriteHeight);
+    idle = new Animation(0, 6);
+    walk = new Animation(1, 6);
+    attack = new Animation(2, 7);
     currentAnimation = idle;
   }
 }
@@ -100,11 +99,11 @@ class Barry extends Enemy {
     spriteHeight = 128;
 
     // Animations
-    idle = new Animation(spriteSheet, 0, 1, spriteWidth, spriteHeight);
-    reveal = new Animation(spriteSheet, 1, 6, spriteWidth, spriteHeight);
-    hide = new Animation(spriteSheet, 3, 6, spriteWidth, spriteHeight);
-    walk = new Animation(spriteSheet, 4, 3, spriteWidth, spriteHeight);
-    attack = new Animation(spriteSheet, 5, 3, spriteWidth, spriteHeight);
+    idle = new Animation(0, 1);
+    reveal = new Animation(1, 6);
+    hide = new Animation(3, 6);
+    walk = new Animation(4, 3);
+    attack = new Animation(5, 3);
     currentAnimation = idle;
   }
 }
