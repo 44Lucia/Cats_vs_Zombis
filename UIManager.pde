@@ -93,7 +93,7 @@ class UIManager {
   
   void builderButtonsDisplay(){
     fill(200, 200, 200, 150); // Color semitransparente
-    image(panelSprite, 190, height - 55, 350, 125);
+    image(panelSprite, 15, height - 115, 350, 125);
     
     goldButton.display();
     treeButton.display();
