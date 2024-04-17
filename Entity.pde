@@ -3,6 +3,7 @@
 abstract class Entity {
 
   float x, y;
+  float lastX;
 
   PImage spriteSheet;
   int spriteWidth, spriteHeight;
@@ -41,6 +42,14 @@ abstract class Entity {
   void display() {
     pushMatrix();
     translate(x, y);
+
+    // Manage sprite orientation
+    if (x - lastX < 0)
+      scale(-1, 1);
+    else
+      scale(1, 1);
+    lastX = x;
+
     currentAnimation.play();
     popMatrix();
   }
