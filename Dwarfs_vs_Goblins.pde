@@ -8,7 +8,8 @@ HighscoreManager hsManager;
 //game control
 int gameState = 0;
 boolean leftClickDown, rightClickDown;
-PImage mouseSprite; 
+PImage mouseSprite, mouseHoverSprite; 
+boolean isMouseHovering;
 String playerInput;
 
 //entities
@@ -18,14 +19,15 @@ void setup() {
   size(960, 960);
   
   mouseSprite = loadImage("mouse.png");
+  mouseHoverSprite = loadImage("mouseHover.png");
   noCursor();
   
   utilities = new Utilities();
-  ui = new UIManager();
   gridManager = new GridManager();
   colManager = new CollisionManager();
   hsManager = new HighscoreManager();
- 
+  ui = new UIManager();
+
   //initialize entites
   pj = new Archer();
 }
@@ -53,9 +55,9 @@ void draw() {
       
       //draw entities
       pj.display();
-      ui.builderButtonsDisplay();
       
       gridManager.display();
+      ui.builderButtonsDisplay();
       
       break;
     }
@@ -65,8 +67,10 @@ void draw() {
     }
   }
   
+  //cursor
   imageMode(CORNER);
-  image(mouseSprite, mouseX, mouseY);
+  if(isMouseHovering) {image(mouseHoverSprite, mouseX, mouseY);}
+  else {image(mouseSprite, mouseX, mouseY);}  
 }
 
 void mousePressed() {
@@ -76,10 +80,11 @@ void mousePressed() {
   switch(gameState) {
     default: break;
     case 0: { //-------[ main title ]-------
+    
       if(ui.playButton.isMouseOver() && !ui.showHighscoreTable) {startGame();}
       
-      if(ui.highscoreButton.isMouseOver()) {ui.showHighscoreTable = true;}
-      else if(ui.returnButton.isMouseOver()) {ui.showHighscoreTable = false;}
+      if((ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) ||
+          (ui.returnButton.isMouseOver() && ui.showHighscoreTable)) {ui.showHighscoreTable = !ui.showHighscoreTable;}
       
       if(ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {closeGame();}
 
@@ -102,6 +107,10 @@ void mousePressed() {
 void mouseReleased() {
   if(mouseButton == LEFT) {leftClickDown = false;}
   if(mouseButton == RIGHT) {rightClickDown = false;}
+}
+
+void keyPressed() {
+ if(key == 'm') {pj.money += 100;} 
 }
 
 void startGame() {

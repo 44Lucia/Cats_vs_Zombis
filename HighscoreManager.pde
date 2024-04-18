@@ -19,7 +19,6 @@ class HighscoreManager {
     highscoreDict.clear();
 
     String[] lines = loadStrings(file);
-    println("there are " + lines.length + " lines");
 
     for (int i = 0; i < lines.length; i+=2) {
       highscoreDict.set(lines[i], int(lines[i + 1]));

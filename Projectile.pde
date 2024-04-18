@@ -8,7 +8,6 @@ class Projectile {
   float speed = 8;
   
   void update() {
-    println(x + "  " + y);
     if(hasbeenShoot) {
       if(x < 0 || x > width || y > height || y < 0) {
         hasbeenShoot = false; 

@@ -19,14 +19,13 @@ class UIManager {
   int returnButtonPosX = 40, returnButtonPosY = 120;
   boolean showHighscoreTable;
   
-  //game ui
+  //towers ui
   PImage panelSprite;
   PImage treeSprite;
   PImage goldSprite;
   PImage archerSprite;
-  Button goldButton;
-  Button treeButton;
-  Button archerButton;
+  Button goldButton, treeButton, archerButton;
+  boolean cursorOverGold;
   
   UIManager() {
     mainFont = createFont("Alkhemikal.ttf", 100);
@@ -82,6 +81,9 @@ class UIManager {
       playButton.display();
       highscoreButton.display();
       exitButton.display();
+      
+      //cursor
+      isMouseHovering = playButton.isMouseOver() || highscoreButton.isMouseOver() || exitButton.isMouseOver();
     }
     else {
       textSize(52);
@@ -103,10 +105,16 @@ class UIManager {
     textSize(20);
     textAlign(RIGHT, TOP);
     text("Money: " + pj.money, width - 10, 10);
+    
+    //cursor
+    isMouseHovering = goldButton.isMouseOver() || treeButton.isMouseOver() || archerButton.isMouseOver() || cursorOverGold;
   }
   
   void displayHighscore() {
     returnButton.display();
+    
+    //cursor
+    isMouseHovering = returnButton.isMouseOver();
     
     for(int i = 0; i < 20; i+=2) {
       int offsetY = i * 25;

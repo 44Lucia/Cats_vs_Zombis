@@ -11,7 +11,9 @@ class Gold {
     image(sprite, x, y, sprite.width / 2, sprite.height / 2);
   }
   
-  boolean isCliceked() {
-    return (mousePressed && utilities.isMouseOver(x, y, sprite.width, sprite.height));
+  boolean isMouseOver() {
+     return utilities.isMouseOver(x, y, sprite.width, sprite.height);
   }
+  
+  boolean isCliceked() {return (mousePressed && isMouseOver());}
 }

@@ -19,7 +19,7 @@ class GoldMine{
     goldList = new ArrayList<Gold>();
   }
   
-  void update(){
+  void update() {
     if (millis() - timeLastGold > intervalBetweenCoins) {
       float angle = random(TWO_PI);
       
@@ -32,7 +32,6 @@ class GoldMine{
     
     for (int i = goldList.size() - 1; i >= 0; i--) {
       Gold gold = goldList.get(i);
-      gold.display();
       if (gold.isCliceked()) {
         pj.money += 20;
         goldList.remove(i);
@@ -42,5 +41,13 @@ class GoldMine{
   
   void display() {
     image(goldMine, mineX, mineY);
+    
+    for (Gold gold : goldList) {gold.display();}
+  }
+  
+  void cursorOverSomeGold() {   
+    for(Gold gold : goldList) {
+      if(gold.isMouseOver()) {ui.cursorOverGold = true; return;}
+    }
   }
 }
