@@ -54,6 +54,7 @@ void draw() {
       gridManager.update();
       
       //draw entities
+      image(ui.mapSprite, 0, 0);
       pj.display();
       
       gridManager.display();

@@ -20,9 +20,10 @@ class GoldMine{
   }
   
   void update() {
-    if (millis() - timeLastGold > intervalBetweenCoins) {
+    if (millis() - timeLastGold > intervalBetweenCoins && goldList.size() < 10) {
       float angle = random(TWO_PI);
       
+      spawnRadius = (int)random(10, 50);
       float x = mineX + cos(angle) * spawnRadius;
       float y = mineY + sin(angle) * spawnRadius;
       
@@ -33,7 +34,7 @@ class GoldMine{
     for (int i = goldList.size() - 1; i >= 0; i--) {
       Gold gold = goldList.get(i);
       if (gold.isCliceked()) {
-        pj.money += 20;
+        pj.money += 10;
         goldList.remove(i);
       }
     }

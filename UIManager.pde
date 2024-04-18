@@ -20,6 +20,7 @@ class UIManager {
   boolean showHighscoreTable;
   
   //towers ui
+  PImage mapSprite;
   PImage panelSprite;
   PImage treeSprite;
   PImage goldSprite;
@@ -47,6 +48,7 @@ class UIManager {
     returnButton = new Button(this, returnButtonPosX, returnButtonPosY, "", returnButtonSprite, returnButtonHoverSprite);
     
     panelSprite = loadImage("BannerInGame.png");
+    mapSprite = loadImage("Map.png");
     
     goldSprite = loadImage("GoldMine.png");
     goldSprite.resize(85, 70);
@@ -72,7 +74,7 @@ class UIManager {
     
     if(!showHighscoreTable) {
       textSize(52);
-      text("Dwarfs", titleBgPosX + 120,  titleBgPosY + 40);
+      text("Dwarves", titleBgPosX + 120,  titleBgPosY + 40);
       textSize(32);
       text("vs.", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
       textSize(52);

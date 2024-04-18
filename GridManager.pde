@@ -11,7 +11,7 @@ class GridManager {
 
   PImage shadowSprite;
   boolean placingItem;
-
+  
   boolean gridLocked;
   int lockDuration;
   int lastLockTime;
@@ -33,7 +33,7 @@ class GridManager {
     ocupedCells = new boolean[rows][cols];
     treeList = new ArrayList<TreeWall>();
     goldMineList = new ArrayList<GoldMine>();
-
+    
     selectedTree = false;
     selectedMine = false;
     selectedArcher = false;
