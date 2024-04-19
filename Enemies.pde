@@ -8,20 +8,15 @@ abstract class Enemy extends Entity {
   float range;
   float speed;  // Speed from 0 to 1
 
-  // Basic animations
-  Animation idle;
-  Animation walk;
-  Animation attack;
-
   final float LIThreshold = 4; // Linear Interpolation threshold for not moving infinitely
 
   void moveTo(float targetX, float targetY) {
     if (abs(x - targetX) < LIThreshold && abs(y - targetY) < LIThreshold) {
+      currentAnimation = 0;
       x = targetX;
       y = targetY;
-      currentAnimation = idle;
     } else {
-      currentAnimation = walk;
+      currentAnimation = 1;
       x = (1 - speed) * x + speed * targetX;
       y = (1 - speed) * y + speed * targetY;
     }
@@ -30,12 +25,7 @@ abstract class Enemy extends Entity {
 
 class Torch extends Enemy {
 
-  // Specific animations
-  Animation attackRight;
-  Animation attackDown;
-  Animation attackUp;
-
-  Torch(int x, int y) {
+  Torch(float x, float y) {
 
     // Position
     this.x = x;
@@ -46,19 +36,8 @@ class Torch extends Enemy {
     range = 70;
     speed = 0.025;
     damage = 10;
-
-    // Sprite
-    spriteSheet = loadImage("Torch.png");
-    spriteWidth = 192;
-    spriteHeight = 192;
-
-    // Animations
-    idle = new Animation(0, 7);
-    walk = new Animation(1, 6);
-    attackRight = new Animation(2, 6);
-    attackDown = new Animation(3, 6);
-    attackUp = new Animation(4, 6);
-    currentAnimation = idle;
+    
+    animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
   }
 
   void update() {
@@ -69,27 +48,21 @@ class Torch extends Enemy {
 // TNT goblin thrower enemy
 class Tnt extends Enemy {
 
-  Tnt(int x, int y) {
+  Tnt(float x, float y) {
+
+    // Position
     this.x = x;
     this.y = y;
+
+    // Stats
     health = 60;
     range = 230;
     speed = 0.05;
     damage = 15;
-    currentAnimation = idle;
 
-    // Sprites
-    spriteSheet = loadImage("TNT.png");
-    spriteWidth = 192;
-    spriteHeight = 192;
-
-    // Animations
-    idle = new Animation(0, 6);
-    walk = new Animation(1, 6);
-    attack = new Animation(2, 7);
-    currentAnimation = idle;
+    animations = new Animations(loadImage("TNT.png"), 3, 6, 192, 192);
   }
-  
+
   void update() {
     utilities.drawCircle(x, y, range);
   }
@@ -98,33 +71,28 @@ class Tnt extends Enemy {
 // Barry goblin enemy
 class Barry extends Enemy {
 
-  // Specific animations
-  Animation reveal;
-  Animation hide;
+  Explosion explosion;
 
-  Barry(int x, int y) {
+  Barry(float x, float y) {
+
+    // Position
     this.x = x;
     this.y = y;
+
+    // Stats
     health = 40;
     range = 50;
     speed = 0.08;
     damage = 30;
+    
+    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
 
-    // Sprite
-    spriteSheet = loadImage("Barry.png");
-    spriteWidth = 128;
-    spriteHeight = 128;
-
-    // Animations
-    idle = new Animation(0, 1);
-    reveal = new Animation(1, 6);
-    hide = new Animation(3, 6);
-    walk = new Animation(4, 3);
-    attack = new Animation(5, 3);
-    currentAnimation = idle;
+    explosion = new Explosion(x, y);
   }
-  
+
   void update() {
     utilities.drawCircle(x, y, range);
+    explosion.x = x;
+    explosion.y = y;
   }
 }

@@ -1,8 +1,4 @@
-enum EnemyState { //<>//
-  IDLE, WALK, ATTACK
-}
-
-class Utilities {
+class Utilities { //<>//
   float deltaX() {
     return mouseX - pj.x;
   }

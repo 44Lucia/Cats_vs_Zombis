@@ -5,41 +5,11 @@ abstract class Entity {
   float x, y;
   float lastX;
 
-  PImage spriteSheet;
-  int spriteWidth, spriteHeight;
-  Animation currentAnimation;
-
-  class Animation {
-    int currentFrame;
-    int timeLastFrame;
-    float frameTime = 90;
-    int frameX, frameY;
-    int totalFrames;
-
-    Animation(int row, int totalFrames) {
-      this.totalFrames = totalFrames;
-      frameY = row * spriteHeight;
-    }
-
-    void play() {
-      if (millis() - timeLastFrame > frameTime) {
-        currentFrame++;
-
-        if (currentFrame >= totalFrames) {
-          currentFrame = 0;
-        }
-        frameX = currentFrame * spriteWidth;
-        timeLastFrame = millis();
-      }
-
-      copy(spriteSheet, frameX, frameY,
-        spriteWidth, spriteHeight,
-        -spriteHeight / 2, -spriteWidth / 2,
-        spriteWidth, spriteHeight);
-    }
-  }
+  int currentAnimation;
+  Animations animations;
 
   void display() {
+
     pushMatrix();
     translate(x, y);
 
@@ -48,9 +18,50 @@ abstract class Entity {
       scale(-1, 1);
     else
       scale(1, 1);
+
+    animations.play(currentAnimation);
     lastX = x;
 
-    currentAnimation.play();
+    utilities.drawCircle(0, 0, 50);
     popMatrix();
+  }
+}
+
+class Animations {
+  PImage spriteSheet;
+  int spriteWidth, spriteHeight;
+
+  int totalRows, totalCols;
+
+  int frameCounter;
+  int currentFrameX, currentFrameY;
+
+  int timeLastFrame;
+  int frameTime;
+
+  Animations(PImage spriteSheet, int rows, int cols, int spriteWidth, int spriteHeight) {
+    this.spriteSheet = spriteSheet;
+    totalRows = rows;
+    totalCols = cols;
+    this.spriteWidth = spriteWidth;
+    this.spriteHeight = spriteHeight;
+    currentFrameX = 0;
+    currentFrameY = cols * spriteHeight;
+    frameTime = 90;
+  }
+
+  void play(int row) {
+    if (millis() - timeLastFrame > frameTime) {
+      frameCounter = (frameCounter + 1) % totalCols;
+
+      currentFrameX = frameCounter * spriteWidth;
+      currentFrameY = row * spriteHeight;
+      timeLastFrame = millis();
+    }
+
+    copy(spriteSheet, currentFrameX, currentFrameY,
+      spriteWidth, spriteHeight,
+      -spriteHeight / 2, -spriteWidth / 2,
+      spriteWidth, spriteHeight);
   }
 }
