@@ -3,6 +3,7 @@ class Player {
   int health = MAX_HEALTH;
   int money = 0;
   int score = 0;
+  String name = "";
   float x = width / 2, y = height / 2;
   
   boolean isWeaponUp;

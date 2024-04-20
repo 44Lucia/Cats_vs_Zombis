@@ -19,6 +19,14 @@ class UIManager {
   int returnButtonPosX = 40, returnButtonPosY = 120;
   boolean showHighscoreTable;
   
+  //character selection
+  PImage nameInputPanel;
+  int nameInputPanelPosX = 135, nameInputPanelPosY = 360;
+  Button knightSelectionButton, archerSelectionButton;
+  PImage knightButtonSprite, knightButtonSelectedSprite;
+  PImage archerButtonSprite, archerButtonSelectedSprite;
+  int knightSelectionButtonPosX = 140, archerSelectionButtonPosX = 305, selectionButtonsPosY = 460;
+  
   //towers ui
   PImage mapSprite;
   PImage panelSprite;
@@ -41,11 +49,20 @@ class UIManager {
     returnButtonSprite = loadImage("ReturnButton.png");
     returnButtonHoverSprite = loadImage("ReturnButtonHover.png");
     
+    nameInputPanel = loadImage("InputPanel.png");
+    knightButtonSprite = loadImage("knightButton.png");
+    knightButtonSelectedSprite = loadImage("knightButtonSelected.png");
+    archerButtonSprite = loadImage("archerButton.png");
+    archerButtonSelectedSprite = loadImage("archerButtonSelected.png");
+    
     //buttons
     playButton = new Button(this, playButtonPosX, playButtonPosY, "Play", redButtonSprite, redButtonHoverSprite);
     highscoreButton = new Button(this, playButtonPosX, playButtonPosY + 80, "Highscores", redButtonSprite, redButtonHoverSprite);
     exitButton = new Button(this, playButtonPosX, playButtonPosY + 200, "Exit", redButtonSprite, redButtonHoverSprite);
     returnButton = new Button(this, returnButtonPosX, returnButtonPosY, "", returnButtonSprite, returnButtonHoverSprite);
+    
+    knightSelectionButton = new Button(this, knightSelectionButtonPosX, selectionButtonsPosY, "", knightButtonSprite, knightButtonSelectedSprite);
+    archerSelectionButton = new Button(this, archerSelectionButtonPosX, selectionButtonsPosY, "", archerButtonSprite, archerButtonSelectedSprite);
     
     panelSprite = loadImage("BannerInGame.png");
     mapSprite = loadImage("Map.png");
@@ -93,6 +110,33 @@ class UIManager {
       text("Highscores", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
       displayHighscore();
     }
+  }
+  
+  void characterSelectionDisplay() {
+    background(bgSprite);
+    
+    //title
+    fill(0);
+    imageMode(CORNER);
+    image(titleBgSprite, titleBgPosX, titleBgPosY);
+    textSize(52);
+    textAlign(CENTER, CENTER);
+    text("Select character", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
+    
+    returnButton.display();
+    isMouseHovering = returnButton.isMouseOver();
+    
+    image(nameInputPanel, nameInputPanelPosX, nameInputPanelPosY);
+    
+    //input text
+    fill(0);
+    textSize(40);
+    textAlign(CENTER, CENTER);
+    if(playerInput == "") {text("--", nameInputPanelPosX + nameInputPanel.width / 2, nameInputPanelPosY + nameInputPanel.height / 3);}
+    else {text(playerInput, nameInputPanelPosX + nameInputPanel.width / 2, nameInputPanelPosY + nameInputPanel.height / 3);}
+    
+      knightSelectionButton.display();
+      archerSelectionButton.display();
   }
   
   void builderButtonsDisplay(){

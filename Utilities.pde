@@ -1,33 +1,25 @@
-class Utilities { //<>//
-  float deltaX() {
-    return mouseX - pj.x;
-  }
-  float deltaY() {
-    return mouseY - pj.y;
-  }
-  float mouseAngle() {
-    return atan2(deltaY(), deltaX());
-  }
+class Utilities { //<>// //<>//
+  float deltaX() {return mouseX - pj.x;}
+  float deltaY() {return mouseY - pj.y;}
+  float mouseAngle() {return atan2(deltaY(), deltaX());}
 
   //Overlaping between two intervals
   boolean isOverlaping(float min1, float max1, float min2, float max2) {
     return !(max1 < min2 || max2 < min1);
   }
 
-  void drawRectangle(PVector[] vertices) {
+  void drawRectangle(PVector[] p_vertices) {
     beginShape();
-    for (PVector v : vertices) {
-      vertex(v.x, v.y);
-    }
+      for(PVector v : p_vertices) {vertex(v.x, v.y);}
     endShape(CLOSE);
   }
 
-  void drawCircle(float x, float y, float radius) {
+  void drawCircle(float p_x, float p_y, float p_radius) {
     push();
-    noFill();
-    strokeWeight(5);
-    stroke(150);
-    circle(x, y, 2 * radius);
+      noFill();
+      strokeWeight(5);
+      stroke(150);
+      circle(p_x, p_y, 2 * p_radius);
     pop();
   }
 
