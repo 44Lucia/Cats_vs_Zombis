@@ -14,7 +14,8 @@ class UIManager {
   PImage backToMainTitleSprite;
   PImage top1HighscoreSprite, top5HighscoreSprite, top10HighscoreSprite;
   PImage returnButtonSprite, returnButtonHoverSprite;
-  int highscorePosX = 150, highscorePosY = 340;
+  PImage playerIconSpritesheet;
+  int highscorePosX = 135, highscorePosY = 340;
   Button returnButton;
   int returnButtonPosX = 40, returnButtonPosY = 120;
   boolean showHighscoreTable;
@@ -49,6 +50,7 @@ class UIManager {
     top10HighscoreSprite = loadImage("HighscoreTop10.png");
     returnButtonSprite = loadImage("ReturnButton.png");
     returnButtonHoverSprite = loadImage("ReturnButtonHover.png");
+    playerIconSpritesheet = loadImage("PlayerLogo.png");
     
     nameInputPanel = loadImage("InputPanel.png");
     knightButtonSprite = loadImage("knightButton.png");
@@ -174,7 +176,7 @@ class UIManager {
     //cursor
     isMouseHovering = returnButton.isMouseOver();
     
-    for(int i = 0; i < 20; i+=2) {
+    for(int i = 0; i < 20; i+=2) { // 10 names + 10 scores
       int offsetY = i * 25;
       //score bg sprite
       imageMode(CORNER);
@@ -183,15 +185,15 @@ class UIManager {
       else {image(top10HighscoreSprite, highscorePosX, highscorePosY + offsetY);}
 
       //score text
-      hsManager.sortedScores();
-      
       if(hsManager.sortedScores().length > i) { //avoid null scores if less than 10
         fill(0);
         textSize(48);
         textAlign(CORNER);
-        text(hsManager.sortedScores()[i], highscorePosX + 20, highscorePosY + top1HighscoreSprite.height + offsetY - 14);
+        
+        int PosY = highscorePosY + top1HighscoreSprite.height + offsetY - 14;
+        text(hsManager.sortedScores()[i], highscorePosX + 50, PosY);
         textSize(32);
-        text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 60, highscorePosY + top1HighscoreSprite.height + offsetY - 14);
+        text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 60,PosY);
       }
     }  
   }

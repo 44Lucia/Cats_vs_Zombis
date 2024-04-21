@@ -9,8 +9,6 @@ class HighscoreManager {
     highscoreDict = new IntDict();
     readFileValues();
     
-    //highscoreDict.set("awawa", 5);
-    
     nameList = highscoreDict.keyArray();
     scoreList = str(highscoreDict.valueArray());
   }
