@@ -29,8 +29,7 @@ void setup() {
   hsManager = new HighscoreManager();
   ui = new UIManager();
 
-  //initialize entites
-  pj = new Archer();
+  isKnight = true;
 }
 
 void draw() {
@@ -82,18 +81,17 @@ void mousePressed() {
   switch(gameState) {
     default: break;
     case 0: { //-------[ main title ]------- 
-      if(ui.playButton.isMouseOver() && !ui.showHighscoreTable) {gameState = 2;} // To character selection
-      
+      if(ui.returnButton.isMouseOver() && ui.showHighscoreTable) {ui.showHighscoreTable = false;}    
+      if(ui.playButton.isMouseOver() && !ui.showHighscoreTable) {gameState = 1;} // To character selection      
       if(ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) {ui.showHighscoreTable = true;}
-      if(ui.returnButton.isMouseOver() && ui.showHighscoreTable) {ui.showHighscoreTable = false;}
-      
       if(ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {closeGame();}
-
       break;
     }
     case 1: { //-------[ character selection ]-------
-      if(ui.playButton.isMouseOver() && playerInput.length() > 2) {startGame();} 
       if(ui.returnButton.isMouseOver()) {gameState = 0;}
+      if(ui.knightSelectionButton.isMouseOver()) {isKnight = true;}
+      if(ui.archerSelectionButton.isMouseOver()) {isKnight = false;}
+      if(ui.startGameButton.isMouseOver() && playerInput.length() > 2) {startGame();} 
       break;
     }
     case 2: { //-------[ game ]-------
@@ -112,18 +110,23 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-  //player input (name)
-  if(gameState == 1) {   
-    if(key > 32 && key < 127 && playerInput.length() < 7) {playerInput += key;}
-    else if(keyCode == BACKSPACE && playerInput.length() > 0) {
-      playerInput = playerInput.substring(0, playerInput.length()-1);
+    switch(gameState) {
+      default: break;
+      case 1: { //player input (name)
+        if(key > 32 && key < 127 && playerInput.length() < 7) {playerInput += key;}
+        else if(keyCode == BACKSPACE && playerInput.length() > 0) {
+          playerInput = playerInput.substring(0, playerInput.length()-1);
+        }
+        
+        //start playing with enter
+        if(keyCode == ENTER && playerInput.length() > 2) {startGame();}
+        break;
+      }
+      case 2: {
+        if(key == 'm') {pj.money += 100;} 
+        break;
+      }
     }
-    
-    //start playing with enter
-    if(keyCode == ENTER && playerInput.length() > 2) {startGame();}
-  }
-  
-  if(key == 'm') {pj.money += 100;} 
 }
 
 void startGame() {

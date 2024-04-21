@@ -16,7 +16,7 @@ class Button {
   void display() {
     //button sprite
     imageMode(CORNER);
-    if (!isMouseOver()) {image(sprite, x, y);} 
+    if (!isMouseOver()) {image(sprite, x, y);}
     else {image(hoverSprite, x, y);}
 
     //button text
@@ -24,6 +24,11 @@ class Button {
     textSize(40);
     textAlign(CENTER, CENTER);
     text(buttonText, x + sprite.width / 2 , y + sprite.height / 2 - 8);
+  }
+  
+  void displayCharacterButton(boolean p_isSelected) {
+    if (p_isSelected) {image(hoverSprite, x, y);}
+    else {image(sprite, x, y);}  
   }
   
   boolean isMouseOver() {

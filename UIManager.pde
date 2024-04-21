@@ -22,10 +22,11 @@ class UIManager {
   //character selection
   PImage nameInputPanel;
   int nameInputPanelPosX = 135, nameInputPanelPosY = 360;
-  Button knightSelectionButton, archerSelectionButton;
+  Button knightSelectionButton, archerSelectionButton, startGameButton;
   PImage knightButtonSprite, knightButtonSelectedSprite;
   PImage archerButtonSprite, archerButtonSelectedSprite;
   int knightSelectionButtonPosX = 140, archerSelectionButtonPosX = 305, selectionButtonsPosY = 460;
+  int startGameButtonPosY = 600;
   
   //towers ui
   PImage mapSprite;
@@ -63,6 +64,7 @@ class UIManager {
     
     knightSelectionButton = new Button(this, knightSelectionButtonPosX, selectionButtonsPosY, "", knightButtonSprite, knightButtonSelectedSprite);
     archerSelectionButton = new Button(this, archerSelectionButtonPosX, selectionButtonsPosY, "", archerButtonSprite, archerButtonSelectedSprite);
+    startGameButton = new Button(this, playButtonPosX, startGameButtonPosY, "Start run", redButtonSprite, redButtonHoverSprite);
     
     panelSprite = loadImage("BannerInGame.png");
     mapSprite = loadImage("Map.png");
@@ -124,7 +126,6 @@ class UIManager {
     text("Select character", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
     
     returnButton.display();
-    isMouseHovering = returnButton.isMouseOver();
     
     image(nameInputPanel, nameInputPanelPosX, nameInputPanelPosY);
     
@@ -135,12 +136,23 @@ class UIManager {
     if(playerInput == "") {text("--", nameInputPanelPosX + nameInputPanel.width / 2, nameInputPanelPosY + nameInputPanel.height / 3);}
     else {text(playerInput, nameInputPanelPosX + nameInputPanel.width / 2, nameInputPanelPosY + nameInputPanel.height / 3);}
     
-      knightSelectionButton.display();
-      archerSelectionButton.display();
+    startGameButton.display();
+    
+    if(isKnight) {
+      knightSelectionButton.displayCharacterButton(true);
+      archerSelectionButton.displayCharacterButton(false);
+      isMouseHovering = archerSelectionButton.isMouseOver() || returnButton.isMouseOver() || startGameButton.isMouseOver();
+    }
+    else {
+      knightSelectionButton.displayCharacterButton(false);
+      archerSelectionButton.displayCharacterButton(true);
+      isMouseHovering = knightSelectionButton.isMouseOver() || returnButton.isMouseOver() || startGameButton.isMouseOver();
+    }
   }
   
-  void builderButtonsDisplay(){
+  void builderButtonsDisplay() {
     fill(200, 200, 200, 150); // Color semitransparente
+    imageMode(CORNER);
     image(panelSprite, 15, height - 115, 350, 125);
     
     goldButton.display();
