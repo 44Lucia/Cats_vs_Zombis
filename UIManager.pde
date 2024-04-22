@@ -95,7 +95,7 @@ class UIManager {
     
     if(!showHighscoreTable) {
       textSize(52);
-      text("Dwarves", titleBgPosX + 120,  titleBgPosY + 40);
+      text("Dwarfs", titleBgPosX + 120,  titleBgPosY + 40);
       textSize(32);
       text("vs.", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
       textSize(52);
