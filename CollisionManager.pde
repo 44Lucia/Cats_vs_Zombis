@@ -41,7 +41,6 @@ class CollisionManager {
   }
   
   // Función para proyectar un conjunto de vértices en un eje y obtener el intervalo de proyección 
-  // Lo usamos para comprobar si los ejes se están solapando
   float[] projectToAxis(PVector[] p_vertices, PVector p_axis) {
     float minProjection = PVector.dot(p_vertices[0], p_axis);
     float maxProjection = minProjection;
@@ -68,5 +67,29 @@ class CollisionManager {
     vertices[3] = new PVector(p_x + p_w/2 * cosAngle + p_h/2 * sinAngle, p_y + p_w/2 * sinAngle - p_h/2 * cosAngle);
     
     return vertices;
+  }
+    
+  boolean rectangleCollision(float p_x1, float p_y1, int p_w1, int p_h1, float p_x2, float p_y2, int p_w2, int p_h2) {
+      return  p_x1 + p_w1/2 > p_x2 - p_w2/2
+              && p_x1 - p_w1/2 < p_x2 + p_w2/2
+              && p_y1 + p_h1/2 > p_y2 - p_h2/2
+              && p_y1 - p_h1/2 < p_y2 + p_h2/2;
+  }
+  
+  boolean circularCollision(float p_x, float p_y, float p_radius, float rectX, float rectY, int rectW, int rectH) {
+    float testX = p_x;
+    float testY = p_y;
+  
+    //closest edge
+    if(p_x < rectX - rectW / 2) {testX = rectX - rectW / 2;}        // left edge
+    else if(p_x > rectX + rectW / 2) {testX = rectX + rectW / 2;}   // right edge
+    
+    if(p_y < rectY - rectH / 2) {testY = rectY - rectH / 2;}        // top edge
+    else if(p_y > rectY + rectH / 2) {testY = rectY + rectH / 2;}   // bottom edge
+  
+    float distX = p_x - testX;
+    float distY = p_y - testY;
+    float distance = sqrt(distX*distX + distY*distY);  
+    return distance <= p_radius;
   }
 }

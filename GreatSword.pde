@@ -12,8 +12,6 @@ class GreatSword {
     y = pj.y + sin(currentAngle) * playerOffset;
     
     currentAngle = swordRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
-    
-    satTest();
   }
     
   void display() {
@@ -40,7 +38,7 @@ class GreatSword {
     utilities.drawRectangle(rect1Vertices);
     utilities.drawRectangle(rect2Vertices);
     
-    //println("Collision: " + collision); 
+    println("Collision: " + collision); 
   } 
   
   float swordRotationAngle(float current, float target, float speed) {
