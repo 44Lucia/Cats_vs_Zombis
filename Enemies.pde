@@ -52,7 +52,9 @@ abstract class Enemy extends Entity {
   final float LIThreshold = 4;
 
   void calculateMovement() {
-    PVector distanceToDestination = desiredPos.sub(pos);
+    PVector distanceToDestination = new PVector();
+    distanceToDestination.x = desiredPos.x - pos.x;
+    distanceToDestination.y = desiredPos.y - pos.y;
 
     if (abs(distanceToDestination.x) < LIThreshold && abs(distanceToDestination.y) < LIThreshold) {
       currentAnimation = 0;
@@ -60,19 +62,20 @@ abstract class Enemy extends Entity {
     }
 
     float magnitude = sqrt(pow(distanceToDestination.x, 2) + pow(distanceToDestination.y, 2));
-
-    if (magnitude > 0)
-      distanceToDestination = distanceToDestination.div(magnitude);
+    if (magnitude > 0) {
+      distanceToDestination.x /= magnitude;
+      distanceToDestination.y /= magnitude;
+    }
 
     //add direction to movement
-    finalMovement.x = finalMovement.x + distanceToDestination.x * rotationAngle;
-    finalMovement.y = finalMovement.y + distanceToDestination.y * rotationAngle;
+    finalMovement.x += distanceToDestination.x * rotationAngle;
+    finalMovement.y += distanceToDestination.y * rotationAngle;
 
     //speed limit to avoid extremely fast moves
     float speed = sqrt(pow(finalMovement.x, 2) + pow(finalMovement.y, 2));
     if (speed > MAX_SPEED) {
-      finalMovement.x = finalMovement.x / speed * MAX_SPEED;
-      finalMovement.y = finalMovement.y / speed * MAX_SPEED;
+      finalMovement.x = (finalMovement.x / speed) * MAX_SPEED;
+      finalMovement.y = (finalMovement.y / speed) * MAX_SPEED;
     }
   }
 
@@ -99,21 +102,18 @@ abstract class Enemy extends Entity {
       angle = 0;
       break;
     }
-    desiredPos.x = magnitude * cos(angle);
-    desiredPos.y = magnitude * sin(angle);
-    println(desiredPos);
+    //desiredPos.x = magnitude * cos(angle);
+    //desiredPos.y = magnitude * sin(angle);
+    desiredPos = new PVector(random(500), random(300));
   }
 
   void move() {
-
     //acceleration
-    if (currentAcceleration < 1) {
-      currentAcceleration += deltaAcceleration;
-    } else {
-      currentAcceleration = 0.8;
-    }
+    if (currentAcceleration < 1) {currentAcceleration += deltaAcceleration;} 
+    else {currentAcceleration = 0.8;}
 
-    pos = pos.add(finalMovement.mult(currentAcceleration));
+    pos.x += finalMovement.x * currentAcceleration;
+    pos.y += finalMovement.y * currentAcceleration;
   }
 
 

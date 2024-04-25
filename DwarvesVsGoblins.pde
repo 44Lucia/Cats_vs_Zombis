@@ -36,7 +36,7 @@ void setup() {
 }
 
 void draw() {
-  background(128);
+  background(20);
   textFont(ui.mainFont);
 
   //main loop
@@ -65,7 +65,7 @@ void draw() {
       gridManager.display();
       pj.display();
       if (first) {
-        enemyManager.enemyWave(10, 10, 10);
+        enemyManager.enemyWave(1, 10, 10);
         first = false;
       }
       ui.builderButtonsDisplay();
