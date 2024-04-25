@@ -6,6 +6,11 @@ class GoldMine{
   int spawnRadius; 
   PVector minePos;
   
+  int health;
+  int maxHealth;
+  boolean alive;
+  HealthBar healthBar;
+  
   GoldMine(float p_x, float p_y) {
     goldMine = loadImage("GoldMine.png");
     goldMine.resize(70, 55);
@@ -17,6 +22,11 @@ class GoldMine{
     minePos = new PVector(p_x, p_y);
     
     goldList = new ArrayList<Gold>();
+    
+    maxHealth = 100;
+    health = maxHealth;
+    alive = true;
+    healthBar = new HealthBar(this, p_x + 10, p_y - 10, 50, 5);
   }
   
   void update() {
@@ -43,11 +53,17 @@ class GoldMine{
     image(goldMine, minePos.x, minePos.y);
     
     for (Gold gold : goldList) {gold.display();}
+    if(alive) {healthBar.display();}
   }
   
   void cursorOverSomeGold() {   
     for(Gold gold : goldList) {
       if(gold.isMouseOver()) {ui.cursorOverGold = true; return;}
     }
+  }
+  
+  void takeDamage(int damage) {
+    health -= damage;
+    if(health <= 0) {alive = false;}
   }
 }

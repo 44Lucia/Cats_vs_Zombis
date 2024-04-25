@@ -5,6 +5,11 @@ class ArcherTower {
   float rotationRange; 
   float minAngle; 
   float maxAngle; 
+  
+  int health;
+  int maxHealth;
+  boolean alive;
+  HealthBar healthBar;
 
   ArcherTower(float p_x, float p_y) {
     pos = new PVector(p_x, p_y);
@@ -13,6 +18,11 @@ class ArcherTower {
     rotationRange = 190;
     minAngle = -PI / 4;
     maxAngle = PI / 4;  
+    
+    maxHealth = 100;
+    health = maxHealth;
+    alive = true;
+    healthBar = new HealthBar(this, p_x - 25, p_y - 30, 50, 5);
   }
   
   void update() {
@@ -26,6 +36,8 @@ class ArcherTower {
       imageMode(CENTER);
       image(archerSprite, 0, 0);
     popMatrix();
+    
+    if(alive) {healthBar.display();}
   }
 
   void rotateTowardsMouse() {
@@ -36,5 +48,10 @@ class ArcherTower {
 
   boolean isMouseWithinRange() {
     return dist(pos.x, pos.y, mouseX, mouseY) < rotationRange;
+  }
+  
+  void takeDamage(int damage) {
+    health -= damage;
+    if(health <= 0) {alive = false;}
   }
 }

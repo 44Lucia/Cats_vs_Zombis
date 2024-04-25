@@ -62,7 +62,7 @@ class GridManager {
       mine.update();
       if(!ui.cursorOverGold) {mine.cursorOverSomeGold();} // Skip iterations if already triggered a true
     }
-    
+    //Archers update
     for(ArcherTower archer : archerTowerList) { archer.update(); }
   }
 
