@@ -1,4 +1,4 @@
-class Utilities { //<>// //<>//
+class Utilities { //<>// //<>// //<>//
   float deltaX() {
     return mouseX - pj.pos.x;
   }
@@ -34,6 +34,14 @@ class Utilities { //<>// //<>//
   //Interaction helper function
   boolean isMouseOver(float p_x, float p_y, int p_w, int p_h) {
     return (mouseX >= p_x && mouseX <= p_x + p_w && mouseY >= p_y && mouseY <= p_y + p_h);
+  }
+  
+  float distanceToPlayer(PVector p_pos) {
+    PVector distance = new PVector();
+    distance.x = p_pos.x - pj.pos.x;
+    distance.y = p_pos.y - pj.pos.y;
+
+    return sqrt(pow(distance.x, 2) + pow(distance.y, 2));
   }
 
   PVector getRandomSpawn() {

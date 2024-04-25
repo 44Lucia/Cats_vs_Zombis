@@ -34,6 +34,7 @@ class Bow {
     //Arrows
     for(Projectile arrow : arrowList) {
       arrow.update();
+      if(arrow.isActive) {checkCollisions(arrow);}     
     }
   }
     
@@ -81,5 +82,23 @@ class Bow {
         currentArrow.isActive = true;
       }
     }    
+  }
+  
+  void checkCollisions(Projectile p_arrow) {
+    // Calcular vértices de cada rectángulo
+    PVector[] arrowVertices = colManager.calculateVertices(p_arrow.pos.x, p_arrow.pos.y, p_arrow.w, p_arrow.h, p_arrow.angle); //arrow collider
+    for(int i = enemyManager.torches.size() - 1; i > 0; i-- ) { // Torch enemies
+      Torch torch = enemyManager.torches.get(i);
+      
+      PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth, torch.animations.spriteHeight, 0); //torch collider
+            utilities.drawRectangle(torchVertices);
+
+      // Verificar colisión usando SAT
+      boolean collision = colManager.checkSATCollision(arrowVertices, torchVertices);      
+      if(collision) {
+        torch.health -= pj.damage;  
+        if(torch.health <= 0) {enemyManager.torches.remove(torch); println("deleted");}
+      }
+    }
   }
 }

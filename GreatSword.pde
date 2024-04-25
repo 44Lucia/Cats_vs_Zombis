@@ -15,34 +15,14 @@ class GreatSword {
     pos.x = pj.pos.x + cos(currentAngle) * playerOffset; 
     pos.y = pj.pos.y + sin(currentAngle) * playerOffset;    
     currentAngle = swordRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
+    
+    checkCollisions();
   }
     
   void display() {
     imageMode(CENTER);
     image(swordSprite, playerOffset, 0);
   }
-    
-  //CONSERVAR PARA TESTEO
-  void satTest() {
-    float testX = mouseX;
-    float testY = mouseY;
-    float testW = 100;
-    float testH = 50;
-    float testAngle = radians(0);  // Ángulo de rotación en radianes
-    
-    // Calcular vértices de cada rectángulo
-    PVector[] rect1Vertices = colManager.calculateVertices(testX, testY, testW, testH, testAngle); //me
-    PVector[] rect2Vertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
-    
-    // Verificar colisión usando SAT
-    boolean collision = colManager.checkSATCollision(rect1Vertices, rect2Vertices);
-    
-    // Dibujar rectángulos de colisiones
-    utilities.drawRectangle(rect1Vertices);
-    utilities.drawRectangle(rect2Vertices);
-    
-    println("Collision: " + collision); 
-  } 
   
   float swordRotationAngle(float current, float target, float speed) {
     float diff = target - current;
@@ -53,5 +33,23 @@ class GreatSword {
     }
     
     return lerp(current, target, speed);
+  }
+  
+  void checkCollisions() {
+    // Calcular vértices de cada rectángulo
+    PVector[] swordVertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
+    for(int i = enemyManager.torches.size() - 1; i > 0; i-- ) {
+      Torch torch = enemyManager.torches.get(i);
+      
+      PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth, torch.animations.spriteHeight, 0); //torch collider
+            utilities.drawRectangle(torchVertices);
+
+      // Verificar colisión usando SAT
+      boolean collision = colManager.checkSATCollision(swordVertices, torchVertices);      
+      if(collision) {
+        torch.health -= pj.damage;  
+        if(torch.health <= 0) {enemyManager.torches.remove(torch); println("deleted");}
+      }
+    }
   }
 }
