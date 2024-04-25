@@ -5,16 +5,15 @@ class GreatSword {
   
   float currentAngle = 0;
   float rotationSpeed = 0.08;
-  int playerOffset = 50;
+  int playerOffset = 60;
   
   GreatSword() {
-    pos = new PVector(50, 0);
+    pos = new PVector(playerOffset, 0);
   }
   
   void update() {
     pos.x = pj.pos.x + cos(currentAngle) * playerOffset; 
-    pos.y = pj.pos.y + sin(currentAngle) * playerOffset;
-    
+    pos.y = pj.pos.y + sin(currentAngle) * playerOffset;    
     currentAngle = swordRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
   }
     

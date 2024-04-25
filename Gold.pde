@@ -1,18 +1,17 @@
 class Gold {
-  float x, y;
+  PVector pos;
   PImage sprite = loadImage("Gold.png");
   
   Gold(float p_x, float p_y) {
-    x = p_x;
-    y = p_y;
+    pos = new PVector(p_x, p_y);
   }
   
   void display() {
-    image(sprite, x, y, sprite.width / 2, sprite.height / 2);
+    image(sprite, pos.x, pos.y, sprite.width / 2, sprite.height / 2);
   }
   
   boolean isMouseOver() {
-     return utilities.isMouseOver(x, y, sprite.width, sprite.height);
+     return utilities.isMouseOver(pos.x, pos.y, sprite.width, sprite.height);
   }
   
   boolean isCliceked() {return (mousePressed && isMouseOver());}

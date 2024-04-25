@@ -2,21 +2,25 @@ class Projectile {
   PImage arrowSprite = loadImage("arrow.png");
   boolean hasbeenShoot, isActive;
 
-  float x = width / 2, y = height / 2;
+  PVector pos;
   int w = 52, h = 11;
   float angle;
   float speed = 8;
   
+  Projectile() {
+    pos = new PVector(width / 2, height / 2);
+  }
+  
   void update() {
     if(hasbeenShoot) {
-      if(x < 0 || x > width || y > height || y < 0) {
+      if(pos.x < 0 || pos.x > width || pos.y > height || pos.y < 0) {
         hasbeenShoot = false; 
         isActive = false;
       }
       
       //movement
-      x += cos(angle) * speed;
-      y += sin(angle) * speed;
+      pos.x += cos(angle) * speed;
+      pos.y += sin(angle) * speed;
     }
     else if(isActive) {angle = utilities.mouseAngle();}
   }
@@ -25,7 +29,7 @@ class Projectile {
     pushMatrix();
       if(hasbeenShoot) {
         resetMatrix();
-        translate(x, y);
+        translate(pos.x, pos.y);
         rotate(angle);
       }
       rectMode(CENTER);
@@ -39,8 +43,8 @@ class Projectile {
   }
   
   void shootArrow(float p_x, float p_y, float p_angle) {
-    x = p_x;
-    y = p_y;
+    pos.x = p_x;
+    pos.y = p_y;
     angle = p_angle;
     hasbeenShoot = true;
   }

@@ -1,10 +1,11 @@
 class Player {
   int MAX_HEALTH = 100;
   int health = MAX_HEALTH;
+  int damage = 0;
   int money = 0;
   int score = 0;
   String name = "";
-  PVector pos;//x = width / 2, y = height / 2;
+  PVector pos;
   
   boolean isWeaponUp;
     
@@ -55,6 +56,7 @@ class Knight extends Player {
     sword = new GreatSword();
     MAX_HEALTH = 100;
     health = MAX_HEALTH;
+    damage = 100;
   }
   
   void update() {
@@ -97,6 +99,7 @@ class Archer extends Player {
     bow = new Bow();
     MAX_HEALTH = 60;
     health = MAX_HEALTH;
+    damage = 50;
   }
   
   void update() {
