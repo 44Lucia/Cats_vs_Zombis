@@ -37,29 +37,21 @@ class EnemyManager {
 
   void enemyWave(int torches, int tnts, int barries) {
 
-    float spawnX, spawnY;
-    float randomAngle;
-    float hipotenusa = sqrt(pow(width / 2, 2) + pow(height / 2, 2));
+    PVector spawnPos;
 
     for (int i = 0; i < torches; i++) {
-      randomAngle = random(TWO_PI);
-      spawnX = width / 2 + hipotenusa * cos(randomAngle);
-      spawnY = height / 2 + hipotenusa * sin(randomAngle);
-      this.torches.add(new Torch(spawnX, spawnY));
+      spawnPos = utilities.getRandomSpawn();
+      this.torches.add(new Torch(spawnPos));
     }
 
     for (int i = 0; i < tnts; i++) {
-      randomAngle = random(TWO_PI);
-      spawnX = width / 2 + hipotenusa * cos(randomAngle);
-      spawnY = height / 2 + hipotenusa * sin(randomAngle);
-      this.tnts.add(new Tnt(spawnX, spawnY));
+      spawnPos = utilities.getRandomSpawn();
+      this.tnts.add(new Tnt(spawnPos));
     }
 
     for (int i = 0; i < barries; i++) {
-      randomAngle = random(TWO_PI);
-      spawnX = width / 2 + hipotenusa * cos(randomAngle);
-      spawnY = height / 2 + hipotenusa * sin(randomAngle);
-      this.barries.add(new Barry(spawnX, spawnY));
+      spawnPos = utilities.getRandomSpawn();
+      this.barries.add(new Barry(spawnPos));
     }
   }
 }
