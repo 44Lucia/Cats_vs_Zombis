@@ -84,7 +84,7 @@ abstract class Enemy extends Entity {
     quadrant = checkQuadrant();
 
     float angle;
-    float magnitude = random(5);
+    float magnitude = random(1, 6);
     switch (quadrant) {
     case Q1:
       angle = random(HALF_PI, PI);
@@ -102,9 +102,10 @@ abstract class Enemy extends Entity {
       angle = 0;
       break;
     }
-    //desiredPos.x = magnitude * cos(angle);
-    //desiredPos.y = magnitude * sin(angle);
-    desiredPos = new PVector(random(500), random(300));
+    
+    //Go to the center of your quad
+    desiredPos.x = pos.x + magnitude * cos(angle);
+    desiredPos.y = pos.y + magnitude * sin(angle);
   }
 
   void move() {
