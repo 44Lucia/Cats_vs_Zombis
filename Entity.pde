@@ -2,7 +2,7 @@
 
 abstract class Entity {
 
-  float x, y;
+  PVector pos = new PVector(0, 0);
 
   int currentAnimation;
   Animations animations;

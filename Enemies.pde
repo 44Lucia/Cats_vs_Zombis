@@ -18,14 +18,14 @@ abstract class Enemy extends Entity {
   final float LIThreshold = 4; // Linear Interpolation threshold for not moving infinitely
 
   void moveTo(float targetX, float targetY) {
-    if (abs(x - targetX) < LIThreshold && abs(y - targetY) < LIThreshold) {
+    if (abs(pos.x - targetX) < LIThreshold && abs(pos.y - targetY) < LIThreshold) {
       currentAnimation = 0;
-      x = targetX;
-      y = targetY;
+      pos.x = targetX;
+      pos.y = targetY;
     } else {
       currentAnimation = 1;
-      x = (1 - speed) * x + speed * targetX;
-      y = (1 - speed) * y + speed * targetY;
+      pos.x = (1 - speed) * pos.x + speed * targetX;
+      pos.y = (1 - speed) * pos.y + speed * targetY;
     }
   }
 
@@ -36,16 +36,16 @@ abstract class Enemy extends Entity {
    */
 
   void drawRange() {
-    utilities.drawCircle(x, y, range);
+    utilities.drawCircle(pos.x, pos.y, range);
   }
 
   void display() {
     // Manage sprite orientation
-    if (x - lastX != 0)
-      flipped = x - lastX < 0;
-    lastX = x;
+    if (pos.x - lastX != 0)
+      flipped = pos.x - lastX < 0;
+    lastX = pos.x;
 
-    animations.play(currentAnimation, int(x), int(y), flipped);
+    animations.play(currentAnimation, int(pos.x), int(pos.y), flipped);
     drawRange();
   }
 }
@@ -55,8 +55,8 @@ class Torch extends Enemy {
   Torch(float x, float y) {
 
     // Position
-    this.x = x;
-    this.y = y;
+    pos.x = x;
+    pos.y = y;
 
     // Stats
     health = 100;
@@ -90,8 +90,8 @@ class Tnt extends Enemy {
   Tnt(float x, float y) {
 
     // Position
-    this.x = x;
-    this.y = y;
+    pos.x = x;
+    pos.y = y;
 
     // Stats
     health = 60;
@@ -112,8 +112,8 @@ class Barry extends Enemy {
   Barry(float x, float y) {
 
     // Position
-    this.x = x;
-    this.y = y;
+    pos.x = x;
+    pos.y = y;
 
     // Stats
     health = 40;

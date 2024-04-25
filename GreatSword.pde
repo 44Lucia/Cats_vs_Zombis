@@ -1,15 +1,19 @@
 class GreatSword {
   PImage swordSprite = loadImage("GreatSword.png");
-  float x = 50, y = 0;
+  PVector pos;
   int w = 76, h = 19;
   
   float currentAngle = 0;
   float rotationSpeed = 0.08;
   int playerOffset = 50;
   
+  GreatSword() {
+    pos = new PVector(50, 0);
+  }
+  
   void update() {
-    x = pj.x + cos(currentAngle) * playerOffset; 
-    y = pj.y + sin(currentAngle) * playerOffset;
+    pos.x = pj.pos.x + cos(currentAngle) * playerOffset; 
+    pos.y = pj.pos.y + sin(currentAngle) * playerOffset;
     
     currentAngle = swordRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
   }
@@ -29,7 +33,7 @@ class GreatSword {
     
     // Calcular vértices de cada rectángulo
     PVector[] rect1Vertices = colManager.calculateVertices(testX, testY, testW, testH, testAngle); //me
-    PVector[] rect2Vertices = colManager.calculateVertices(x, y, w, h, currentAngle); //sword collider
+    PVector[] rect2Vertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
     
     // Verificar colisión usando SAT
     boolean collision = colManager.checkSATCollision(rect1Vertices, rect2Vertices);

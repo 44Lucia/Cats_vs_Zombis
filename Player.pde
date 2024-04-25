@@ -4,7 +4,7 @@ class Player {
   int money = 0;
   int score = 0;
   String name = "";
-  float x = width / 2, y = height / 2;
+  PVector pos;//x = width / 2, y = height / 2;
   
   boolean isWeaponUp;
     
@@ -13,6 +13,10 @@ class Player {
   int currentFrame = 0, totalCurrentAnimFrames = 4, row = 0;
   int currentSpriteSheetX = 0, currentSpriteSheetY = 0;
   int playerSpriteW = 64, playerSpriteH = 64;
+  
+  Player() {
+    pos = new PVector(width / 2, height / 2);
+  }
   
   //default no weapon update
   void update() {    
@@ -24,7 +28,7 @@ class Player {
     fill(0);
     copy(playerSprite, currentSpriteSheetX, currentSpriteSheetY, 
       playerSpriteW, playerSpriteH, 
-      int(x) - playerSpriteW / 2, int(y) - playerSpriteH / 2, // draw sprite centered
+      int(pos.x) - playerSpriteW / 2, int(pos.y) - playerSpriteH / 2, // draw sprite centered
       playerSpriteW, playerSpriteH);
   }
   
@@ -65,7 +69,7 @@ class Knight extends Player {
  
     if(isWeaponUp) {
       pushMatrix();
-        translate(x, y);
+        translate(pos.x, pos.y);
         rotate(sword.currentAngle);
         sword.display();
       popMatrix();
@@ -73,12 +77,12 @@ class Knight extends Player {
     
     copy(playerSprite, currentSpriteSheetX, currentSpriteSheetY, 
       playerSpriteW, playerSpriteH, 
-      int(x) - playerSpriteW / 2, int(y) - playerSpriteH / 2, // draw sprite centered
+      int(pos.x) - playerSpriteW / 2, int(pos.y) - playerSpriteH / 2, // draw sprite centered
       playerSpriteW, playerSpriteH);
       
     if(!isWeaponUp) {
       pushMatrix();
-        translate(x, y);
+        translate(pos.x, pos.y);
         rotate(sword.currentAngle);
         sword.display();
       popMatrix();
@@ -107,7 +111,7 @@ class Archer extends Player {
  
     if(isWeaponUp) {
       pushMatrix();
-        translate(x, y);
+        translate(pos.x, pos.y);
         rotate(bow.currentAngle);
         bow.display();
       popMatrix();
@@ -115,12 +119,12 @@ class Archer extends Player {
     
     copy(playerSprite, currentSpriteSheetX, currentSpriteSheetY, 
       playerSpriteW, playerSpriteH, 
-      int(x) - playerSpriteW / 2, int(y) - playerSpriteH / 2, // draw sprite centered
+      int(pos.x) - playerSpriteW / 2, int(pos.y) - playerSpriteH / 2, // draw sprite centered
       playerSpriteW, playerSpriteH);
       
     if(!isWeaponUp) {
       pushMatrix();
-        translate(x, y);
+        translate(pos.x, pos.y);
         rotate(bow.currentAngle);
         bow.display();
       popMatrix();

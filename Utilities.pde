@@ -1,6 +1,6 @@
-class Utilities { //<>// //<>//
-  float deltaX() {return mouseX - pj.x;}
-  float deltaY() {return mouseY - pj.y;}
+class Utilities { //<>//
+  float deltaX() {return mouseX - pj.pos.x;}
+  float deltaY() {return mouseY - pj.pos.y;}
   float mouseAngle() {return atan2(deltaY(), deltaX());}
 
   //Overlaping between two intervals
@@ -23,9 +23,7 @@ class Utilities { //<>// //<>//
     pop();
   }
   
-  void fps() {
-   println(frameRate); 
-  }
+  void fps() {println(frameRate);}
 
   //Interaction helper function
   boolean isMouseOver(float p_x, float p_y, int p_w, int p_h) {

@@ -1,6 +1,6 @@
 class Bow {
   PImage bowSprite = loadImage("Bow.png");
-  float x = 50, y = 0;
+  PVector pos;
   int w = 64, h = 127;
   
   ArrayList<Projectile> arrowList = new ArrayList<Projectile>();
@@ -14,16 +14,15 @@ class Bow {
   float rotationSpeed = 0.2;
   
   Bow() {
-    for(int i = 0; i < 3; i++) { //3 arrows pool
-      arrowList.add(new Projectile()); 
-    }
+    pos = new PVector(50, 0);
     
+    for(int i = 0; i < 3; i++) {arrowList.add(new Projectile());}  
     getNextArrow();
   }
   
   void update() {
-    x = pj.x + cos(currentAngle);
-    y = pj.y + sin(currentAngle); 
+    pos.x = pj.pos.x + cos(currentAngle);
+    pos.y = pj.pos.y + sin(currentAngle); 
     currentAngle = bowRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
     
     
@@ -69,7 +68,7 @@ class Bow {
       
       if(currentFrame == totalCurrentAnimFrames) {
         //shoot inactive arrow
-        currentArrow.shootArrow(x, y, currentAngle);
+        currentArrow.shootArrow(pos.x, pos.y, currentAngle);
         getNextArrow();
         currentFrame = 0;
       }
