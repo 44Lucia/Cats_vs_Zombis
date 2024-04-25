@@ -6,9 +6,9 @@ class UIManager {
   PImage bgSprite;
   PImage titleBgSprite;
   PImage redButtonSprite, redButtonHoverSprite;
-  int titleBgPosX = 50, titleBgPosY = 160;
+  PVector titleBgPos = new PVector(50, 160);
   Button playButton, highscoreButton, exitButton;
-  int playButtonPosX = 185, playButtonPosY = 360;
+  PVector playButtonPos = new PVector(185, 360);
   
   //highscore table
   PImage backToMainTitleSprite;
@@ -59,14 +59,14 @@ class UIManager {
     archerButtonSelectedSprite = loadImage("archerButtonSelected.png");
     
     //buttons
-    playButton = new Button(this, playButtonPosX, playButtonPosY, "Play", redButtonSprite, redButtonHoverSprite);
-    highscoreButton = new Button(this, playButtonPosX, playButtonPosY + 80, "Highscores", redButtonSprite, redButtonHoverSprite);
-    exitButton = new Button(this, playButtonPosX, playButtonPosY + 200, "Exit", redButtonSprite, redButtonHoverSprite);
+    playButton = new Button(this, playButtonPos.x, playButtonPos.y, "Play", redButtonSprite, redButtonHoverSprite);
+    highscoreButton = new Button(this, playButtonPos.x, playButtonPos.y + 80, "Highscores", redButtonSprite, redButtonHoverSprite);
+    exitButton = new Button(this, playButtonPos.x, playButtonPos.y + 200, "Exit", redButtonSprite, redButtonHoverSprite);
     returnButton = new Button(this, returnButtonPosX, returnButtonPosY, "", returnButtonSprite, returnButtonHoverSprite);
     
     knightSelectionButton = new Button(this, knightSelectionButtonPosX, selectionButtonsPosY, "", knightButtonSprite, knightButtonSelectedSprite);
     archerSelectionButton = new Button(this, archerSelectionButtonPosX, selectionButtonsPosY, "", archerButtonSprite, archerButtonSelectedSprite);
-    startGameButton = new Button(this, playButtonPosX, startGameButtonPosY, "Start run", redButtonSprite, redButtonHoverSprite);
+    startGameButton = new Button(this, playButtonPos.x, startGameButtonPosY, "Start run", redButtonSprite, redButtonHoverSprite);
     
     panelSprite = loadImage("BannerInGame.png");
     mapSprite = loadImage("Map.png");
@@ -91,15 +91,15 @@ class UIManager {
     //title
     fill(0);    
     imageMode(CORNER);
-    image(titleBgSprite, titleBgPosX, titleBgPosY);
+    image(titleBgSprite, titleBgPos.x, titleBgPos.y);
     
     if(!showHighscoreTable) {
       textSize(52);
-      text("Dwarfs", titleBgPosX + 120,  titleBgPosY + 40);
+      text("Dwarfs", titleBgPos.x + 120,  titleBgPos.y + 40);
       textSize(32);
-      text("vs.", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
+      text("vs.", titleBgPos.x + titleBgSprite.width / 2,  titleBgPos.y + titleBgSprite.height / 2 - 20);
       textSize(52);
-      text("Goblins", titleBgPosX + titleBgSprite.width - 120,  titleBgPosY + 90);
+      text("Goblins", titleBgPos.x + titleBgSprite.width - 120,  titleBgPos.y + 90);
       
       playButton.display();
       highscoreButton.display();
@@ -111,7 +111,7 @@ class UIManager {
     else {
       textSize(52);
       textAlign(CENTER, CENTER);
-      text("Highscores", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
+      text("Highscores", titleBgPos.x + titleBgSprite.width / 2,  titleBgPos.y + titleBgSprite.height / 2 - 20);
       displayHighscore();
     }
   }
@@ -122,10 +122,10 @@ class UIManager {
     //title
     fill(0);
     imageMode(CORNER);
-    image(titleBgSprite, titleBgPosX, titleBgPosY);
+    image(titleBgSprite, titleBgPos.x, titleBgPos.y);
     textSize(52);
     textAlign(CENTER, CENTER);
-    text("Select character", titleBgPosX + titleBgSprite.width / 2,  titleBgPosY + titleBgSprite.height / 2 - 20);
+    text("Select character", titleBgPos.x + titleBgSprite.width / 2,  titleBgPos.y + titleBgSprite.height / 2 - 20);
     
     returnButton.display();
     

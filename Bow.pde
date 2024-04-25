@@ -14,7 +14,7 @@ class Bow {
   float rotationSpeed = 0.2;
   
   Bow() {
-    pos = new PVector(50, 0);
+    pos = new PVector(0, 0);
     
     for(int i = 0; i < 3; i++) {arrowList.add(new Projectile());}  
     getNextArrow();
@@ -24,7 +24,6 @@ class Bow {
     pos.x = pj.pos.x + cos(currentAngle);
     pos.y = pj.pos.y + sin(currentAngle); 
     currentAngle = bowRotationAngle(currentAngle, utilities.mouseAngle(), rotationSpeed);
-    
     
     if(rightClickDown) {tenseBow();}
     else if(currentFrame != 0) {

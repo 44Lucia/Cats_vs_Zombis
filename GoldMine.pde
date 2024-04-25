@@ -4,17 +4,17 @@ class GoldMine{
   int timeLastGold;
   int intervalBetweenCoins; 
   int spawnRadius; 
-  float mineX, mineY;
+  PVector minePos;
   
-  GoldMine(float x, float y) {
+  GoldMine(float p_x, float p_y) {
     goldMine = loadImage("GoldMine.png");
     goldMine.resize(70, 55);
     
     timeLastGold = 0;
     intervalBetweenCoins = 2000;
     spawnRadius = 50;
-    mineX =  x;
-    mineY = y;
+    
+    minePos = new PVector(p_x, p_y);
     
     goldList = new ArrayList<Gold>();
   }
@@ -24,10 +24,9 @@ class GoldMine{
       float angle = random(TWO_PI);
       
       spawnRadius = (int)random(10, 50);
-      float x = mineX + cos(angle) * spawnRadius;
-      float y = mineY + sin(angle) * spawnRadius;
+      PVector newPos = new PVector((minePos.x + cos(angle) * spawnRadius),(minePos.y + sin(angle) * spawnRadius));
       
-      goldList.add(new Gold(x, y));
+      goldList.add(new Gold(newPos.x, newPos.y));
       timeLastGold = millis();
     }
     
@@ -41,7 +40,7 @@ class GoldMine{
   }
   
   void display() {
-    image(goldMine, mineX, mineY);
+    image(goldMine, minePos.x, minePos.y);
     
     for (Gold gold : goldList) {gold.display();}
   }

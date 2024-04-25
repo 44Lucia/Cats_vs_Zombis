@@ -1,13 +1,13 @@
 class ArcherTower {
-  PVector position;
+  PVector pos;
   PImage archerSprite;
   float angle;
   float rotationRange; 
   float minAngle; 
   float maxAngle; 
 
-  ArcherTower(float x, float y) {
-    position = new PVector(x, y);
+  ArcherTower(float p_x, float p_y) {
+    pos = new PVector(p_x, p_y);
     archerSprite = loadImage("Archer.png");
     angle = 0;
     rotationRange = 190;
@@ -16,27 +16,25 @@ class ArcherTower {
   }
   
   void update() {
-    if (isMouseWithinRange()) {
-      rotateTowardsMouse();
-    }
+    if (isMouseWithinRange()) {rotateTowardsMouse();}
   }
 
   void display() {
     pushMatrix();
-    translate(position.x, position.y);
-    rotate(angle);
-    imageMode(CENTER);
-    image(archerSprite, 0, 0);
+      translate(pos.x, pos.y);
+      rotate(angle);
+      imageMode(CENTER);
+      image(archerSprite, 0, 0);
     popMatrix();
   }
 
   void rotateTowardsMouse() {
     PVector mousePos = new PVector(mouseX, mouseY);
-    PVector towerToMouse = PVector.sub(mousePos, position);
+    PVector towerToMouse = PVector.sub(mousePos, pos);
     angle = atan2(towerToMouse.y, towerToMouse.x);
   }
 
   boolean isMouseWithinRange() {
-    return dist(position.x, position.y, mouseX, mouseY) < rotationRange;
+    return dist(pos.x, pos.y, mouseX, mouseY) < rotationRange;
   }
 }
