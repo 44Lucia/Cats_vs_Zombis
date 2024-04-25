@@ -48,8 +48,7 @@ void draw() {
       ui.mainMenuDisplay();
       break;
     }
-  case 1:
-    { //-------[ character selection ]-------
+    case 1: { //-------[ character selection ]-------
       ui.characterSelectionDisplay();
       break;
     }
@@ -68,13 +67,12 @@ void draw() {
         enemyManager.enemyWave(10, 10, 10);
         first = false;
       }
+      enemyManager.display();
       ui.builderButtonsDisplay();
 
       gridManager.display();
-      enemyManager.display();
-
+      
       ui.builderButtonsDisplay();
-
 
       break;
     }
@@ -84,8 +82,8 @@ void draw() {
       break;
     }
   }
-
-  //utilities.fps();
+  
+  utilities.fps();
 
   //cursor
   imageMode(CORNER);
@@ -105,38 +103,19 @@ void mousePressed() {
   }
 
   switch(gameState) {
-  default:
-    break;
-  case 0:
-    { //-------[ main title ]-------
-      if (ui.returnButton.isMouseOver() && ui.showHighscoreTable) {
-        ui.showHighscoreTable = false;
-      }
-      if (ui.playButton.isMouseOver() && !ui.showHighscoreTable) {
-        gameState = 1;
-      } // To character selection
-      if (ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) {
-        ui.showHighscoreTable = true;
-      }
-      if (ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {
-        closeGame();
-      }
+    default: break;
+    case 0: { //-------[ main title ]------- 
+      if(ui.returnButton.isMouseOver() && ui.showHighscoreTable) {ui.showHighscoreTable = false;}    
+      if(ui.playButton.isMouseOver() && !ui.showHighscoreTable) {gameState = 1;} // To character selection      
+      if(ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) {ui.showHighscoreTable = true;}
+      if(ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {closeGame();}
       break;
     }
-  case 1:
-    { //-------[ character selection ]-------
-      if (ui.returnButton.isMouseOver()) {
-        gameState = 0;
-      }
-      if (ui.knightSelectionButton.isMouseOver()) {
-        isKnight = true;
-      }
-      if (ui.archerSelectionButton.isMouseOver()) {
-        isKnight = false;
-      }
-      if (ui.startGameButton.isMouseOver() && playerInput.length() > 2) {
-        startGame();
-      }
+    case 1: { //-------[ character selection ]-------
+      if(ui.returnButton.isMouseOver()) {gameState = 0;}
+      if(ui.knightSelectionButton.isMouseOver()) {isKnight = true;}
+      if(ui.archerSelectionButton.isMouseOver()) {isKnight = false;}
+      if(ui.startGameButton.isMouseOver() && playerInput.length() > 2) {startGame();} 
       break;
     }
   case 2:
@@ -161,40 +140,29 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-  switch(gameState) {
-  default:
-    break;
-  case 1:
-    { //player input (name)
-      if (key > 32 && key < 127 && playerInput.length() < 7) {
-        playerInput += key;
-      } else if (keyCode == BACKSPACE && playerInput.length() > 0) {
-        playerInput = playerInput.substring(0, playerInput.length()-1);
+    switch(gameState) {
+      default: break;
+      case 1: { //player input (name)
+        if(key > 32 && key < 127 && playerInput.length() < 7) {playerInput += key;}
+        else if(keyCode == BACKSPACE && playerInput.length() > 0) {
+          playerInput = playerInput.substring(0, playerInput.length()-1);
+        }
+        
+        //start playing with enter
+        if(keyCode == ENTER && playerInput.length() > 2) {startGame();}
+        break;
       }
-
-      //start playing with enter
-      if (keyCode == ENTER && playerInput.length() > 2) {
-        startGame();
+      case 2: {
+        if(key == 'm') {pj.money += 100;} 
+        break;
       }
-      break;
     }
-  case 2:
-    {
-      if (key == 'm') {
-        pj.money += 100;
-      }
-      break;
-    }
-  }
 }
 
 void startGame() {
-  if (isKnight) {
-    pj = new Knight();
-  } else {
-    pj = new Archer();
-  }
-
+  if(isKnight) {pj = new Knight();}
+  else {pj = new Archer();}
+  
   pj.name = playerInput;
   gameState = 2; // Game scene
 }

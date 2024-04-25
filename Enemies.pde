@@ -6,7 +6,14 @@ abstract class Enemy extends Entity {
   int health;
   int damage;
   float range;
-  float speed;  // Speed from 0 to 1
+  float speed; // Speed from 0 to 1
+  int quadrant;
+  float moveTimerOffset;
+  float moveTimer;
+  float moveCooldown;
+  boolean moving;
+  float lastX;
+  boolean flipped;
 
   final float LIThreshold = 4; // Linear Interpolation threshold for not moving infinitely
 
@@ -20,6 +27,26 @@ abstract class Enemy extends Entity {
       x = (1 - speed) * x + speed * targetX;
       y = (1 - speed) * y + speed * targetY;
     }
+  }
+
+  /*
+  boolean constructionInRange() {
+   
+   }
+   */
+
+  void drawRange() {
+    utilities.drawCircle(x, y, range);
+  }
+
+  void display() {
+    // Manage sprite orientation
+    if (x - lastX != 0)
+      flipped = x - lastX < 0;
+    lastX = x;
+
+    animations.play(currentAnimation, int(x), int(y), flipped);
+    drawRange();
   }
 }
 
@@ -36,12 +63,24 @@ class Torch extends Enemy {
     range = 70;
     speed = 0.025;
     damage = 10;
-    
+    moveTimer = millis();
+    moveCooldown = 3000;
+
     animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
   }
 
   void update() {
-    utilities.drawCircle(x, y, range);
+
+    if (moveTimerOffset + millis() - moveTimer > moveCooldown) {
+      moveTimerOffset = random(5000);
+      moveTimer = millis();
+      moving = true;
+    }
+    moveTimerOffset = random(7000);
+    float magnitude = 500;
+    //float angle = random();
+    //PVector dashVector = new PVector(magnitude * cos(angle));
+   // moveTo(dashVector.x, dashVector.y);
   }
 }
 
@@ -64,14 +103,11 @@ class Tnt extends Enemy {
   }
 
   void update() {
-    utilities.drawCircle(x, y, range);
   }
 }
 
 // Barry goblin enemy
 class Barry extends Enemy {
-
-  Explosion explosion;
 
   Barry(float x, float y) {
 
@@ -84,15 +120,10 @@ class Barry extends Enemy {
     range = 50;
     speed = 0.08;
     damage = 30;
-    
-    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
 
-    explosion = new Explosion(x, y);
+    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
   }
 
   void update() {
-    utilities.drawCircle(x, y, range);
-    explosion.x = x;
-    explosion.y = y;
   }
 }

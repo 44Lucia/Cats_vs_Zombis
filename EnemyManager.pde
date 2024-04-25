@@ -24,28 +24,42 @@ class EnemyManager {
   void display() {
     for (int i = 0; i < torches.size(); i++) {
       torches.get(i).display();
-      torches.get(i).moveTo(mouseX, mouseY);
     }
 
     for (int i = 0; i < tnts.size(); i++) {
       tnts.get(i).display();
-      tnts.get(i).moveTo(mouseX, mouseY);
     }
 
     for (int i = 0; i < barries.size(); i++) {
       barries.get(i).display();
-      barries.get(i).moveTo(mouseX, mouseY);
     }
   }
 
   void enemyWave(int torches, int tnts, int barries) {
-    for (int i = 0; i < torches; i++)
-      this.torches.add(new Torch(i * 192, 0));
 
-    for (int i = 0; i < tnts; i++)
-      this.tnts.add(new Tnt(i * 192, 192));
+    float spawnX, spawnY;
+    float randomAngle;
+    float hipotenusa = sqrt(pow(width / 2, 2) + pow(height / 2, 2));
 
-    for (int i = 0; i < barries; i++)
-      this.barries.add(new Barry(i * 128, 384));
+    for (int i = 0; i < torches; i++) {
+      randomAngle = random(TWO_PI);
+      spawnX = width / 2 + hipotenusa * cos(randomAngle);
+      spawnY = height / 2 + hipotenusa * sin(randomAngle);
+      this.torches.add(new Torch(spawnX, spawnY));
+    }
+
+    for (int i = 0; i < tnts; i++) {
+      randomAngle = random(TWO_PI);
+      spawnX = width / 2 + hipotenusa * cos(randomAngle);
+      spawnY = height / 2 + hipotenusa * sin(randomAngle);
+      this.tnts.add(new Tnt(spawnX, spawnY));
+    }
+
+    for (int i = 0; i < barries; i++) {
+      randomAngle = random(TWO_PI);
+      spawnX = width / 2 + hipotenusa * cos(randomAngle);
+      spawnY = height / 2 + hipotenusa * sin(randomAngle);
+      this.barries.add(new Barry(spawnX, spawnY));
+    }
   }
 }

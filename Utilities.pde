@@ -22,6 +22,10 @@ class Utilities { //<>// //<>//
       circle(p_x, p_y, 2 * p_radius);
     pop();
   }
+  
+  void fps() {
+   println(frameRate); 
+  }
 
   //Interaction helper function
   boolean isMouseOver(float p_x, float p_y, int p_w, int p_h) {
