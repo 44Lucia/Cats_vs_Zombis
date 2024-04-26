@@ -56,7 +56,7 @@ class Knight extends Player {
     sword = new GreatSword();
     MAX_HEALTH = 100;
     health = MAX_HEALTH;
-    damage = 100;
+    damage = 5;
   }
   
   void update() {
@@ -99,7 +99,7 @@ class Archer extends Player {
     bow = new Bow();
     MAX_HEALTH = 60;
     health = MAX_HEALTH;
-    damage = 50;
+    damage = 40;
   }
   
   void update() {

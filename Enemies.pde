@@ -10,7 +10,7 @@ enum Quadrant {
 abstract class Enemy extends Entity {
 
   // Stats
-  int health;
+  HealthBar healthBar;
   int damage;
   float range;
   Quadrant quadrant;
@@ -52,13 +52,13 @@ abstract class Enemy extends Entity {
   final float LIThreshold = 4;
 
   void calculateMovement() {
-    PVector distanceToDestination = new PVector();
-    distanceToDestination.x = desiredPos.x - pos.x;
-    distanceToDestination.y = desiredPos.y - pos.y;
+    PVector distanceToDestination = new PVector(desiredPos.x - pos.x, desiredPos.y - pos.y);
 
     if (abs(distanceToDestination.x) < LIThreshold && abs(distanceToDestination.y) < LIThreshold) {
       currentAnimation = 0;
       setNewMovement();
+    } else {
+      currentAnimation = 1;
     }
 
     float magnitude = sqrt(pow(distanceToDestination.x, 2) + pow(distanceToDestination.y, 2));
@@ -80,11 +80,10 @@ abstract class Enemy extends Entity {
   }
 
   void setNewMovement() {
-    // Check quadrant
-    quadrant = checkQuadrant();
 
     float angle;
     float magnitude = random(1, 6);
+    quadrant = checkQuadrant();
     switch (quadrant) {
     case Q1:
       angle = random(HALF_PI, PI);
@@ -102,7 +101,7 @@ abstract class Enemy extends Entity {
       angle = 0;
       break;
     }
-    
+
     //Go to the center of your quad
     desiredPos.x = pos.x + magnitude * cos(angle);
     desiredPos.y = pos.y + magnitude * sin(angle);
@@ -110,14 +109,19 @@ abstract class Enemy extends Entity {
 
   void move() {
     //acceleration
-    if (currentAcceleration < 1) {currentAcceleration += deltaAcceleration;} 
-    else {currentAcceleration = 0.8;}
+    if (currentAcceleration < 1) {
+      currentAcceleration += deltaAcceleration;
+    } else {
+      currentAcceleration = 0.8;
+    }
 
     pos.x += finalMovement.x * currentAcceleration;
     pos.y += finalMovement.y * currentAcceleration;
   }
-
-
+  
+  //boolean constructionInRange() {
+   //if (circularCollision()) {}
+  //}
 
   void drawRange() {
     utilities.drawCircle(pos.x, pos.y, range);
@@ -131,18 +135,25 @@ abstract class Enemy extends Entity {
 
     animations.play(currentAnimation, int(pos.x), int(pos.y), flipped);
     drawRange();
+    healthBar.display();
   }
 }
 
 class Torch extends Enemy {
+  int health;
+  int maxHealth;
 
   Torch(PVector p_pos) {
 
     // Position
     pos = p_pos;
 
+    animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
+
     // Stats
     health = 100;
+    maxHealth = 100;
+    healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 70;
     damage = 10;
     finalMovement = new PVector();
@@ -153,8 +164,6 @@ class Torch extends Enemy {
 
     quadrant = checkQuadrant();
     setNewMovement();
-
-    animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
   }
 
   void update() {
@@ -162,23 +171,29 @@ class Torch extends Enemy {
     //println(pos);
     calculateMovement();
     move();
+    healthBar.healthBarPos.x = pos.x - animations.spriteWidth / 8;
+    healthBar.healthBarPos.y = pos.y - animations.spriteHeight / 4;
   }
 }
 
 // TNT goblin thrower enemy
 class Tnt extends Enemy {
+  int health;
+  int maxHealth;
 
   Tnt(PVector p_pos) {
 
     // Position
     pos = p_pos;
 
+    animations = new Animations(loadImage("TNT.png"), 3, 6, 192, 192);
+
     // Stats
     health = 60;
+    maxHealth = 60;
+    healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 230;
     damage = 15;
-
-    animations = new Animations(loadImage("TNT.png"), 3, 6, 192, 192);
   }
 
   void update() {
@@ -187,18 +202,23 @@ class Tnt extends Enemy {
 
 // Barry goblin enemy
 class Barry extends Enemy {
+  int health;
+  int maxHealth;
 
   Barry (PVector p_pos) {
 
     // Position
     pos = p_pos;
 
+    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
+
     // Stats
     health = 40;
+    maxHealth = 40;
+    healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
+
     range = 50;
     damage = 30;
-
-    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
   }
 
   void update() {
