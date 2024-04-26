@@ -43,20 +43,15 @@ class Animations {
 
       currentSprite = spriteSheet.get(currentFrameX, currentFrameY, spriteWidth, spriteHeight);
     }
+    pushMatrix();
     imageMode(CENTER);
-
-    image(currentSprite, p_x, p_y);
-    /*
-     if (p_flipped) {
-     scale(-1, 1);
-     image(currentSprite, -p_x, p_y);
-     } else {
-     scale(1, 1);
-     image(currentSprite, p_x, p_y);
-     }
-     
-     scale(1, 1);
-     imageMode(CORNER);
-     */
+    if (p_flipped) {
+      scale(-1, 1);
+      image(currentSprite, -p_x, p_y);
+    } else {
+      scale(1, 1);
+      image(currentSprite, p_x, p_y);
+    }
+    popMatrix();
   }
 }

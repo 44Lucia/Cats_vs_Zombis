@@ -60,12 +60,13 @@ abstract class Enemy extends Entity {
     } else {
       currentAnimation = 1;
     }
-
+/*
     float magnitude = sqrt(pow(distanceToDestination.x, 2) + pow(distanceToDestination.y, 2));
     if (magnitude > 0) {
       distanceToDestination.x /= magnitude;
-      distanceToDestination.y /= magnitude;
+     distanceToDestination.y /= magnitude;
     }
+    */
 
     //add direction to movement
     finalMovement.x += distanceToDestination.x * rotationAngle;
@@ -92,7 +93,7 @@ abstract class Enemy extends Entity {
       angle = random(HALF_PI);
       break;
     case Q3:
-      angle = random(3 * HALF_PI);
+      angle = random(3 * HALF_PI, TWO_PI);
       break;
     case Q4:
       angle = random(PI, 3 * HALF_PI);
@@ -114,14 +115,9 @@ abstract class Enemy extends Entity {
     } else {
       currentAcceleration = 0.8;
     }
-
     pos.x += finalMovement.x * currentAcceleration;
     pos.y += finalMovement.y * currentAcceleration;
   }
-  
-  //boolean constructionInRange() {
-   //if (circularCollision()) {}
-  //}
 
   void drawRange() {
     utilities.drawCircle(pos.x, pos.y, range);
