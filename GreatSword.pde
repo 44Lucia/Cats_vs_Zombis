@@ -38,7 +38,7 @@ class GreatSword {
   void checkCollisions() {
     // Calcular vértices de cada rectángulo
     PVector[] swordVertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
-    for(int i = enemyManager.torches.size() - 1; i > 0; i-- ) {
+    for(int i = enemyManager.torches.size() - 1; i >= 0; i-- ) {
       Torch torch = enemyManager.torches.get(i);
       
       PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth, torch.animations.spriteHeight, 0); //torch collider
