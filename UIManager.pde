@@ -14,7 +14,6 @@ class UIManager {
   PImage backToMainTitleSprite;
   PImage top1HighscoreSprite, top5HighscoreSprite, top10HighscoreSprite;
   PImage returnButtonSprite, returnButtonHoverSprite;
-  PImage playerIconSpritesheet;
   int highscorePosX = 135, highscorePosY = 340;
   Button returnButton;
   int returnButtonPosX = 40, returnButtonPosY = 120;
@@ -38,6 +37,10 @@ class UIManager {
   Button goldButton, treeButton, archerButton;
   boolean cursorOverGold;
   
+  //Game over ui
+  PImage gameOverPanel;
+  Button gameOverButton;
+  
   UIManager() {
     mainFont = createFont("Alkhemikal.ttf", 100);
     bgSprite = loadImage("MainMenuBg.png");
@@ -50,13 +53,15 @@ class UIManager {
     top10HighscoreSprite = loadImage("HighscoreTop10.png");
     returnButtonSprite = loadImage("ReturnButton.png");
     returnButtonHoverSprite = loadImage("ReturnButtonHover.png");
-    playerIconSpritesheet = loadImage("PlayerLogo.png");
     
     nameInputPanel = loadImage("InputPanel.png");
     knightButtonSprite = loadImage("knightButton.png");
     knightButtonSelectedSprite = loadImage("knightButtonSelected.png");
     archerButtonSprite = loadImage("archerButton.png");
     archerButtonSelectedSprite = loadImage("archerButtonSelected.png");
+    
+    gameOverPanel = loadImage("gameOverPanel.png");
+    gameOverButton = new Button(this, width / 2 - redButtonSprite.width / 2, height / 2 + 80, "Main title", redButtonSprite, redButtonHoverSprite);
     
     //buttons
     playButton = new Button(this, playButtonPos.x, playButtonPos.y, "Play", redButtonSprite, redButtonHoverSprite);
@@ -197,5 +202,35 @@ class UIManager {
         text(hsManager.sortedScores()[i+1], highscorePosX + top1HighscoreSprite.width - 60,PosY);
       }
     }  
+  }
+  
+  void gameOverPanelDisplay() {
+    background(bgSprite);
+    
+    //title
+    fill(0);
+    imageMode(CENTER);
+    image(gameOverPanel, width / 2, height / 2);
+    textSize(48);
+    textAlign(CENTER, CENTER);
+    text("Game over...", width / 2, height / 2 - 140);
+        
+    //results text
+    fill(0);
+    textSize(32);
+    textAlign(CORNER, CENTER);
+    text("Player:   " + pj.name, width / 2 - 160, height / 2 - 70);
+    text("Score:   " + pj.score, width / 2 - 160, height / 2 - 40);
+    textSize(24);
+    if(pj.score > Integer.valueOf(hsManager.sortedScores()[1])) {text("New Highscore, congrats!!", width / 2 - 160, height / 2 + 10);}
+    gameOverButton.display();
+    
+    imageMode(CENTER);
+    PImage classIcon;
+    if(isKnight) {classIcon = loadImage("swordIcon.png");}
+    else {classIcon = loadImage("bowIcon.png");}
+    image(classIcon, width / 2 + 100, height / 2 - 45);
+    
+    isMouseHovering = gameOverButton.isMouseOver();
   }
 }

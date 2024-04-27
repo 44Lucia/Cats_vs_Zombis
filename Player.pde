@@ -6,7 +6,6 @@ class Player extends Entity {
   PVector pos;
   
   boolean isWeaponUp;
-    
   //sprite
   PImage playerSprite = loadImage("Player.png");
   int currentFrame = 0, totalCurrentAnimFrames = 4, row = 0;
@@ -39,13 +38,13 @@ class Player extends Entity {
   void playerAnimDirection() {
     float animAngle = degrees(utilities.mouseAngle());
     //sprite Row update (8 dir)
-    if (animAngle >= -22.5 && animAngle < 22.5) {row = 0;} //east
-    else if (animAngle <= -22.5 && animAngle > -67.5) {row = 1;} //north-east
-    else if (animAngle <= -67.5 && animAngle > -112.5) {row = 2;} //north
-    else if (animAngle <= -112.5 && animAngle > -157.5) {row = 3;} //north-west
-    else if (animAngle <= -157.5 || animAngle > 157.5) {row = 4;} //west
-    else if (animAngle <= 157.5 && animAngle > 112.5) {row = 5;} //south-west
-    else if (animAngle <= 112.5 && animAngle > 67.5) {row = 6;} //south
+    if(animAngle >= -22.5 && animAngle < 22.5) {row = 0;} //east
+    else if(animAngle <= -22.5 && animAngle > -67.5) {row = 1;} //north-east
+    else if(animAngle <= -67.5 && animAngle > -112.5) {row = 2;} //north
+    else if(animAngle <= -112.5 && animAngle > -157.5) {row = 3;} //north-west
+    else if(animAngle <= -157.5 || animAngle > 157.5) {row = 4;} //west
+    else if(animAngle <= 157.5 && animAngle > 112.5) {row = 5;} //south-west
+    else if(animAngle <= 112.5 && animAngle > 67.5) {row = 6;} //south
     else {row = 7;} //south-east
     
     currentSpriteSheetY = row * int(playerSpriteH);

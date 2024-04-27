@@ -28,7 +28,10 @@ abstract class Entity {
       
   void takeDamage(float p_damage) {
     health -= p_damage;
-    if(health <= 0) {isAlive = false;}    
+    if(health <= 0) {
+      if(this instanceof Player) {hsManager.highscoreDict.add(pj.name, pj.score);}
+      isAlive = false;
+    }
   }
 }
 

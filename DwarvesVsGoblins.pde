@@ -77,12 +77,11 @@ void draw() {
 
       ui.builderButtonsDisplay();
 
-
       break;
     }
   case 3:
     { //-------[ game over ]-------
-
+      ui.gameOverPanelDisplay();
       break;
     }
   }
@@ -91,7 +90,7 @@ void draw() {
 
   //cursor
   imageMode(CORNER);
-  if (isMouseHovering) {
+  if(isMouseHovering) {
     image(mouseHoverSprite, mouseX, mouseY);
   } else {
     image(mouseSprite, mouseX, mouseY);
@@ -107,34 +106,18 @@ void mousePressed() {
     break;
   case 0:
     { //-------[ main title ]-------
-      if (ui.returnButton.isMouseOver() && ui.showHighscoreTable) {
-        ui.showHighscoreTable = false;
-      }
-      if (ui.playButton.isMouseOver() && !ui.showHighscoreTable) {
-        gameState = 1;
-      } // To character selection
-      if (ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) {
-        ui.showHighscoreTable = true;
-      }
-      if (ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {
-        closeGame();
-      }
+      if (ui.returnButton.isMouseOver() && ui.showHighscoreTable) {ui.showHighscoreTable = false;}
+      if (ui.playButton.isMouseOver() && !ui.showHighscoreTable) {gameState = 1;}
+      if (ui.highscoreButton.isMouseOver() && !ui.showHighscoreTable) {ui.showHighscoreTable = true;}
+      if (ui.exitButton.isMouseOver() && !ui.showHighscoreTable) {closeGame();}
       break;
     }
   case 1:
     { //-------[ character selection ]-------
-      if (ui.returnButton.isMouseOver()) {
-        gameState = 0;
-      }
-      if (ui.knightSelectionButton.isMouseOver()) {
-        isKnight = true;
-      }
-      if (ui.archerSelectionButton.isMouseOver()) {
-        isKnight = false;
-      }
-      if (ui.startGameButton.isMouseOver() && playerInput.length() > 2) {
-        startGame();
-      }
+      if(ui.returnButton.isMouseOver()) {gameState = 0;}
+      if(ui.knightSelectionButton.isMouseOver()) {isKnight = true;}
+      if(ui.archerSelectionButton.isMouseOver()) {isKnight = false;}
+      if(ui.startGameButton.isMouseOver() && playerInput.length() > 2) {startGame();}
       break;
     }
   case 2:
@@ -143,19 +126,15 @@ void mousePressed() {
     }
   case 3:
     { //-------[ game over ]-------
-
+      if(ui.gameOverButton.isMouseOver()) {gameState = 0;}
       break;
     }
   }
 }
 
 void mouseReleased() {
-  if (mouseButton == LEFT) {
-    leftClickDown = false;
-  }
-  if (mouseButton == RIGHT) {
-    rightClickDown = false;
-  }
+  if(mouseButton == LEFT) {leftClickDown = false;}
+  if(mouseButton == RIGHT) {rightClickDown = false;}
 }
 
 void keyPressed() {
@@ -164,34 +143,27 @@ void keyPressed() {
     break;
   case 1:
     { //player input (name)
-      if (key > 32 && key < 127 && playerInput.length() < 7) {
-        playerInput += key;
-      } else if (keyCode == BACKSPACE && playerInput.length() > 0) {
+      if(key > 32 && key < 127 && playerInput.length() < 7) {playerInput += key;} 
+      else if(keyCode == BACKSPACE && playerInput.length() > 0) {
         playerInput = playerInput.substring(0, playerInput.length()-1);
       }
 
       //start playing with enter
-      if (keyCode == ENTER && playerInput.length() > 2) {
-        startGame();
-      }
+      if(keyCode == ENTER && playerInput.length() > 2) {startGame();}
       break;
     }
   case 2:
     {
-      if (key == 'm') {
-        pj.money += 100;
-      }
+      if(key == 'm') {pj.money += 100;}
+      if(key == 'k') {pj.isAlive = false;}
       break;
     }
   }
 }
 
 void startGame() {
-  if (isKnight) {
-    pj = new Knight();
-  } else {
-    pj = new Archer();
-  }
+  if(isKnight) {pj = new Knight();} 
+  else {pj = new Archer();}
 
   pj.name = playerInput;
   gameState = 2; // Game scene
