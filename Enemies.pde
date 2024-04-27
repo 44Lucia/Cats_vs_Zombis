@@ -1,11 +1,3 @@
-// Torch goblin enemy
-
-enum Quadrant {
-  Q1,
-    Q2,
-    Q3,
-    Q4
-}
 
 abstract class Enemy extends Entity {
   // Stats
@@ -14,15 +6,7 @@ abstract class Enemy extends Entity {
   HealthBar healthBar;
   int damage;
   float range;
-  Quadrant quadrant;
   int score, money;
-
-  // Dash variables
-  float moveTimerOffset;
-  float moveTimer;
-  float moveCooldown;
-  boolean moving;
-  boolean movingStart;
 
   // Acceleration
   PVector desiredPos;
@@ -34,22 +18,6 @@ abstract class Enemy extends Entity {
   // Flipping variables
   float lastX;
   boolean flipped;
-
-  Quadrant checkQuadrant() {
-    Quadrant q;
-    if (pos.x > width / 2) {
-      if (pos.y < height / 2)
-        q = Quadrant.Q1;
-      else
-        q = Quadrant.Q4;
-    } else {
-      if (pos.y < height / 2)
-        q = Quadrant.Q2;
-      else
-        q = Quadrant.Q3;
-    }
-    return q;
-  }
 
   final float LIThreshold = 4;
 
@@ -79,7 +47,7 @@ abstract class Enemy extends Entity {
 
     float angle;
     float magnitude = random(1, 6);
-    quadrant = checkQuadrant();
+    updateQuadrant();
     switch (quadrant) {
     case Q1:
       angle = random(HALF_PI, PI);
@@ -118,6 +86,41 @@ abstract class Enemy extends Entity {
     utilities.drawCircle(pos.x, pos.y, range);
   }
 
+  Entity buildingInRange() {
+
+    for (TreeWall treeWall : gridManager.treeList) {
+      PVector distance = new PVector(pos.x - treeWall.pos.x, pos.y - treeWall.pos.y);
+      if (distance.mag() < range) {
+        return treeWall;
+      }
+    }
+    
+    for (ArcherTower archerTower : gridManager.archerTowerList) {
+      PVector distance = new PVector(pos.x - archerTower.pos.x, pos.y - archerTower.pos.y);
+      if (distance.mag() < range) {
+        return archerTower;
+      }
+    }
+    
+    for (GoldMine goldMine : gridManager.goldMineList) {
+      PVector distance = new PVector(pos.x - goldMine.pos.x, pos.y - goldMine.pos.y);
+      if (distance.mag() < range) {
+        return goldMine;
+      }
+    }
+    return null;
+  }
+
+
+  boolean attack(Entity target) {
+    if (target != null) {
+      currentAnimation = 2;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void display() {
     // Manage sprite orientation
     if (pos.x - lastX != 0)
@@ -126,6 +129,7 @@ abstract class Enemy extends Entity {
 
     animations.play(currentAnimation, int(pos.x), int(pos.y), flipped);
     drawRange();
+    healthBar.healthBarPos.set(pos.x - animations.spriteWidth / 8, pos.y - animations.spriteHeight / 4);
     healthBar.display(health, maxHealth);
   }
 }
@@ -148,20 +152,16 @@ class Torch extends Enemy {
     finalMovement = new PVector();
     desiredPos = new PVector();
 
-    moveTimer = millis();
-    moveCooldown = 1000;
-
-    quadrant = checkQuadrant();
     setNewMovement();
   }
 
   void update() {
     //println(quadrant);
     //println(pos);
-    calculateMovement();
-    move();
-    healthBar.healthBarPos.x = pos.x - animations.spriteWidth / 8;
-    healthBar.healthBarPos.y = pos.y - animations.spriteHeight / 4;
+    if (!attack(buildingInRange())) {
+      calculateMovement();
+      move();
+    }
   }
 }
 

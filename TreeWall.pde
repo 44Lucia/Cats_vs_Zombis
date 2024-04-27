@@ -1,4 +1,4 @@
-class TreeWall {
+class TreeWall extends Entity {
   PImage treeImage;
   PVector pos;
   int health;

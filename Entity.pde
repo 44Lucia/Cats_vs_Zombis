@@ -1,11 +1,35 @@
 // Entity class
 
+enum Quadrant {
+  Q1,
+    Q2,
+    Q3,
+    Q4
+}
+
 abstract class Entity {
 
-  PVector pos = new PVector(0, 0);
+  PVector pos = new PVector();
 
-  int currentAnimation;
+  int currentAnimation = 0;
   Animations animations;
+  Quadrant quadrant;
+
+  void updateQuadrant() {
+    Quadrant q;
+    if (pos.x > width / 2) {
+      if (pos.y < height / 2)
+        q = Quadrant.Q1;
+      else
+        q = Quadrant.Q4;
+    } else {
+      if (pos.y < height / 2)
+        q = Quadrant.Q2;
+      else
+        q = Quadrant.Q3;
+    }
+    quadrant = q;
+  }
 }
 
 class Animations {

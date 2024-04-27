@@ -1,4 +1,4 @@
-class ArcherTower {
+class ArcherTower extends Entity {
   PVector pos;
   PImage archerSprite;
   float angle;

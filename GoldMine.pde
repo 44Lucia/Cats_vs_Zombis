@@ -1,4 +1,4 @@
-class GoldMine{
+class GoldMine extends Entity {
   PImage goldMine;
   ArrayList<Gold> goldList;
   int timeLastGold;

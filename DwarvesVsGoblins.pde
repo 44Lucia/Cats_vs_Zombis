@@ -65,7 +65,7 @@ void draw() {
       gridManager.display();
       pj.display();
       if (first) {
-        enemyManager.enemyWave(10, 10, 10);
+        enemyManager.enemyWave(1, 0, 0);
         first = false;
       }
       ui.builderButtonsDisplay();
