@@ -1,14 +1,14 @@
 // Entity class
 
-enum Quadrant {
-  Q1,
-    Q2,
-    Q3,
-    Q4
-}
+enum Quadrant {Q1, Q2, Q3, Q4}
 
 abstract class Entity {
-
+  int health;
+  int maxHealth;
+  HealthBar healthBar;
+  boolean isAlive = true;
+  long canAttackTime = 1000, lastTimeAttacked;
+  
   PVector pos = new PVector();
 
   int currentAnimation = 0;
@@ -18,17 +18,17 @@ abstract class Entity {
   void updateQuadrant() {
     Quadrant q;
     if (pos.x > width / 2) {
-      if (pos.y < height / 2)
-        q = Quadrant.Q1;
-      else
-        q = Quadrant.Q4;
-    } else {
-      if (pos.y < height / 2)
-        q = Quadrant.Q2;
-      else
-        q = Quadrant.Q3;
-    }
+      if (pos.y < height / 2) {q = Quadrant.Q1;}
+      else {q = Quadrant.Q4;}
+    } 
+    else if (pos.y < height / 2) {q = Quadrant.Q2;}
+    else {q = Quadrant.Q3;}
     quadrant = q;
+  }
+      
+  void takeDamage(float p_damage) {
+    health -= p_damage;
+    if(health <= 0) {isAlive = false;}    
   }
 }
 

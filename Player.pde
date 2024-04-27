@@ -1,7 +1,4 @@
-class Player {
-  int maxHealth = 100;
-  int health = maxHealth;
-  HealthBar healthBar;
+class Player extends Entity {
   int damage = 0;
   int money = 0;
   int score = 0;
@@ -24,6 +21,10 @@ class Player {
   //default no weapon update
   void update() {    
     playerAnimDirection();
+    isWeaponUp = row < 5; //Sets the weapon back or front of the player
+    
+    //game over
+    if(!isAlive) {gameState = 3;}
   }
   
   //default no weapon display
@@ -64,7 +65,6 @@ class Knight extends Player {
   void update() {
     super.update();
     
-    isWeaponUp = row < 5; //Sets the weapon back or front of the player     
     sword.update();
   }
   
@@ -108,8 +108,7 @@ class Archer extends Player {
   
   void update() {
     super.update();
-    
-    isWeaponUp = row < 5; //Sets the weapon back or front of the player     
+     
     bow.update();
   }
   

@@ -6,11 +6,6 @@ class GoldMine extends Entity {
   int spawnRadius; 
   PVector minePos;
   
-  int health;
-  int maxHealth;
-  boolean alive;
-  HealthBar healthBar;
-  
   GoldMine(float p_x, float p_y) {
     goldMine = loadImage("GoldMine.png");
     goldMine.resize(70, 55);
@@ -25,7 +20,7 @@ class GoldMine extends Entity {
     
     maxHealth = 100;
     health = maxHealth;
-    alive = true;
+    isAlive = true;
     healthBar = new HealthBar(this, p_x + 10, p_y - 10, 50, 5);
   }
   
@@ -53,7 +48,7 @@ class GoldMine extends Entity {
     image(goldMine, minePos.x, minePos.y);
     
     for (Gold gold : goldList) {gold.display();}
-    if(alive) {healthBar.display(health, maxHealth);}
+    if(isAlive) {healthBar.display(health, maxHealth);}
   }
   
   void cursorOverSomeGold() {   
@@ -64,6 +59,6 @@ class GoldMine extends Entity {
   
   void takeDamage(int damage) {
     health -= damage;
-    if(health <= 0) {alive = false;}
+    if(health <= 0) {isAlive = false;}
   }
 }

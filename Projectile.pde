@@ -1,20 +1,21 @@
 class Projectile {
   PImage arrowSprite = loadImage("arrow.png");
-  boolean hasbeenShoot, isActive;
+  boolean hasBeenShoot, isActive;
 
   PVector pos;
-  int w = 52, h = 11;
+  PVector size;
   float angle;
   float speed = 8;
   
   Projectile() {
     pos = new PVector(width / 2, height / 2);
+    size = new PVector(52, 11);
   }
   
   void update() {
-    if(hasbeenShoot) {
+    if(hasBeenShoot) {
       if(pos.x < 0 || pos.x > width || pos.y > height || pos.y < 0) {
-        hasbeenShoot = false; 
+        hasBeenShoot = false; 
         isActive = false;
       }
       
@@ -27,7 +28,7 @@ class Projectile {
     
   void display(int p_currentFrame) {
     pushMatrix();
-      if(hasbeenShoot) {
+      if(hasBeenShoot) {
         resetMatrix();
         translate(pos.x, pos.y);
         rotate(angle);
@@ -35,9 +36,9 @@ class Projectile {
       rectMode(CENTER);
       
       copy(arrowSprite, 0, 0,
-      w, h,
+      (int)size.x, (int)size.y,
       32 + p_currentFrame * -10, -arrowSprite.height / 2, // draw sprite centered
-      w, h);
+      (int)size.x, (int)size.y);
       
     popMatrix();
   }
@@ -46,6 +47,6 @@ class Projectile {
     pos.x = p_x;
     pos.y = p_y;
     angle = p_angle;
-    hasbeenShoot = true;
+    hasBeenShoot = true;
   }
 }

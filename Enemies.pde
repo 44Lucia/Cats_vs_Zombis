@@ -1,11 +1,6 @@
-
 abstract class Enemy extends Entity {
   // Stats
-  int health;
-  int maxHealth;
-  HealthBar healthBar;
-  int damage;
-  float range;
+  float damage, range;
   int score, money;
 
   // Acceleration
@@ -13,13 +8,13 @@ abstract class Enemy extends Entity {
   PVector finalMovement;
   float currentAcceleration = 0, deltaAcceleration = 0.005;
   final float MAX_SPEED = 2;
-  float rotationAngle = 0.3;   //enemy rotation amplitude
+  float rotationAngle = 0.3;
 
   // Flipping variables
   float lastX;
   boolean flipped;
 
-  final float LIThreshold = 4;
+  final float LIThreshold = 2;
 
   void calculateMovement() {
     PVector distanceToDestination = new PVector(desiredPos.x - pos.x, desiredPos.y - pos.y);
@@ -27,9 +22,8 @@ abstract class Enemy extends Entity {
     if (abs(distanceToDestination.x) < LIThreshold && abs(distanceToDestination.y) < LIThreshold) {
       currentAnimation = 0;
       setNewMovement();
-    } else {
-      currentAnimation = 1;
-    }
+    } 
+    else {currentAnimation = 1;}
 
     //add direction to movement
     finalMovement.x += distanceToDestination.x * rotationAngle;
@@ -44,10 +38,10 @@ abstract class Enemy extends Entity {
   }
 
   void setNewMovement() {
-
     float angle;
     float magnitude = random(1, 6);
-    updateQuadrant();
+    
+    updateQuadrant();    
     switch (quadrant) {
     case Q1:
       angle = random(HALF_PI, PI);
@@ -73,11 +67,9 @@ abstract class Enemy extends Entity {
 
   void move() {
     //acceleration
-    if (currentAcceleration < 1) {
-      currentAcceleration += deltaAcceleration;
-    } else {
-      currentAcceleration = 0.8;
-    }
+    if (currentAcceleration < 1) {currentAcceleration += deltaAcceleration;} 
+    else {currentAcceleration = 0.8;}
+    
     pos.x += finalMovement.x * currentAcceleration;
     pos.y += finalMovement.y * currentAcceleration;
   }
@@ -86,57 +78,42 @@ abstract class Enemy extends Entity {
     utilities.drawCircle(pos.x, pos.y, range);
   }
 
-  Entity buildingInRange() {
-
+  Entity entityInRange() {
     for (TreeWall treeWall : gridManager.treeList) {
       PVector distance = new PVector(pos.x - treeWall.pos.x, pos.y - treeWall.pos.y);
-      if (distance.mag() < range) {
-        return treeWall;
-      }
+      if (distance.mag() < range) {return treeWall;}
     }
     
     for (ArcherTower archerTower : gridManager.archerTowerList) {
       PVector distance = new PVector(pos.x - archerTower.pos.x, pos.y - archerTower.pos.y);
-      if (distance.mag() < range) {
-        return archerTower;
-      }
+      if (distance.mag() < range) {return archerTower;}
     }
     
     for (GoldMine goldMine : gridManager.goldMineList) {
       PVector distance = new PVector(pos.x - goldMine.pos.x, pos.y - goldMine.pos.y);
-      if (distance.mag() < range) {
-        return goldMine;
-      }
+      if (distance.mag() < range) {return goldMine;}
     }
+    
+    PVector distance = new PVector(pos.x - pj.pos.x, pos.y - pj.pos.y);
+    if (distance.mag() < range) {return pj;}
+    
     return null;
-  }
-
-
-  boolean attack(Entity target) {
-    if (target != null) {
-      currentAnimation = 2;
-      return true;
-    } else {
-      return false;
-    }
   }
 
   void display() {
     // Manage sprite orientation
-    if (pos.x - lastX != 0)
-      flipped = pos.x - lastX < 0;
+    if (pos.x - lastX != 0) {flipped = pos.x - lastX < 0;}
     lastX = pos.x;
 
     animations.play(currentAnimation, int(pos.x), int(pos.y), flipped);
     drawRange();
     healthBar.healthBarPos.set(pos.x - animations.spriteWidth / 8, pos.y - animations.spriteHeight / 4);
-    healthBar.display(health, maxHealth);
+    healthBar.display(health, maxHealth);    
   }
 }
 
 class Torch extends Enemy {
   Torch(PVector p_pos) {
-    // Position
     pos = p_pos;
 
     animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
@@ -146,7 +123,7 @@ class Torch extends Enemy {
     maxHealth = 100;
     healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 70;
-    damage = 10;
+    damage = 5;
     score = 1;
     money = 10;
     finalMovement = new PVector();
@@ -156,11 +133,17 @@ class Torch extends Enemy {
   }
 
   void update() {
-    //println(quadrant);
-    //println(pos);
-    if (!attack(buildingInRange())) {
+    Entity target = entityInRange();
+    if (target != null) {
+      currentAnimation = 2;
+      if(canAttackTime + lastTimeAttacked < millis()) {
+        lastTimeAttacked = millis();
+        target.takeDamage(damage);
+      }
+    }
+    else {
       calculateMovement();
-      move();
+      move();    
     }
   }
 }
@@ -182,7 +165,7 @@ class Tnt extends Enemy {
     maxHealth = 60;
     healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 230;
-    damage = 15;
+    damage = 10;
     score = 3;
     money = 20;
   }
@@ -209,7 +192,7 @@ class Barry extends Enemy {
     healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
 
     range = 50;
-    damage = 30;
+    damage = 15;
     score = 5;
     money = 30;
   }

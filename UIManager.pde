@@ -163,8 +163,9 @@ class UIManager {
     
     fill(255);
     textSize(20);
-    textAlign(RIGHT, TOP);
-    text("Money: " + pj.money, width - 10, 10);
+    textAlign(CENTER, CENTER);
+    text("Score: " + pj.score, width / 2, 10);
+    text("Money: " + pj.money, width / 2, 30);
     
     //cursor
     isMouseHovering = goldButton.isMouseOver() || treeButton.isMouseOver() || archerButton.isMouseOver() || cursorOverGold;

@@ -58,12 +58,19 @@ class GridManager {
     
     //Mines update
     ui.cursorOverGold = false;
-    for(GoldMine mine : goldMineList) {
-      mine.update();
-      if(!ui.cursorOverGold) {mine.cursorOverSomeGold();} // Skip iterations if already triggered a true
+    for(int i = goldMineList.size() -1; i >= 0; i--) {
+      if(!goldMineList.get(i).isAlive) {goldMineList.remove(i);}
+      else {goldMineList.get(i).update();}
+      
+      if(!ui.cursorOverGold) {goldMineList.get(i).cursorOverSomeGold();} // Skip iterations if already triggered a true
     }
     //Archers update
-    for(ArcherTower archer : archerTowerList) { archer.update(); }
+    for(int i = archerTowerList.size() -1; i >= 0; i--) {
+      if(!archerTowerList.get(i).isAlive) {archerTowerList.remove(i);}
+      else {archerTowerList.get(i).update();}
+    }
+    //Trees update
+    for(int i = treeList.size() -1; i >= 0; i--) {if(!treeList.get(i).isAlive) {treeList.remove(i);}}
   }
 
   void display() {    

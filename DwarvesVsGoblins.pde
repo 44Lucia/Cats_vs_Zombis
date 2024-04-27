@@ -1,3 +1,9 @@
+//DWARVES VS GOBLINS
+//  Arnau Miragall
+//  Lucia Fornos
+//  Pol Lleida
+
+
 //-------[ variables ]-------
 Utilities utilities;
 UIManager ui;
@@ -64,10 +70,6 @@ void draw() {
       image(ui.mapSprite, 0, 0);
       gridManager.display();
       pj.display();
-      if (first) {
-        enemyManager.enemyWave(1, 0, 0);
-        first = false;
-      }
       ui.builderButtonsDisplay();
 
       gridManager.display();
@@ -97,12 +99,8 @@ void draw() {
 }
 
 void mousePressed() {
-  if (mouseButton == LEFT) {
-    leftClickDown = true;
-  }
-  if (mouseButton == RIGHT) {
-    rightClickDown = true;
-  }
+  if (mouseButton == LEFT) {leftClickDown = true;}
+  if (mouseButton == RIGHT) {rightClickDown = true;}
 
   switch(gameState) {
   default:
@@ -197,6 +195,8 @@ void startGame() {
 
   pj.name = playerInput;
   gameState = 2; // Game scene
+  
+  enemyManager.spawnWave();
 }
 
 void closeGame() {

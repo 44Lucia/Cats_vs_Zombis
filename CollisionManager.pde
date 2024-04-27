@@ -1,5 +1,5 @@
 class CollisionManager {
-  //ROTATED RECTANGLES COLLISIONS with Separating Axis Theorem (SAT)
+  //Separating Axis Theorem (SAT)
   boolean checkSATCollision(PVector[] p_vertices1, PVector[] p_vertices2) {
     // Obtenemos los ejes perpendiculares a los lados de los rectángulos
     PVector[] axes = getAxes(p_vertices1);

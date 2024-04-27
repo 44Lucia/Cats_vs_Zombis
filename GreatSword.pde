@@ -43,9 +43,7 @@ class GreatSword {
     PVector[] swordVertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
     for (int i = enemyManager.torches.size() - 1; i >= 0; i-- ) {
       Torch torch = enemyManager.torches.get(i);
-
-      PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth, torch.animations.spriteHeight, 0); //torch collider
-      utilities.drawRectangle(torchVertices);
+      PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth / 8, torch.animations.spriteHeight / 4, 0); //torch collider
 
       // Verificar colisión usando SAT
       boolean collision = colManager.checkSATCollision(swordVertices, torchVertices);      
@@ -55,6 +53,8 @@ class GreatSword {
           enemyManager.torches.remove(torch); 
           pj.score += torch.score;
           pj.money += torch.money;
+          
+          if(enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
         }
       }
     }
