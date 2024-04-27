@@ -48,7 +48,11 @@ class GreatSword {
       boolean collision = colManager.checkSATCollision(swordVertices, torchVertices);      
       if(collision) {
         torch.health -= pj.damage;  
-        if(torch.health <= 0) {enemyManager.torches.remove(torch); println("deleted");}
+        if(torch.health <= 0) {
+          enemyManager.torches.remove(torch); 
+          pj.score += torch.score;
+          pj.money += torch.money;
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 class Player {
-  int MAX_HEALTH = 100;
-  int health = MAX_HEALTH;
+  int maxHealth = 100;
+  int health = maxHealth;
+  HealthBar healthBar;
   int damage = 0;
   int money = 0;
   int score = 0;
@@ -17,6 +18,7 @@ class Player {
   
   Player() {
     pos = new PVector(width / 2, height / 2);
+    healthBar = new HealthBar(this, pos.x - playerSpriteW / 2, pos.y + 30, 60, 10);
   }
   
   //default no weapon update
@@ -54,8 +56,8 @@ class Knight extends Player {
 
   Knight() {
     sword = new GreatSword();
-    MAX_HEALTH = 100;
-    health = MAX_HEALTH;
+    maxHealth = 100;
+    health = maxHealth;
     damage = 5;
   }
   
@@ -89,6 +91,8 @@ class Knight extends Player {
         sword.display();
       popMatrix();
     }
+    
+    healthBar.display(health, maxHealth);
   }
 }
 
@@ -97,8 +101,8 @@ class Archer extends Player {
 
   Archer() {
     bow = new Bow();
-    MAX_HEALTH = 60;
-    health = MAX_HEALTH;
+    maxHealth = 60;
+    health = maxHealth;
     damage = 40;
   }
   
@@ -132,5 +136,7 @@ class Archer extends Player {
         bow.display();
       popMatrix();
     }
+    
+    healthBar.display(health, maxHealth);
   }
 }

@@ -37,7 +37,7 @@ class ArcherTower {
       image(archerSprite, 0, 0);
     popMatrix();
     
-    if(alive) {healthBar.display();}
+    if(alive) {healthBar.display(health, maxHealth);}
   }
 
   void rotateTowardsMouse() {

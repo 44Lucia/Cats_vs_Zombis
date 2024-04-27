@@ -10,24 +10,13 @@ class HealthBar {
     h = p_h;
   }
 
-  void display() {
+  void display(int p_health, int p_maxHealth) {
     // Draw the background of the life bar
     fill(255);
     rect(healthBarPos.x, healthBarPos.y, w, h);
   
-    // Gain health and maximum health from the target using reflection
-    int health = 0;
-    int maxHealth = 0;
-    try {
-      health = (int) target.getClass().getDeclaredField("health").get(target);
-      maxHealth = (int) target.getClass().getDeclaredField("maxHealth").get(target);
-    } catch (Exception e) {
-      // Handle any exceptions that may occur when accessing fields
-      e.printStackTrace();
-    }
-  
     // Calculates the length of the life bar based on current health
-    float healthLength = map(health, 0, maxHealth, 0, w);
+    float healthLength = map(p_health, 0, p_maxHealth, 0, w);
   
     // Draw the life bar
     fill(0, 255, 0); 

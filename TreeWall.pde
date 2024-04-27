@@ -18,7 +18,7 @@ class TreeWall {
 
   void display() {
     image(treeImage, pos.x, pos.y);
-    if(alive) {healthBar.display();}
+    if(alive) {healthBar.display(health, maxHealth);}
   }
 
   void takeDamage(int damage) {

@@ -81,7 +81,7 @@ class Bow {
         currentArrow = arrow;
         currentArrow.isActive = true;
       }
-    }    
+    }
   }
   
   void checkCollisions(Projectile p_arrow) {
@@ -97,7 +97,11 @@ class Bow {
       boolean collision = colManager.checkSATCollision(arrowVertices, torchVertices);      
       if(collision) {
         torch.health -= pj.damage;  
-        if(torch.health <= 0) {enemyManager.torches.remove(torch); println("deleted");}
+        if(torch.health <= 0) {
+          enemyManager.torches.remove(torch); 
+          pj.score += torch.score;
+          pj.money += torch.money;
+        }
       }
     }
   }

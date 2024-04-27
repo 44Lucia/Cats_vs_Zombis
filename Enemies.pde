@@ -8,12 +8,14 @@ enum Quadrant {
 }
 
 abstract class Enemy extends Entity {
-
   // Stats
+  int health;
+  int maxHealth;
   HealthBar healthBar;
   int damage;
   float range;
   Quadrant quadrant;
+  int score, money;
 
   // Dash variables
   float moveTimerOffset;
@@ -60,13 +62,6 @@ abstract class Enemy extends Entity {
     } else {
       currentAnimation = 1;
     }
-/*
-    float magnitude = sqrt(pow(distanceToDestination.x, 2) + pow(distanceToDestination.y, 2));
-    if (magnitude > 0) {
-      distanceToDestination.x /= magnitude;
-     distanceToDestination.y /= magnitude;
-    }
-    */
 
     //add direction to movement
     finalMovement.x += distanceToDestination.x * rotationAngle;
@@ -131,16 +126,12 @@ abstract class Enemy extends Entity {
 
     animations.play(currentAnimation, int(pos.x), int(pos.y), flipped);
     drawRange();
-    healthBar.display();
+    healthBar.display(health, maxHealth);
   }
 }
 
 class Torch extends Enemy {
-  int health;
-  int maxHealth;
-
   Torch(PVector p_pos) {
-
     // Position
     pos = p_pos;
 
@@ -152,6 +143,8 @@ class Torch extends Enemy {
     healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 70;
     damage = 10;
+    score = 1;
+    money = 10;
     finalMovement = new PVector();
     desiredPos = new PVector();
 
@@ -190,6 +183,8 @@ class Tnt extends Enemy {
     healthBar = new HealthBar(this, pos.x, pos.y, 50, 5);
     range = 230;
     damage = 15;
+    score = 3;
+    money = 20;
   }
 
   void update() {
@@ -215,6 +210,8 @@ class Barry extends Enemy {
 
     range = 50;
     damage = 30;
+    score = 5;
+    money = 30;
   }
 
   void update() {

@@ -53,7 +53,7 @@ class GoldMine{
     image(goldMine, minePos.x, minePos.y);
     
     for (Gold gold : goldList) {gold.display();}
-    if(alive) {healthBar.display();}
+    if(alive) {healthBar.display(health, maxHealth);}
   }
   
   void cursorOverSomeGold() {   
