@@ -153,7 +153,7 @@ class GridManager {
       shadowSprite = loadImage("GoldMine.png");
       shadowSprite.resize(70, 55);
       placingItem = true;
-    }else if (ui.archerButton.isMouseOver()){
+    }else if (ui.archerButton.isMouseOver() /*&& pj.money >= 70*/){
       if (!gridLocked) {
         gridLocked = true;
         lastLockTime = millis();

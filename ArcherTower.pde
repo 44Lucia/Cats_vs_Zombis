@@ -61,9 +61,7 @@ class ArcherTower extends Entity {
     }
     
     // Show and update life bar
-    if (isAlive) {
-      healthBar.display(health, maxHealth);
-    }
+    if (isAlive) { healthBar.display(health, maxHealth); }
   }
   
   Enemy findClosestEnemy() {

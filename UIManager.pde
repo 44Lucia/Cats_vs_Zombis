@@ -86,7 +86,7 @@ class UIManager {
     
     archerSprite = loadImage("Archer.png");
     archerSprite.resize(70, 85);
-    archerButton = new Button(this, 150, height - 100, "120", archerSprite, archerSprite);
+    archerButton = new Button(this, 150, height - 100, "70", archerSprite, archerSprite);
   }
 
   //-------[ functions ]-------  
