@@ -165,6 +165,7 @@ void startGame() {
   gameState = 2; // Game scene
   
   enemyManager = new EnemyManager();
+  gridManager = new GridManager();
   enemyManager.spawnWave();
 }
 

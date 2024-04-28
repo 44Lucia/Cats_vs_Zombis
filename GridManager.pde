@@ -112,14 +112,14 @@ class GridManager {
 
   void updateArchers() {
     for (ArcherTower archerTower : archerTowerList){
-      if(!archerTower.isAlive){ removeItem(archerTower.gridRow, archerTower.gridCol); }
+      if(!archerTower.isAlive) {removeItem(archerTower.gridRow, archerTower.gridCol);}
     }
     archerTowerList.removeIf(archer -> !archer.isAlive);
     archerTowerList.forEach(ArcherTower::update);
   }
   
   void updateTrees() {
-    for (TreeWall treeWall : treeList){
+    for(TreeWall treeWall : treeList){
       if(!treeWall.isAlive){ removeItem(treeWall.gridRow, treeWall.gridCol); }
     }
     treeList.removeIf(tree -> !tree.isAlive);
@@ -129,8 +129,8 @@ class GridManager {
       int row = mouseY / cellSize;
       int col = mouseX / cellSize;
       
-      if (isValidCell(row, col)) {
-          if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
+      if(isValidCell(row, col)) {
+          if(!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
               placeItem(row, col);
           }
       }
@@ -181,23 +181,23 @@ class GridManager {
   }
 
   void displayItems() {
-    for (TreeWall tree : treeList) {tree.display();}
-    for (GoldMine mine : goldMineList) {mine.display();}
-    for (ArcherTower archer : archerTowerList) {archer.display();}
+    for(TreeWall tree : treeList) {tree.display();}
+    for(GoldMine mine : goldMineList) {mine.display();}
+    for(ArcherTower archer : archerTowerList) {archer.display();}
     
-    if (placingItem && shadowSprite != null) { // Only show the shadow if there is a shadow image defined
-        int row = mouseY / cellSize;
-        int col = mouseX / cellSize;
-        float shadowX = col * cellSize - (cellSize - shadowSprite.width - 65) / 2; // Calculate the X position of the shadow
-        float shadowY = row * cellSize - (cellSize - shadowSprite.height - 70) / 2; // Calculate the Y position of the shadow
-        imageMode(CENTER);
-        image(createShadow(shadowSprite), shadowX, shadowY);
+    if(placingItem && shadowSprite != null) { // Only show the shadow if there is a shadow image defined
+      int row = mouseY / cellSize;
+      int col = mouseX / cellSize;
+      float shadowX = col * cellSize - (cellSize - shadowSprite.width - 65) / 2; // Calculate the X position of the shadow
+      float shadowY = row * cellSize - (cellSize - shadowSprite.height - 70) / 2; // Calculate the Y position of the shadow
+      imageMode(CENTER);
+      image(createShadow(shadowSprite), shadowX, shadowY);
     }
   }
   
   void removeItem(int row, int col) {
-      grid[row][col] = 0;
-      ocupedCells[row][col] = false;
+    grid[row][col] = 0;
+    ocupedCells[row][col] = false;
   }
 
   PImage createShadow(PImage originalImage) {
@@ -233,5 +233,5 @@ class GridManager {
 
   boolean canPlaceItems() {
     return selectedMine || selectedTree || selectedArcher;
-  }
+  }  
 }

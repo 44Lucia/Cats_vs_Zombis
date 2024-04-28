@@ -75,9 +75,7 @@ class GreatSword {
           pj.score += barry.score;
           pj.money += barry.money;
 
-          if (enemyManager.torches.size() == 0) {
-            enemyManager.spawnWave();
-          }
+          if (enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
         }
       }
     }

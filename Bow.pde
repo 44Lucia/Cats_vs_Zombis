@@ -108,5 +108,41 @@ class Bow {
         }
       }
     }
+    
+    for (int i = enemyManager.tnts.size() - 1; i >= 0; i-- ) {
+      Tnt tnt = enemyManager.tnts.get(i);
+      PVector[] barryVertices = colManager.calculateVertices(tnt.pos.x, tnt.pos.y, tnt.animations.spriteWidth / 8, tnt.animations.spriteHeight / 4, 0); //torch collider
+
+      // Verificar colisión usando SAT
+      boolean collision = colManager.checkSATCollision(arrowVertices, barryVertices);
+      if (collision) {
+        tnt.takeDamage(pj.damage);
+        if (tnt.health <= 0) {
+          enemyManager.tnts.remove(tnt);
+          pj.score += tnt.score;
+          pj.money += tnt.money;
+
+          if (enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
+        }
+      }
+    }
+    
+    for (int i = enemyManager.barries.size() - 1; i >= 0; i-- ) {
+      Barry barry = enemyManager.barries.get(i);
+      PVector[] barryVertices = colManager.calculateVertices(barry.pos.x, barry.pos.y, barry.animations.spriteWidth / 8, barry.animations.spriteHeight / 4, 0); //torch collider
+
+      // Verificar colisión usando SAT
+      boolean collision = colManager.checkSATCollision(arrowVertices, barryVertices);
+      if (collision) {
+        barry.takeDamage(pj.damage);
+        if (barry.health <= 0) {
+          enemyManager.barries.remove(barry);
+          pj.score += barry.score;
+          pj.money += barry.money;
+
+          if (enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
+        }
+      }
+    }
   }
 }

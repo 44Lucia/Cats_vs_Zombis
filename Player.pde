@@ -19,9 +19,7 @@ class Player extends Entity {
     isWeaponUp = currentAnimation < 5; //Sets the weapon back or front of the player
 
     //game over
-    if (!isAlive) {
-      gameState = 3;
-    }
+    if(!isAlive) {gameState = 3;}
   }
 
   //default no weapon display
@@ -33,30 +31,14 @@ class Player extends Entity {
   void playerAnimDirection() {
     float animAngle = degrees(utilities.mouseAngle());
     //sprite Row update (8 dir)
-    if (animAngle >= -22.5 && animAngle < 22.5) {
-      currentAnimation = 0;
-    } //east
-    else if (animAngle <= -22.5 && animAngle > -67.5) {
-      currentAnimation = 1;
-    } //north-east
-    else if (animAngle <= -67.5 && animAngle > -112.5) {
-      currentAnimation = 2;
-    } //north
-    else if (animAngle <= -112.5 && animAngle > -157.5) {
-      currentAnimation = 3;
-    } //north-west
-    else if (animAngle <= -157.5 || animAngle > 157.5) {
-      currentAnimation = 4;
-    } //west
-    else if (animAngle <= 157.5 && animAngle > 112.5) {
-      currentAnimation = 5;
-    } //south-west
-    else if (animAngle <= 112.5 && animAngle > 67.5) {
-      currentAnimation = 6;
-    } //south
-    else {
-      currentAnimation = 7;
-    } //south-east
+    if(animAngle >= -22.5 && animAngle < 22.5) {currentAnimation = 0;} //east
+    else if(animAngle <= -22.5 && animAngle > -67.5) {currentAnimation = 1;} //north-east
+    else if(animAngle <= -67.5 && animAngle > -112.5) {currentAnimation = 2;} //north
+    else if(animAngle <= -112.5 && animAngle > -157.5) {currentAnimation = 3;} //north-west
+    else if(animAngle <= -157.5 || animAngle > 157.5) {currentAnimation = 4;} //west
+    else if(animAngle <= 157.5 && animAngle > 112.5) {currentAnimation = 5;} //south-west
+    else if(animAngle <= 112.5 && animAngle > 67.5) {currentAnimation = 6;} //south
+    else {currentAnimation = 7;} //south-east
   }
 }
 
@@ -79,20 +61,20 @@ class Knight extends Player {
   void display() {
     fill(0);
 
-    if (isWeaponUp) {
+    if(isWeaponUp) {
       pushMatrix();
-      translate(pos.x, pos.y);
-      rotate(sword.currentAngle);
-      sword.display();
+        translate(pos.x, pos.y);
+        rotate(sword.currentAngle);
+        sword.display();
       popMatrix();
     }
     animations.play(currentAnimation, int(pos.x), int(pos.y), false);
 
-    if (!isWeaponUp) {
+    if(!isWeaponUp) {
       pushMatrix();
-      translate(pos.x, pos.y);
-      rotate(sword.currentAngle);
-      sword.display();
+        translate(pos.x, pos.y);
+        rotate(sword.currentAngle);
+        sword.display();
       popMatrix();
     }
 
@@ -119,20 +101,20 @@ class Archer extends Player {
   void display() {
     fill(0);
 
-    if (isWeaponUp) {
+    if(isWeaponUp) {
       pushMatrix();
-      translate(pos.x, pos.y);
-      rotate(bow.currentAngle);
-      bow.display();
+        translate(pos.x, pos.y);
+        rotate(bow.currentAngle);
+        bow.display();
       popMatrix();
     }
     animations.play(currentAnimation, int(pos.x), int(pos.y), false);
 
-    if (!isWeaponUp) {
+    if(!isWeaponUp) {
       pushMatrix();
-      translate(pos.x, pos.y);
-      rotate(bow.currentAngle);
-      bow.display();
+        translate(pos.x, pos.y);
+        rotate(bow.currentAngle);
+        bow.display();
       popMatrix();
     }
 
