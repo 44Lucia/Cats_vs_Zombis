@@ -103,17 +103,26 @@ class GridManager {
   }
 
   void updateMines() {
+    for (GoldMine goldMine : goldMineList){
+      if(!goldMine.isAlive){ removeItem(goldMine.gridRow, goldMine.gridCol); }
+    }
     goldMineList.removeIf(mine -> !mine.isAlive);
     goldMineList.forEach(GoldMine::update);
   }
 
   void updateArchers() {
-      archerTowerList.removeIf(archer -> !archer.isAlive);
-      archerTowerList.forEach(ArcherTower::update);
+    for (ArcherTower archerTower : archerTowerList){
+      if(!archerTower.isAlive){ removeItem(archerTower.gridRow, archerTower.gridCol); }
+    }
+    archerTowerList.removeIf(archer -> !archer.isAlive);
+    archerTowerList.forEach(ArcherTower::update);
   }
   
   void updateTrees() {
-      treeList.removeIf(tree -> !tree.isAlive);
+    for (TreeWall treeWall : treeList){
+      if(!treeWall.isAlive){ removeItem(treeWall.gridRow, treeWall.gridCol); }
+    }
+    treeList.removeIf(tree -> !tree.isAlive);
   }
   
   void gridManagement() {
@@ -130,13 +139,13 @@ class GridManager {
   void placeItem(int row, int col) {
       int cost = 0;
       if (selectedTree) {
-          treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
+          treeList.add(new TreeWall(col * cellSize + 6, row * cellSize,row, col));
           cost = ItemType.TREE.cost;
       } else if (selectedMine) {
-          goldMineList.add(new GoldMine(col * cellSize - 2, row * cellSize + 2));
+          goldMineList.add(new GoldMine(col * cellSize - 2, row * cellSize,row, col));
           cost = ItemType.MINE.cost;
       } else if (selectedArcher) {
-          archerTowerList.add(new ArcherTower(col * cellSize + 33, row * cellSize + 33));
+          archerTowerList.add(new ArcherTower(col * cellSize + 33, row * cellSize + 33,row, col));
           cost = ItemType.ARCHER.cost;
       }
       ocupedCells[row][col] = true;
@@ -184,6 +193,11 @@ class GridManager {
         imageMode(CENTER);
         image(createShadow(shadowSprite), shadowX, shadowY);
     }
+  }
+  
+  void removeItem(int row, int col) {
+      grid[row][col] = 0;
+      ocupedCells[row][col] = false;
   }
 
   PImage createShadow(PImage originalImage) {

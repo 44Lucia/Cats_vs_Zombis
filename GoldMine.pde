@@ -5,8 +5,10 @@ class GoldMine extends Entity {
   int intervalBetweenCoins; 
   int spawnRadius; 
   PVector minePos;
+  int gridRow;
+  int gridCol;
   
-  GoldMine(float p_x, float p_y) {
+  GoldMine(float p_x, float p_y, int p_gridRow, int p_gridCol) {
     goldMine = loadImage("GoldMine.png");
     goldMine.resize(70, 55);
     
@@ -22,6 +24,9 @@ class GoldMine extends Entity {
     health = maxHealth;
     isAlive = true;
     healthBar = new HealthBar(this, p_x + 10, p_y - 10, 50, 5);
+    
+    gridRow = p_gridRow;
+    gridCol = p_gridCol;
   }
   
   void update() {
