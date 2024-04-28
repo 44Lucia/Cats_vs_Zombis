@@ -28,7 +28,7 @@ abstract class Enemy extends Entity {
     if (abs(distanceToDestination.x) < LIThreshold && abs(distanceToDestination.y) < LIThreshold) {
       currentAnimation = 0;
       idle = true;
-      if (millis() - moveTimer > moveCooldown) {
+      if(millis() - moveTimer > moveCooldown) {
         idle = false;
         moveCooldown = random(1500, 2000);
         setNewMovement();
