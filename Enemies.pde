@@ -3,10 +3,13 @@ abstract class Enemy extends Entity {
   float damage, range;
   int score, money;
 
-  // Acceleration
+  // Movement variables
+  boolean idle;
   PVector desiredPos;
   PVector finalMovement;
   float currentAcceleration = 0, deltaAcceleration = 0.005;
+  float moveTimer = millis();
+  float moveCooldown = 2000;
   final float MAX_SPEED = 2;
   float rotationAngle = 0.3;
 
@@ -22,7 +25,13 @@ abstract class Enemy extends Entity {
 
     if (abs(distanceToDestination.x) < LIThreshold && abs(distanceToDestination.y) < LIThreshold) {
       currentAnimation = 0;
-      setNewMovement();
+      idle = true;
+      if (millis() - moveTimer > moveCooldown) {
+        idle = false;
+        moveCooldown = random(1500, 2000);
+        setNewMovement();
+        moveTimer = millis();
+      }
     } else {
       currentAnimation = 1;
 
@@ -41,7 +50,7 @@ abstract class Enemy extends Entity {
 
   void setNewMovement() {
     float angle;
-    float magnitude = random(70, 105);
+    float magnitude = random(85, 140);
 
     updateQuadrant();
     switch(quadrant) {
@@ -114,8 +123,7 @@ abstract class Enemy extends Entity {
   }
 
   void display() {
-    
-    circle(desiredPos.x, desiredPos.y, 40);
+
     // Manage sprite orientation
     if (pos.x - lastX != 0) {
       flipped = pos.x - lastX < 0;
@@ -159,7 +167,8 @@ class Torch extends Enemy {
       }
     } else {
       calculateMovement();
-      move();
+      if (!idle)
+        move();
     }
   }
 }
