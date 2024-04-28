@@ -1,9 +1,27 @@
+enum ItemType {
+    TREE(50, "Tree.png", 55, 70),
+    MINE(100, "GoldMine.png", 70, 55),
+    ARCHER(70, "Archer.png", 33, 33);
+    
+    int cost;
+    String spriteName;
+    int spriteWidth;
+    int spriteHeight;
+    
+    ItemType(int cost, String spriteName, int spriteWidth, int spriteHeight) {
+        this.cost = cost;
+        this.spriteName = spriteName;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
+    }
+}
+
 class GridManager {
-  final int rows; // Número de filas en la cuadrícula
-  final int cols; // Número de columnas en la cuadrícula
-  final int cellSize; // Tamaño de cada celda de la cuadrícula
-  int[][] grid; // Matriz que representa la cuadrícula
-  boolean[][] ocupedCells; // Matriz que registra las casillas ocupadas
+  final int rows; 
+  final int cols; 
+  final int cellSize; 
+  int[][] grid; 
+  boolean[][] ocupedCells;
   int selectedRow;
   int selectedCol;
   ArrayList<TreeWall> treeList;
@@ -49,28 +67,18 @@ class GridManager {
   }
 
   void update() {
-    if(gridLocked && millis() - lastLockTime >= lockDuration) {gridLocked = false;}
+     if (gridLocked && millis() - lastLockTime >= lockDuration) {
+        gridLocked = false;
+    }
 
-    if(leftClickDown) {
-      checkItemToInsert();
-      gridManagement();
+    if (leftClickDown) {
+        checkItemToInsert();
+        gridManagement();
     }
     
-    //Mines update
-    ui.cursorOverGold = false;
-    for(int i = goldMineList.size() -1; i >= 0; i--) {
-      if(!goldMineList.get(i).isAlive) {goldMineList.remove(i);}
-      else {goldMineList.get(i).update();}
-      
-      if(!ui.cursorOverGold) {goldMineList.get(i).cursorOverSomeGold();} // Skip iterations if already triggered a true
-    }
-    //Archers update
-    for(int i = archerTowerList.size() -1; i >= 0; i--) {
-      if(!archerTowerList.get(i).isAlive) {archerTowerList.remove(i);}
-      else {archerTowerList.get(i).update();}
-    }
-    //Trees update
-    for(int i = treeList.size() -1; i >= 0; i--) {if(!treeList.get(i).isAlive) {treeList.remove(i);}}
+    updateMines();
+    updateArchers();
+    updateTrees();
   }
 
   void display() {    
@@ -94,88 +102,87 @@ class GridManager {
     }
   }
 
-  void gridManagement() {
-    // Calcula la fila y columna seleccionadas en función de la posición del ratón
-    int row = mouseY / cellSize;
-    int col = mouseX / cellSize;
-    // Verifica si la celda seleccionada está dentro de los límites de la cuadrícula
-    if (row >= 0 && row < rows && col >= 0 && col < cols) {
-      // Verifica si la casilla está ocupada
-      if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
-        if (selectedTree) {
-          treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
-          ocupedCells[row][col] = true;
-          pj.money -= 50;
-          selectedArcher = false;
-          selectedTree = false;
-          placingItem = false;
-        } else if (selectedMine) {
-          goldMineList.add(new GoldMine(col * cellSize - 2, row * cellSize + 2));
-          ocupedCells[row][col] = true;
-          pj.money -= 100;
-          selectedArcher = false;
-          selectedMine = false;
-          placingItem = false;
-        }else if (selectedArcher){
-          archerTowerList.add(new ArcherTower(col * cellSize + 33, row * cellSize + 33));
-          ocupedCells[row][col] = true;
-          pj.money -= 150;
-          selectedArcher = false;
-          selectedMine = false;
-          placingItem = false;
-        }
-      }
-    }
+  void updateMines() {
+    goldMineList.removeIf(mine -> !mine.isAlive);
+    goldMineList.forEach(GoldMine::update);
   }
 
-  void checkItemToInsert() {
-    if (ui.treeButton.isMouseOver() && pj.money >= 50) {
-      if (!gridLocked) {
-        gridLocked = true;
-        lastLockTime = millis();
-      }
-
-      selectedTree = true;
-      selectedMine = false;
-      selectedArcher = false;
-      shadowSprite = loadImage("Tree.png");
-      shadowSprite.resize(55, 70);
-      placingItem = true;
-    } else if (ui.goldButton.isMouseOver() && pj.money >= 100) {
-      if (!gridLocked) {
-        gridLocked = true;
-        lastLockTime = millis();
-      }
-
-      selectedTree = false;
-      selectedMine = true;
-      selectedArcher = false;
-      shadowSprite = loadImage("GoldMine.png");
-      shadowSprite.resize(70, 55);
-      placingItem = true;
-    }else if (ui.archerButton.isMouseOver() /*&& pj.money >= 70*/){
-      if (!gridLocked) {
-        gridLocked = true;
-        lastLockTime = millis();
-      }
+  void updateArchers() {
+      archerTowerList.removeIf(archer -> !archer.isAlive);
+      archerTowerList.forEach(ArcherTower::update);
+  }
+  
+  void updateTrees() {
+      treeList.removeIf(tree -> !tree.isAlive);
+  }
+  
+  void gridManagement() {
+      int row = mouseY / cellSize;
+      int col = mouseX / cellSize;
       
+      if (isValidCell(row, col)) {
+          if (!ocupedCells[row][col] && !gridLocked && canPlaceItems()) {
+              placeItem(row, col);
+          }
+      }
+  }
+  
+  void placeItem(int row, int col) {
+      int cost = 0;
+      if (selectedTree) {
+          treeList.add(new TreeWall(col * cellSize + 6, row * cellSize - 1));
+          cost = ItemType.TREE.cost;
+      } else if (selectedMine) {
+          goldMineList.add(new GoldMine(col * cellSize - 2, row * cellSize + 2));
+          cost = ItemType.MINE.cost;
+      } else if (selectedArcher) {
+          archerTowerList.add(new ArcherTower(col * cellSize + 33, row * cellSize + 33));
+          cost = ItemType.ARCHER.cost;
+      }
+      ocupedCells[row][col] = true;
+      pj.money -= cost;
       selectedTree = false;
       selectedMine = false;
-      selectedArcher = true;
-      shadowSprite = loadImage("Archer.png");
+      selectedArcher = false;
+      placingItem = false;
+      shadowSprite = null;
+  }
+  
+  void checkItemToInsert() {
+      if (ui.treeButton.isMouseOver() && pj.money >= ItemType.TREE.cost) {
+          selectItem(ItemType.TREE, "Tree.png", 55, 70);
+      } else if (ui.goldButton.isMouseOver() && pj.money >= ItemType.MINE.cost) {
+          selectItem(ItemType.MINE, "GoldMine.png", 70, 55);
+      } else if (ui.archerButton.isMouseOver() && pj.money >= ItemType.ARCHER.cost) {
+          selectItem(ItemType.ARCHER, "Archer.png", 55, 60);
+      }
+  }
+  
+  void selectItem(ItemType type, String spriteName, int spriteWidth, int spriteHeight) {
+      if (!gridLocked) {
+          gridLocked = true;
+          lastLockTime = millis();
+      }
+      selectedTree = type == ItemType.TREE;
+      selectedMine = type == ItemType.MINE;
+      selectedArcher = type == ItemType.ARCHER;
+      shadowSprite = loadImage(spriteName);
+      shadowSprite.resize(spriteWidth, spriteHeight);
       placingItem = true;
-    }
   }
 
   void displayItems() {
     for (TreeWall tree : treeList) {tree.display();}
     for (GoldMine mine : goldMineList) {mine.display();}
     for (ArcherTower archer : archerTowerList) {archer.display();}
-
-    if (placingItem) {
-      float shadowX = mouseX - shadowSprite.width / 2;
-      float shadowY = mouseY - shadowSprite.height /  2;
-      image(createShadow(shadowSprite), shadowX, shadowY);
+    
+    if (placingItem && shadowSprite != null) { // Only show the shadow if there is a shadow image defined
+        int row = mouseY / cellSize;
+        int col = mouseX / cellSize;
+        float shadowX = col * cellSize - (cellSize - shadowSprite.width - 65) / 2; // Calculate the X position of the shadow
+        float shadowY = row * cellSize - (cellSize - shadowSprite.height - 70) / 2; // Calculate the Y position of the shadow
+        imageMode(CENTER);
+        image(createShadow(shadowSprite), shadowX, shadowY);
     }
   }
 
@@ -204,6 +211,10 @@ class GridManager {
       lut[i] = i / 255.0 * opacityFactor; // Adjust opacity based on original pixel value
     }
     return lut;
+  }
+  
+  boolean isValidCell(int row, int col) {
+    return row >= 0 && row < rows && col >= 0 && col < cols;
   }
 
   boolean canPlaceItems() {
