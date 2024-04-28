@@ -21,7 +21,7 @@ class ArcherTower extends Entity {
 
     maxHealth = 100;
     health = maxHealth;
-    healthBar = new HealthBar(this, p_x - 25, p_y - 30, 50, 5);
+    healthBar = new HealthBar(this, p_x, p_y - 30, 50, 5);
     
     for(int i = 0; i < 3; i++) {arrowList.add(new Projectile());}  
     getNextArrow();
