@@ -71,11 +71,7 @@ void draw() {
       gridManager.display();
       pj.display();
       ui.builderButtonsDisplay();
-
-      gridManager.display();
       enemyManager.display();
-
-      ui.builderButtonsDisplay();
 
       break;
     }
@@ -168,6 +164,7 @@ void startGame() {
   pj.name = playerInput;
   gameState = 2; // Game scene
   
+  enemyManager = new EnemyManager();
   enemyManager.spawnWave();
 }
 
