@@ -41,20 +41,43 @@ class GreatSword {
   void checkCollisions() {
     // Calcular vértices de cada rectángulo
     PVector[] swordVertices = colManager.calculateVertices(pos.x, pos.y, w, h, currentAngle); //sword collider
+    
     for (int i = enemyManager.torches.size() - 1; i >= 0; i-- ) {
       Torch torch = enemyManager.torches.get(i);
       PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth / 8, torch.animations.spriteHeight / 4, 0); //torch collider
 
       // Verificar colisión usando SAT
-      boolean collision = colManager.checkSATCollision(swordVertices, torchVertices);      
-      if(collision) {
-        torch.health -= pj.damage;  
-        if(torch.health <= 0) {
-          enemyManager.torches.remove(torch); 
+      boolean collision = colManager.checkSATCollision(swordVertices, torchVertices);
+      if (collision) {
+        torch.takeDamage(pj.damage);
+        if (torch.health <= 0) {
+          enemyManager.torches.remove(torch);
           pj.score += torch.score;
           pj.money += torch.money;
-          
-          if(enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
+
+          if (enemyManager.torches.size() == 0) {
+            enemyManager.spawnWave();
+          }
+        }
+      }
+    }
+    
+    for (int i = enemyManager.barries.size() - 1; i >= 0; i-- ) {
+      Barry barry = enemyManager.barries.get(i);
+      PVector[] barryVertices = colManager.calculateVertices(barry.pos.x, barry.pos.y, barry.animations.spriteWidth / 8, barry.animations.spriteHeight / 4, 0); //torch collider
+
+      // Verificar colisión usando SAT
+      boolean collision = colManager.checkSATCollision(swordVertices, barryVertices);
+      if (collision) {
+        barry.takeDamage(pj.damage);
+        if (barry.health <= 0) {
+          enemyManager.barries.remove(barry);
+          pj.score += barry.score;
+          pj.money += barry.money;
+
+          if (enemyManager.torches.size() == 0) {
+            enemyManager.spawnWave();
+          }
         }
       }
     }

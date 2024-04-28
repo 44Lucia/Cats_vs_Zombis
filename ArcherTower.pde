@@ -1,19 +1,21 @@
 class ArcherTower extends Entity {
-  PVector pos;
-  PImage archerSprite;
   float angle;
   float rotationRange;
   float minAngle;
   float maxAngle;
-  
+
   ArrayList<Projectile> arrowList = new ArrayList<Projectile>();
   Projectile currentArrow;
-  float shootInterval; 
+  float shootInterval;
   float lastShotTime;
+  int gridRow;
+  int gridCol;
 
-  ArcherTower(float p_x, float p_y) {
+  ArcherTower(float p_x, float p_y, int p_gridRow, int p_gridCol) {
+    gridRow = p_gridRow;
+    gridCol = p_gridCol;
     pos = new PVector(p_x, p_y);
-    archerSprite = loadImage("Archer.png");
+    animations = new Animations(loadImage("Archer.png"), 1, 61, 86);
     angle = 0;
     rotationRange = 190;
     minAngle = -PI / 4;
@@ -22,8 +24,10 @@ class ArcherTower extends Entity {
     maxHealth = 100;
     health = maxHealth;
     healthBar = new HealthBar(this, p_x, p_y - 30, 50, 5);
-    
-    for(int i = 0; i < 3; i++) {arrowList.add(new Projectile());}  
+
+    for (int i = 0; i < 3; i++) {
+      arrowList.add(new Projectile());
+    }
     getNextArrow();
     shootInterval = 2000;
     lastShotTime = 0;
@@ -34,11 +38,11 @@ class ArcherTower extends Entity {
       rotateTowardsEnemy();
       // Update and show arrows
       for (Projectile arrow : arrowList) {
-          if (arrow.isActive) {
-              arrow.update();
-              // If the arrow is active, check for collisions
-              checkCollisions(arrow);
-          }
+        if (arrow.isActive) {
+          arrow.update();
+          // If the arrow is active, check for collisions
+          checkCollisions(arrow);
+        }
       }
       // Try to shoot an arrow
       tryShoot();
@@ -50,38 +54,40 @@ class ArcherTower extends Entity {
     translate(pos.x, pos.y);
     rotate(angle);
     imageMode(CENTER);
-    image(archerSprite, 0, 0);
+    animations.play(0, 0, 0, false);
     popMatrix();
-    
+
     // Show and update arrows
     for (Projectile arrow : arrowList) {
-        if (arrow.isActive) {
-            arrow.display(0);
-        }
+      if (arrow.isActive) {
+        arrow.display(0);
+      }
     }
-    
+
     // Show and update life bar
-    if (isAlive) { healthBar.display(health, maxHealth); }
+    if (isAlive) {
+      healthBar.display(health, maxHealth);
+    }
   }
-  
+
   Enemy findClosestEnemy() {
     // Initialize variables to store the position of the closest enemy within range
     Enemy closestEnemy = null;
     float closestDistance = rotationRange;
-    
+
     // Iterate over the list of enemies
     for (Enemy enemy : enemyManager.torches) {
-        // Calculate the distance between the tower and the current enemy
-        float distanceToEnemy = dist(pos.x, pos.y, enemy.pos.x, enemy.pos.y);
-        // Check if the distance is within the rotation range
-        if (distanceToEnemy < rotationRange) {
-            // Update nearest enemy if it is closer than the current one
-            if (distanceToEnemy < closestDistance) {
-                closestEnemy = enemy;
-                closestDistance = distanceToEnemy;
-            }
+      // Calculate the distance between the tower and the current enemy
+      float distanceToEnemy = dist(pos.x, pos.y, enemy.pos.x, enemy.pos.y);
+      // Check if the distance is within the rotation range
+      if (distanceToEnemy < rotationRange) {
+        // Update nearest enemy if it is closer than the current one
+        if (distanceToEnemy < closestDistance) {
+          closestEnemy = enemy;
+          closestDistance = distanceToEnemy;
         }
-    } 
+      }
+    }
     return closestEnemy;
   }
 
@@ -115,64 +121,66 @@ class ArcherTower extends Entity {
       angle += turnSpeed * angleDiff;
     }
   }
-  
+
   void tryShoot() {
     // Check if enough time has passed since the last shot
     if (millis() - lastShotTime >= shootInterval) {
-        shootAtEnemy(); // Shoot
-        lastShotTime = millis(); // Update last shot time
+      shootAtEnemy(); // Shoot
+      lastShotTime = millis(); // Update last shot time
     }
   }
-  
+
   void shootAtEnemy() {
     // Search for the nearest enemy within range
     Enemy closestEnemy = findClosestEnemy();
-    
+
     // If an enemy was found within range, shoot towards that enemy
     if (closestEnemy != null) {
-        currentArrow.shootArrow(pos.x, pos.y, angle);
-        getNextArrow();
+      currentArrow.shootArrow(pos.x, pos.y, angle);
+      getNextArrow();
     }
   }
-  
-  void getNextArrow() {    
+
+  void getNextArrow() {
     for (Projectile arrow : arrowList) {
-        if (!arrow.isActive) {
-            currentArrow = arrow;
-            currentArrow.isActive = true;
-            break; // Exit loop once an arrow has been selected
-        }
+      if (!arrow.isActive) {
+        currentArrow = arrow;
+        currentArrow.isActive = true;
+        break; // Exit loop once an arrow has been selected
+      }
     }
   }
-  
+
   void takeDamage(int damage) {
     health -= damage;
     if (health <= 0) {
       isAlive = false;
     }
   }
-  
+
   void checkCollisions(Projectile p_arrow) {
     // Calculate vertices of each rectangle
     PVector[] arrowVertices = colManager.calculateVertices(p_arrow.pos.x, p_arrow.pos.y, p_arrow.size.x, p_arrow.size.y, p_arrow.angle); // Arrow collider
-    for(int i = enemyManager.torches.size() - 1; i >= 0; i--) { // Torch enemies
+    for (int i = enemyManager.torches.size() - 1; i >= 0; i--) { // Torch enemies
       Torch torch = enemyManager.torches.get(i);
-      
+
       PVector[] torchVertices = colManager.calculateVertices(torch.pos.x, torch.pos.y, torch.animations.spriteWidth / 8, torch.animations.spriteHeight / 4, 0); // Torch collider
-            utilities.drawRectangle(torchVertices);
-      
+      utilities.drawRectangle(torchVertices);
+
       // Check collision using SAT
-      boolean collision = colManager.checkSATCollision(arrowVertices, torchVertices);      
-      if(collision) {
+      boolean collision = colManager.checkSATCollision(arrowVertices, torchVertices);
+      if (collision) {
         torch.health -= pj.damage;
         p_arrow.hasBeenShoot = false;
         p_arrow.isActive = false;
-        if(torch.health <= 0) {
-          enemyManager.torches.remove(torch); 
+        if (torch.health <= 0) {
+          enemyManager.torches.remove(torch);
           pj.score += torch.score;
           pj.money += torch.money;
-          
-          if(enemyManager.torches.size() == 0) {enemyManager.spawnWave();}
+
+          if (enemyManager.torches.size() == 0) {
+            enemyManager.spawnWave();
+          }
         }
       }
     }

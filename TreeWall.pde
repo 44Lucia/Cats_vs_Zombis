@@ -1,12 +1,13 @@
 class TreeWall extends Entity {
-  PImage treeImage;
-  PVector pos;
+  boolean flipped;
   int gridRow;
   int gridCol;
 
   TreeWall(float p_x, float p_y, int p_gridRow, int p_gridCol) {
-    treeImage = loadImage("Tree.png");
-    treeImage.resize(55, 70);
+    
+    animations = new Animations(loadImage("Tree.png"), 0, 55, 70);
+    flipped = random(1) == 1;
+    animations.spriteSheet.resize(55, 70);
     pos = new PVector(p_x,p_y);
     maxHealth = 100;
     health = maxHealth;
@@ -18,7 +19,7 @@ class TreeWall extends Entity {
   }
 
   void display() {
-    image(treeImage, pos.x, pos.y);
+    animations.play(0, int(pos.x) + animations.spriteWidth / 2, int(pos.y) + animations.spriteHeight / 2, flipped);
     if(isAlive) {healthBar.display(health, maxHealth);}
   }
 }

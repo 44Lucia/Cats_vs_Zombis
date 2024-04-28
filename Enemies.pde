@@ -3,10 +3,12 @@ abstract class Enemy extends Entity {
   float damage, range;
   int score, money;
 
+  long canAttackTime = 1000, lastTimeAttacked;
+
   // Movement variables
   boolean idle;
-  PVector desiredPos;
-  PVector finalMovement;
+  PVector finalMovement = new PVector();
+  PVector desiredPos = new PVector();
   float currentAcceleration = 0, deltaAcceleration = 0.005;
   float moveTimer = millis();
   float moveCooldown = 2000;
@@ -93,28 +95,30 @@ abstract class Enemy extends Entity {
   }
 
   Entity entityInRange() {
+
+    PVector distance;
     for (TreeWall treeWall : gridManager.treeList) {
-      PVector distance = new PVector(pos.x - treeWall.pos.x, pos.y - treeWall.pos.y);
+      distance = new PVector(pos.x - treeWall.pos.x, pos.y - treeWall.pos.y);
       if (distance.mag() < range) {
         return treeWall;
       }
     }
 
     for (ArcherTower archerTower : gridManager.archerTowerList) {
-      PVector distance = new PVector(pos.x - archerTower.pos.x, pos.y - archerTower.pos.y);
+      distance = new PVector(pos.x - archerTower.pos.x, pos.y - archerTower.pos.y);
       if (distance.mag() < range) {
         return archerTower;
       }
     }
-
+    
     for (GoldMine goldMine : gridManager.goldMineList) {
-      PVector distance = new PVector(pos.x - goldMine.pos.x, pos.y - goldMine.pos.y);
+      distance = new PVector(pos.x - goldMine.pos.x, pos.y - goldMine.pos.y);
       if (distance.mag() < range) {
         return goldMine;
       }
     }
 
-    PVector distance = new PVector(pos.x - pj.pos.x, pos.y - pj.pos.y);
+    distance = new PVector(pos.x - pj.pos.x, pos.y - pj.pos.y);
     if (distance.mag() < range) {
       return pj;
     }
@@ -141,7 +145,7 @@ class Torch extends Enemy {
   Torch(PVector p_pos) {
     pos = p_pos;
 
-    animations = new Animations(loadImage("Torch.png"), 3, 6, 192, 192);
+    animations = new Animations(loadImage("Torch.png"), 6, 192, 192);
 
     // Stats
     health = 100;
@@ -150,9 +154,7 @@ class Torch extends Enemy {
     range = 70;
     damage = 5;
     score = 1;
-    money = 10;
-    finalMovement = new PVector();
-    desiredPos = new PVector();
+    money = 50;
 
     setNewMovement();
   }
@@ -165,6 +167,10 @@ class Torch extends Enemy {
         lastTimeAttacked = millis();
         target.takeDamage(damage);
       }
+      if (millis() - damageLutTimer > 50) {
+        damageLutTimer = millis();
+        target.damageLUT();
+      }
     } else {
       calculateMovement();
       if (!idle)
@@ -175,15 +181,15 @@ class Torch extends Enemy {
 
 // TNT goblin thrower enemy
 class Tnt extends Enemy {
-  int health;
-  int maxHealth;
+
+  Projectile projectile = new Projectile();
 
   Tnt(PVector p_pos) {
 
     // Position
     pos = p_pos;
 
-    animations = new Animations(loadImage("TNT.png"), 3, 6, 192, 192);
+    animations = new Animations(loadImage("TNT.png"), 6, 192, 192);
 
     // Stats
     health = 60;
@@ -193,23 +199,39 @@ class Tnt extends Enemy {
     damage = 10;
     score = 3;
     money = 20;
+
+    setNewMovement();
   }
 
   void update() {
+    Entity target = entityInRange();
+    if (target != null) {
+      currentAnimation = 2;
+      if (canAttackTime + lastTimeAttacked < millis()) {
+        lastTimeAttacked = millis();
+        target.takeDamage(damage);
+      }
+      if (millis() - damageLutTimer > 50) {
+        damageLutTimer = millis();
+        target.damageLUT();
+      }
+    } else {
+      calculateMovement();
+      if (!idle)
+        move();
+    }
   }
 }
 
 // Barry goblin enemy
 class Barry extends Enemy {
-  int health;
-  int maxHealth;
 
   Barry (PVector p_pos) {
 
     // Position
     pos = p_pos;
 
-    animations = new Animations(loadImage("Barry.png"), 3, 3, 128, 128);
+    animations = new Animations(loadImage("Barry.png"), 3, 128, 128);
 
     // Stats
     health = 40;
@@ -223,5 +245,21 @@ class Barry extends Enemy {
   }
 
   void update() {
+    Entity target = entityInRange();
+    if (target != null) {
+      currentAnimation = 2;
+      if (canAttackTime + lastTimeAttacked < millis()) {
+        lastTimeAttacked = millis();
+        target.takeDamage(damage);
+      }
+      if (millis() - damageLutTimer > 50) {
+        damageLutTimer = millis();
+        target.damageLUT();
+      }
+    } else {
+      calculateMovement();
+      if (!idle)
+        move();
+    }
   }
 }

@@ -96,7 +96,7 @@ class Bow {
       // Verificar colisión usando SAT
       boolean collision = colManager.checkSATCollision(arrowVertices, torchVertices);      
       if(collision) {
-        torch.health -= pj.damage;
+        torch.takeDamage(pj.damage);
         p_arrow.hasBeenShoot = false;
         p_arrow.isActive = false;
         if(torch.health <= 0) {

@@ -1,22 +1,21 @@
 class GoldMine extends Entity {
-  PImage goldMine;
   ArrayList<Gold> goldList;
   int timeLastGold;
   int intervalBetweenCoins; 
-  int spawnRadius; 
-  PVector minePos;
+  int spawnRadius;
   int gridRow;
   int gridCol;
   
   GoldMine(float p_x, float p_y, int p_gridRow, int p_gridCol) {
-    goldMine = loadImage("GoldMine.png");
-    goldMine.resize(70, 55);
+    
+    animations = new Animations(loadImage("GoldMine.png"), 1, 192, 128);
+    animations.spriteSheet.resize(70, 55);
     
     timeLastGold = 0;
     intervalBetweenCoins = 2000;
     spawnRadius = 50;
     
-    minePos = new PVector(p_x, p_y);
+    pos = new PVector(p_x, p_y);
     
     goldList = new ArrayList<Gold>();
     
@@ -34,7 +33,7 @@ class GoldMine extends Entity {
       float angle = random(TWO_PI);
       
       spawnRadius = (int)random(10, 50);
-      PVector newPos = new PVector((minePos.x + cos(angle) * spawnRadius),(minePos.y + sin(angle) * spawnRadius));
+      PVector newPos = new PVector((pos.x + cos(angle) * spawnRadius),(pos.y + sin(angle) * spawnRadius));
       
       goldList.add(new Gold(newPos.x, newPos.y));
       timeLastGold = millis();
@@ -50,7 +49,7 @@ class GoldMine extends Entity {
   }
   
   void display() {
-    image(goldMine, minePos.x, minePos.y);
+    animations.play(0, int(pos.x) + animations.spriteWidth / 2, int(pos.y) + animations.spriteHeight / 2, false);
     
     for (Gold gold : goldList) {gold.display();}
     if(isAlive) {healthBar.display(health, maxHealth);}

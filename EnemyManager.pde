@@ -11,7 +11,7 @@ class EnemyManager {
     torches = new ArrayList<Torch>();
     tnts = new ArrayList<Tnt>();
     barries = new ArrayList<Barry>();
-    waveEnemies = new PVector(1,0,0);
+    waveEnemies = new PVector(1,1,1);
     spawnedEnemies = new PVector();
   }
 
